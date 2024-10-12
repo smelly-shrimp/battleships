@@ -8,6 +8,5 @@ using namespace std;
 void Intro::print()
 {
     Fman::playAnim("intro", false);
-
     Game::setGameState(GameStates::WELCOME);
 }

@@ -2,19 +2,18 @@
 #include <vector>
 #include <fstream>
 #include <format>
-#include <chrono>
-#include <thread>
 #include "fman.h"
+#include "tools.h"
 
 using namespace std;
 
 void Fman::_pingPong(vector<string> f, int i)
 {
     cout << f.at(i) << endl;
-    this_thread::sleep_for(chrono::milliseconds(500));
+    Tools::waitMs(250);
     if (i < f.size() - 1) _pingPong(f, i + 1);
     cout << f.at(i) << endl;
-    this_thread::sleep_for(chrono::milliseconds(500));
+    Tools::waitMs(250);
 }
 
 vector<string> Fman::read(string file)
@@ -50,9 +49,9 @@ void Fman::playAnim(string file, bool isPingPong)
     if (isPingPong) _pingPong(anim, 0);
     else {
         for (string f : anim) {
-            printf("\033[2J");
+            Tools::clearConsole();
             cout << f << endl;
-            this_thread::sleep_for(chrono::milliseconds(500));
+            Tools::waitMs(500);
         }
     }
 

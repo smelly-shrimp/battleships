@@ -2,6 +2,7 @@
 #include "game.h"
 #include "intro.h"
 #include "welcome.h"
+#include "tools.h"
 
 void Game::setGameState(GameStates state)
 {
@@ -10,7 +11,8 @@ void Game::setGameState(GameStates state)
     Intro intro;
     Welcome welcome;
 
-    printf("\033[2J");
+    Tools::clearConsole();
+    
     switch(Game::getGameState()) {
         case GameStates::INTRO:
             intro.print();
