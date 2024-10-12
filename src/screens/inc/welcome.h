@@ -1,7 +1,9 @@
 #ifndef WELCOME_H
 #define WELCOME_H
 
-class Welcome
+#include "screen.h"
+
+class Welcome : public Screen
 {
     private:
     public:
