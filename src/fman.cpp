@@ -17,6 +17,9 @@ vector<string> Fman::read(string file)
             f.push_back(ch);
         }
         else {
+            if (f[0] == '\n') {
+                f.erase(0, 1);
+            }
             f.erase(f.length()-1);
             _frames.push_back(f);
             f = "";
