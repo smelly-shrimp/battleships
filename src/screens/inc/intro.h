@@ -1,9 +1,7 @@
 #ifndef INTRO_H
 #define INTRO_H
 
-#include "screen.h"
-
-class Intro : public Screen
+class Intro
 {
     private:
     public:

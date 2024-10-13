@@ -1,4 +1,3 @@
-#include <iostream>
 #include "intro.h"
 #include "game.h"
 #include "fman.h"
