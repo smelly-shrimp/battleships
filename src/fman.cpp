@@ -51,7 +51,7 @@ void Fman::playAnim(string file, bool isPingPong)
         for (string f : anim) {
             Tools::clearConsole();
             cout << f << endl;
-            Tools::waitMs(500);
+            if (anim.size() > 1) Tools::waitMs(500);
         }
     }
 
