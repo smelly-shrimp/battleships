@@ -6,8 +6,10 @@
 class Welcome : public Screen
 {
     private:
+        void _validate(string ans);
     public:
         void print() override;
+        void enemyIn();
 };
 
 #endif // !WELCOME_H

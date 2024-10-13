@@ -19,6 +19,7 @@ void Game::setGameState(GameStates state)
             break;
         case GameStates::WELCOME:
             welcome.print();
+            welcome.enemyIn();
             break;
         case GameStates::ARRANGE:
             break;
