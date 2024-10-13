@@ -7,7 +7,7 @@ class Welcome : public Screen
 {
     private:
     public:
-        void print();
+        void print() override;
 };
 
 #endif // !WELCOME_H

@@ -1,11 +1,13 @@
 #ifndef INTRO_H
 #define INTRO_H
 
-class Intro
+#include "screen.h"
+
+class Intro : public Screen
 {
     private:
     public:
-        void print();
+        void print() override;
 };
 
 #endif // !INTRO_H

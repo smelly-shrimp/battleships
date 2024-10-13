@@ -9,8 +9,9 @@ using namespace std;
 class Console
 {
     private:
+        vector<string> _validateArgv(string arg, string valid);
     public:
-        vector<string> validateArgv(string arg, int argc);
+        void inputArgv(string arg, string valid);
 };
 
 #endif // !CONSOLE_H

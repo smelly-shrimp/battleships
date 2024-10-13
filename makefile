@@ -44,3 +44,6 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 run:
 	clear
 	$(BUILD_DIR)/$(TARGET_EXEC)
+
+clean:
+	rm -rf build
