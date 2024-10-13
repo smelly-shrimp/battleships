@@ -9,7 +9,7 @@ using namespace std;
 class Console
 {
     public:
-        string input();
+        string input(string msg);
         bool isAnswer(string arg, string valid);
 };
 

@@ -5,9 +5,13 @@
 
 using namespace std;
 
-string Console::input()
+string Console::input(string msg)
 {
+    for (int i = 0; i < 80; i++) cout << "\u2594"; cout << endl;
+
+    cout << msg << endl;
     string arg;
+    cout << "ROOT $ ";
     cin >> arg;
     return arg;
 }

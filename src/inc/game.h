@@ -16,8 +16,6 @@ class Game
     public:
         static void setGameState(GameStates state);
         static GameStates getGameState();
-        // string ans = welcome.console.input();
-        // welcome.console.isAnswer(ans, "(h|human)"); 
 };
 
 #endif // !GAME_H
