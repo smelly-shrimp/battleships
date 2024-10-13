@@ -8,10 +8,9 @@ using namespace std;
 
 class Console
 {
-    private:
-        vector<string> _validateArgv(string arg, string valid);
     public:
-        void inputArgv(string arg, string valid);
+        string input();
+        bool isAnswer(string arg, string valid);
 };
 
 #endif // !CONSOLE_H

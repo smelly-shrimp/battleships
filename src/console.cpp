@@ -1,15 +1,20 @@
 #include <iostream>
+#include <regex>
 #include <vector>
 #include "console.h"
 
 using namespace std;
 
-vector<string> Console::_validateArgv(string arg, string valid)
+string Console::input()
 {
-    cout << valid << endl;
+    string arg;
+    cin >> arg;
+    return arg;
 }
 
-void Console::inputArgv(string arg, string valid)
-{
-    cout << valid << endl;
+bool Console::isAnswer(string arg, string valid) {
+    regex re(valid);
+    regex_match(arg.c_str(), re);
+
+    return false;
 }
