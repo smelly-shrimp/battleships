@@ -8,7 +8,7 @@ class Screen
     private:
     public:
         Console console;
-        virtual void print();
+        virtual void print() = 0;
 };
 
 #endif // !SCREEN_H
