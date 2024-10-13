@@ -20,7 +20,11 @@ void Game::setGameState(GameStates state)
         case GameStates::WELCOME:
             welcome.print();
             break;
+        case GameStates::ARRANGE:
+            break;
         default:
+            std::cout << "PANIC! STOPPING EXECUTION! ILLEGAL STATE!" << std::endl;
+            std::exit(0);
     }
 }
 
