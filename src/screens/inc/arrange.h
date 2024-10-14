@@ -8,7 +8,7 @@ class Arrange : public Screen
 {
     public:
         void print() override;
-        void shipsIn();
+        void inputShips();
     private:
         void _printList();
         void _askForShips(std::string ans);

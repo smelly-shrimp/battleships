@@ -24,12 +24,13 @@ void Game::setGameState(GameStates state)
             break;
         case WELCOME:
             welcome.print();
-            welcome.inputEnemy();
+            p1 = new Human("PLAYER_1");
+            p2 = welcome.inputEnemy();
             setGameState(GameStates::ARRANGE);
             break;
         case ARRANGE:
             arrange.print();
-            arrange.shipsIn();
+            arrange.inputShips();
             break;
         default:
             cout << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << endl;

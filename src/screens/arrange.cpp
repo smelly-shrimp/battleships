@@ -10,7 +10,7 @@ void Arrange::print()
     Fman::playAnim("arrange", false, false);
 }
 
-void Arrange::shipsIn()
+void Arrange::inputShips()
 {
     _askForShips(console.input("To position: <a-j><1-10>"));
 }
