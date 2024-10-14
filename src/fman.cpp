@@ -42,14 +42,14 @@ vector<string> Fman::read(string file)
     return _frames;
 }
 
-void Fman::playAnim(string file, bool isPingPong)
+void Fman::playAnim(string file, bool isClear, bool isPingPong)
 {
     vector<string> anim = Fman::read(file);
 
     if (isPingPong) _pingPong(anim, 0);
     else {
         for (string f : anim) {
-            Tools::clearConsole();
+            if (isClear) Tools::clearConsole();
             cout << f << endl;
             if (anim.size() > 1) Tools::waitMs(500);
         }

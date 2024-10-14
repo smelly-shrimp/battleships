@@ -7,7 +7,7 @@ using namespace std;
 void Arrange::print()
 {
     _printList();
-    Fman::playAnim("arrange", false);
+    Fman::playAnim("arrange", false, false);
 }
 
 void Arrange::_printList()

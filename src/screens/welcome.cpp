@@ -37,5 +37,5 @@ void Welcome::enemyIn()
 
 void Welcome::print()
 {
-    Fman::playAnim("welcome", false);
+    Fman::playAnim("welcome", false, false);
 }

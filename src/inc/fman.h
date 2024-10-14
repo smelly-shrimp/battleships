@@ -10,7 +10,7 @@ class Fman
 {
     public:
         static vector<string> read(string file);
-        static void playAnim(string file, bool isPingPong);
+        static void playAnim(string file, bool isClean, bool isPingPong);
     private:
         inline static vector<string> _frames;
         static void _pingPong(vector<string> f, int i);

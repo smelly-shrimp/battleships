@@ -6,6 +6,6 @@ using namespace std;
 
 void Intro::print()
 {
-    Fman::playAnim("intro", false);
+    Fman::playAnim("intro", false, false);
     Game::setGameState(GameStates::WELCOME);
 }
