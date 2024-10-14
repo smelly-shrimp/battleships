@@ -2,13 +2,8 @@
 #define PLAYER_H
 
 #include <iostream>
+#include "grid.h"
 using namespace std;
-
-enum squareStates
-{
-    EMPTY,
-    SHOT,
-};
 
 class Player
 {
@@ -17,8 +12,7 @@ class Player
         string getName();
     private:
         string _name;
-        void _clear();
-        squareStates grid[10][10];
+        Grid grid;
 };
 
 class Human : public Player

@@ -6,8 +6,9 @@
 class Screen
 {
     public:
-        Console console;
         virtual void print() = 0;
+    protected:
+        Console _console;
 };
 
 #endif // !SCREEN_H

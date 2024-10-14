@@ -12,7 +12,7 @@ void Arrange::print()
 
 void Arrange::inputShips()
 {
-    _askForShips(console.input("To position: <a-j><1-10>"));
+    _askForShips(_console.input("To position: <a-j><1-10>"));
 }
 
 void Arrange::_printList()

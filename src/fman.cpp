@@ -7,15 +7,6 @@
 
 using namespace std;
 
-void Fman::_pingPong(vector<string> f, int i)
-{
-    cout << f.at(i) << endl;
-    Tools::waitMs(250);
-    if (i < f.size() - 1) _pingPong(f, i + 1);
-    cout << f.at(i) << endl;
-    Tools::waitMs(250);
-}
-
 vector<string> Fman::read(string file)
 {
     ifstream framesFile(format("./src/anims/{}.anim", file));
@@ -56,4 +47,13 @@ void Fman::playAnim(string file, bool isClear, bool isPingPong)
     }
 
     _frames.clear();
+}
+
+void Fman::_pingPong(vector<string> f, int i)
+{
+    cout << f.at(i) << endl;
+    Tools::waitMs(250);
+    if (i < f.size() - 1) _pingPong(f, i + 1);
+    cout << f.at(i) << endl;
+    Tools::waitMs(250);
 }

@@ -5,11 +5,6 @@
 
 using namespace std;
 
-void Console::_drawChars(int length, string color)
-{
-    for (int i = 0; i < length; i++) cout << color << "\u2594";
-}
-
 void Console::drawLine(string color, bool isError)
 {
     if (isError) {
@@ -38,4 +33,9 @@ string Console::input(string msg)
 bool Console::isAnswer(string arg, string valid) {
     regex re(valid);
     return regex_match(arg.c_str(), re);
+}
+
+void Console::_drawChars(int length, string color)
+{
+    for (int i = 0; i < length; i++) cout << color << "\u2594";
 }
