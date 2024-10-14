@@ -2,14 +2,13 @@
 #define WELCOME_H
 
 #include "screen.h"
+#include "player.h"
 
 class Welcome : public Screen
 {
     public:
         void print() override;
-        void enemyIn();
-    private:
-        void _validate(string ans);
+        Player* inputEnemy();
 };
 
 #endif // !WELCOME_H

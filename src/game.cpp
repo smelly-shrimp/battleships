@@ -24,7 +24,7 @@ void Game::setGameState(GameStates state)
             break;
         case WELCOME:
             welcome.print();
-            welcome.enemyIn();
+            welcome.inputEnemy();
             setGameState(GameStates::ARRANGE);
             break;
         case ARRANGE:
