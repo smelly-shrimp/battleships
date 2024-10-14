@@ -6,6 +6,8 @@
 #include "tools.h"
 #include "player.h"
 
+using namespace std;
+
 void Game::setGameState(GameStates state)
 {
     _state = state;
@@ -27,10 +29,11 @@ void Game::setGameState(GameStates state)
             break;
         case ARRANGE:
             arrange.print();
+            arrange.shipsIn();
             break;
         default:
-            std::cout << "PANIC! STOPPING EXECUTION! ILLEGAL STATE!" << std::endl;
-            std::exit(0);
+            cout << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << endl;
+            exit(0);
     }
 }
 
