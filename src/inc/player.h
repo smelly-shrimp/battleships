@@ -21,14 +21,14 @@ class Player
         string getName();
 };
 
-class Human
+class Human : public Player
 {
-    
+    using Player::Player;
 };
 
-class Computer
+class Comp : public Player
 {
-
+    using Player::Player;
 };
 
 #endif // !PLAYER_H

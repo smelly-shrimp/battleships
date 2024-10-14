@@ -3,6 +3,7 @@
 #include "intro.h"
 #include "welcome.h"
 #include "tools.h"
+#include "player.h"
 
 void Game::setGameState(GameStates state)
 {
@@ -14,14 +15,16 @@ void Game::setGameState(GameStates state)
     Tools::clearConsole();
     
     switch(Game::getGameState()) {
-        case GameStates::INTRO:
+        case INTRO:
             intro.print();
             break;
-        case GameStates::WELCOME:
+        case WELCOME:
             welcome.print();
             welcome.enemyIn();
+            setGameState(GameStates::ARRANGE);
             break;
-        case GameStates::ARRANGE:
+        case ARRANGE:
+            cout << "Foo" << endl;
             break;
         default:
             std::cout << "PANIC! STOPPING EXECUTION! ILLEGAL STATE!" << std::endl;
