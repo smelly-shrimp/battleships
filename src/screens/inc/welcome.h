@@ -5,11 +5,11 @@
 
 class Welcome : public Screen
 {
-    private:
-        void _validate(string ans);
     public:
         void print() override;
         void enemyIn();
+    private:
+        void _validate(string ans);
 };
 
 #endif // !WELCOME_H

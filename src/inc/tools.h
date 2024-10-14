@@ -3,7 +3,6 @@
 
 class Tools
 {
-    private:
     public:
         static void clearConsole();
         static void waitMs(int ms);

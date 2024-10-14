@@ -12,13 +12,13 @@ enum squareStates
 
 class Player
 {
+    public:
+        Player(string name);
+        string getName();
     private:
         string _name;
         void _clear();
         squareStates grid[10][10];
-    public:
-        Player(string name);
-        string getName();
 };
 
 class Human : public Player

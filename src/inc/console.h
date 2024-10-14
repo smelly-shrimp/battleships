@@ -8,12 +8,12 @@ using namespace std;
 
 class Console
 {
-    private:
-        void _drawChars(int length, string color);
     public:
         void drawLine(string color = "", bool isError = false);
         string input(string msg);
         bool isAnswer(string arg, string valid);
+    private:
+        void _drawChars(int length, string color);
 };
 
 #endif // !CONSOLE_H

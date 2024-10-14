@@ -5,7 +5,6 @@
 
 class Intro : public Screen
 {
-    private:
     public:
         void print() override;
 };

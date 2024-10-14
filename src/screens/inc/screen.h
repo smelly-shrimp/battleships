@@ -5,7 +5,6 @@
 
 class Screen
 {
-    private:
     public:
         Console console;
         virtual void print() = 0;
