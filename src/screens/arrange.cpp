@@ -13,9 +13,19 @@ void Arrange::print()
     _printGrid();
 }
 
+void Arrange::inputShip()
+{
+    for (auto const& [key, val] : Game::getCurrPlayer()->grid.ships) { // 4
+        for (int i = 0; i < key; i++) {
+            inputShipPos();
+            inputShipRot(val);
+        }
+    }
+}
+
 void Arrange::inputShipPos()
 {
-    string ans = _console.input("To position: <a-j><1-10>");
+    string ans = _console.input("To position: <a-j><1-10>", Game::getCurrPlayer()->getName());
     regex re{"[a-j][0-9]{1,2}"};
 
     if (regex_match(ans, re)) {
@@ -27,32 +37,31 @@ void Arrange::inputShipPos()
         _y = int(tolower(ans.at(0))) - 97;
     }
     else _askAgain();
+
+    print();
 }
 
-void Arrange::inputShipRot()
+void Arrange::inputShipRot(int length)
 {
-    string ans = _console.input("To rotation: <(h)orizontal/(v)>ertical");
+    string ans = _console.input("To rotation: <(h)orizontal/(v)>ertical", Game::getCurrPlayer()->getName());
     ans = Tools::lower(ans);
-    print();
 
     if (_console.isAnswer(ans, "(h|horizontal)") || _console.isAnswer(ans, "(v|vertical)")) {
-        Game::getCurrPlayer()->grid.setShip(_x, _y, _rotation, 1);
-        _printList();
-        _printGrid();
-
         if (_console.isAnswer(ans, "(h|horizontal)")) _rotation = 0;
-        else if (_console.isAnswer(ans, "(v|vertical)")) _rotation = 1;
+        else _rotation = 1;
+
+        Game::getCurrPlayer()->grid.setShip(_x, _y, _rotation, 1, length);
+        print();
     }
     else {
         _console.drawError("Wrong rotation!");
         print();
-        inputShipRot();
+        inputShipRot(length);
     }
 }
 
 void Arrange::_printList()
 {
-    Tools::clearConsole();
     cout << Game::getCurrPlayer()->grid.getShipList();
 }
 

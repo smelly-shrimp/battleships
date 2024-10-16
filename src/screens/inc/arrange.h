@@ -8,8 +8,9 @@ class Arrange : public Screen
 {
     public:
         void print() override;
+        void inputShip();
         void inputShipPos();
-        void inputShipRot();
+        void inputShipRot(int length);
     private:
         int _x;
         int _y;

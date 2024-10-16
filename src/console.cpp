@@ -19,13 +19,13 @@ void Console::drawLine(string color, bool isError)
     cout << Tools::colors["endf"] << endl;
 }
 
-string Console::input(string msg)
+string Console::input(string msg, string name)
 {
     drawLine();
 
     cout << msg << endl;
     string arg;
-    cout << "ROOT" << " $ ";
+    cout << name << " $ ";
     cin >> arg;
 
     return arg;
