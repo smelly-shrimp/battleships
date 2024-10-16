@@ -11,7 +11,6 @@ class Arrange : public Screen
         void inputShips();
     private:
         void _printList();
-        void _askForShips(std::string ans);
 };
 
 #endif // !ARRANGE_H

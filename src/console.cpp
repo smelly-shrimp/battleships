@@ -12,9 +12,8 @@ void Console::drawLine(string color, bool isError)
         cout << " ERROR ";
         _drawChars(36, color);
     }
-    else {
-        _drawChars(80, color);
-    }
+    else _drawChars(80, color);
+    
     cout << "\033[0m" << endl;
 }
 

@@ -12,7 +12,14 @@ void Arrange::print()
 
 void Arrange::inputShips()
 {
-    _askForShips(_console.input("To position: <a-j><1-10>"));
+    string ans = _console.input("To position: <a-j><1-10>");
+
+    if (ans.length() == 2) {
+        cout << ans;
+    }
+    else {
+        inputShips();
+    }
 }
 
 void Arrange::_printList()
@@ -22,9 +29,4 @@ void Arrange::_printList()
     cout << "3 × two-masted    __ __ __" << endl;
     cout << "2 × three-masted  __ __" << endl;
     cout << "1 × four-masted   __" << endl;
-}
-
-void Arrange::_askForShips(string ans)
-{
-    cout << ans << endl;
 }
