@@ -7,6 +7,8 @@ class Grid
 {
     public:
         Grid();
+        void setSquare(int x, int y, int val);
+        std::string getGrid();
     private:
         void _clear();
         int _grid[10][10];

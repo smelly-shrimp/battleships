@@ -3,6 +3,7 @@
 #include <vector>
 #include "console.h"
 #include "tools.h"
+#include "game.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ string Console::input(string msg)
 
     cout << msg << endl;
     string arg;
-    cout << "ROOT $ ";
+    cout << "ROOT" << " $ ";
     cin >> arg;
 
     return arg;

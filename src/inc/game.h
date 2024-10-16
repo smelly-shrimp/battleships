@@ -18,10 +18,11 @@ class Game
         inline static Player* p2;
         static void setGameState(GameStates state);
         static GameStates getGameState();
+        static void setCurrPlayer(Player* p);
+        static Player* getCurrPlayer();
     private:
         inline static GameStates _state;
-        // static Player* getCurrPlayer();
-        // inline static Player* _pcurr;
+        inline static Player* _currPlayer;
 };
 
 #endif // !GAME_H

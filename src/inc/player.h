@@ -8,11 +8,11 @@ using namespace std;
 class Player
 {
     public:
+        Grid grid;
         Player(string name);
         string getName();
     private:
         string _name;
-        Grid grid;
 };
 
 class Human : public Player

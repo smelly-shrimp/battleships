@@ -26,6 +26,7 @@ void Game::setGameState(GameStates state)
             welcome.print();
             p1 = new Human("PLAYER_1");
             p2 = welcome.inputEnemy();
+            setCurrPlayer(p1);
             setGameState(GameStates::ARRANGE);
             break;
         case ARRANGE:
@@ -43,7 +44,12 @@ GameStates Game::getGameState()
     return _state;
 }
 
-// Player *Game::getCurrPlayer()
-// {
-//     return _pcurr;
-// }
+void Game::setCurrPlayer(Player* p)
+{
+    _currPlayer = p;
+}
+
+Player *Game::getCurrPlayer()
+{
+    return _currPlayer;
+}

@@ -2,6 +2,7 @@
 #include <regex>
 #include "arrange.h"
 #include "fman.h"
+#include "game.h"
 
 using namespace std;
 
@@ -17,9 +18,13 @@ void Arrange::inputShips()
     regex re{"[a-j][0-9]{1,2}"};
 
     if (regex_match(ans, re)) {
-        int x = stoi(ans.erase(0, 1));
-        _x = x;
-        _y = int(tolower(ans.at(0)));
+        string anst{ans};
+        int x = stoi(anst.erase(0, 1));
+        _x = x - 1;
+        _y = int(tolower(ans.at(0))) - 97;
+
+        Game::getCurrPlayer()->grid.setSquare(_x, _y, 1);
+        // cout << Game::getCurrPlayer()->grid.getGrid();
     }
     else _askAgain();
 }
