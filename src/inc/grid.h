@@ -10,6 +10,7 @@ class Grid
         Grid();
         void setSquare(int x, int y, int val);
         string getGrid();
+        string getShipList();
     private:
         void _clear();
         int _grid[10][10];

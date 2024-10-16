@@ -1,5 +1,7 @@
 #include <iostream>
 #include <sstream>
+#include <iomanip>
+#include <ios>
 #include "grid.h"
 
 using namespace std;
@@ -29,6 +31,20 @@ string Grid::getGrid()
         ss << endl;
     }
     
+    return ss.str();
+}
+
+string Grid::getShipList()
+{
+    ostringstream ss;
+    string names[4] = { "single-masted", "two-masted   ", "three-masted ", "four-masted  " };
+    int size = sizeof(names) / sizeof(names[0]);
+    for (int i = 0; i < size; i++) {
+        ss << names[i];
+        for (int j = 0; j <= i; j++) ss << " __";
+        ss << endl;
+    }
+
     return ss.str();
 }
 
