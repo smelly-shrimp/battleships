@@ -14,6 +14,7 @@ class Arrange : public Screen
         int _y;
         void _printList();
         void _askAgain();
+        void _printGrid();
 };
 
 #endif // !ARRANGE_H

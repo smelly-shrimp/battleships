@@ -3,13 +3,15 @@
 #include "arrange.h"
 #include "fman.h"
 #include "game.h"
+#include "tools.h"
 
 using namespace std;
 
 void Arrange::print()
 {
     _printList();
-    Fman::playAnim("arrange", false, false);
+    _printGrid();
+    // Fman::playAnim("arrange", false, false);
 }
 
 void Arrange::inputShips()
@@ -26,18 +28,20 @@ void Arrange::inputShips()
         _y = int(tolower(ans.at(0))) - 97;
 
         Game::getCurrPlayer()->grid.setSquare(_x, _y, 1);
-        // cout << Game::getCurrPlayer()->grid.getGrid();
+        _printList();
+        _printGrid();
     }
     else _askAgain();
 }
 
 void Arrange::_printList()
 {
-    cout << "\n\n";
+    Tools::clearConsole();
     cout << "4 × single-masted __ __ __ __" << endl;
     cout << "3 × two-masted    __ __ __" << endl;
     cout << "2 × three-masted  __ __" << endl;
     cout << "1 × four-masted   __" << endl;
+    cout << endl;
 }
 
 void Arrange::_askAgain()
@@ -46,4 +50,10 @@ void Arrange::_askAgain()
     _console.drawError("You're stupid!");
     print();
     inputShips();
+}
+
+void Arrange::_printGrid()
+{
+    cout << Game::getCurrPlayer()->grid.getGrid();
+    cout << "\n\n";
 }

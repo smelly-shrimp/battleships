@@ -17,16 +17,19 @@ void Grid::setSquare(int x, int y, int val)
 string Grid::getGrid()
 {
     ostringstream ss;
-    ss << "========= OCEAN GRID =========="
+    ss << "========= OCEAN GRID ==========" << endl
         << ". 01 02 03 04 05 06 07 08 09 10" << endl;
-    for (int x = 0; x < 10; x++) {
-        ss << char(65 + x) << " ";
-        for (int y = 0; y < 10; y++) {
-            ss << (_grid[x][y] == 0 ? "\2588\2588" : "__" ) << " ";
+        
+    for (int y = 0; y < 10; y++) {
+        ss << char(65 + y) << " ";
+        for (int x = 0; x < 10; x++) {
+            ss << (_grid[x][y] == 0 ? "__" : "\u2588\u2588" ) << " ";
         }
 
         ss << endl;
     }
+    
+    return ss.str();
 }
 
 void Grid::_clear()
