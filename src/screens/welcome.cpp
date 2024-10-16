@@ -9,6 +9,7 @@ using namespace std;
 Player* Welcome::inputEnemy()
 {
     string ans = _console.input("To play with: human => H; computer => C");
+    ans = Tools::lower(ans);
 
     if (_console.isAnswer(ans, "(h|human)")) {
         return new Human("PLAYER_2");
