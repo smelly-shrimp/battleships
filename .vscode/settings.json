@@ -113,6 +113,7 @@
     "algorithm": "cpp",
     "chrono": "cpp",
     "thread": "cpp",
-    "regex": "cpp"
+    "regex": "cpp",
+    "map": "cpp"
   }
 }
