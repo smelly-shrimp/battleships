@@ -20,7 +20,8 @@ void Arrange::inputShips()
         int x = stoi(ans.erase(0, 1));
         _x = x;
         _y = int(tolower(ans.at(0)));
-    }    
+    }
+    else _askAgain();
 }
 
 void Arrange::_printList()
