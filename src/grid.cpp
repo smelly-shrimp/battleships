@@ -14,7 +14,6 @@ Grid::Grid()
 void Grid::setShip(int x, int y, int rotation, int val, int length)
 {
     for (int i = 0; i < length; i++) {
-        cout << rotation << endl;
         rotation == 0 ? _grid[x + i][y] = val : _grid[x][y + i] = val;
     }
 }
@@ -40,7 +39,7 @@ string Grid::getGrid()
 string Grid::getShipList()
 {
     ostringstream ss;
-    string names[4] = { "single-masted", "two-masted   ", "three-masted ", "four-masted  " };
+    string names[4] = { "four-masted  ", "three-masted ", "two-masted   ", "single-masted" };
     int size = sizeof(names) / sizeof(names[0]);
     ss << "\n\n";
     for (int i = 0; i < size; i++) {

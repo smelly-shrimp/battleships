@@ -9,17 +9,20 @@ using namespace std;
 
 void Arrange::print()
 {
-    _printList();
-    _printGrid();
+    cout << Game::getCurrPlayer()->grid.getShipList();
+    cout << Game::getCurrPlayer()->grid.getGrid();
+    cout << "\n\n";
 }
 
 void Arrange::inputShip()
 {
-    for (auto const& [key, val] : Game::getCurrPlayer()->grid.ships) { // 4
-        for (int i = 0; i < key; i++) {
+    int len = 4;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < i + 1; j++) {
             inputShipPos();
-            inputShipRot(val);
+            inputShipRot(len);
         }
+        len -= 1;
     }
 }
 
@@ -60,21 +63,10 @@ void Arrange::inputShipRot(int length)
     }
 }
 
-void Arrange::_printList()
-{
-    cout << Game::getCurrPlayer()->grid.getShipList();
-}
-
 void Arrange::_askAgain()
 {
     print();
     _console.drawError("You're stupid!");
     print();
     inputShipPos();
-}
-
-void Arrange::_printGrid()
-{
-    cout << Game::getCurrPlayer()->grid.getGrid();
-    cout << "\n\n";
 }
