@@ -20,6 +20,8 @@ class Game
         static GameStates getGameState();
     private:
         inline static GameStates _state;
+        // static Player* getCurrPlayer();
+        // inline static Player* _pcurr;
 };
 
 #endif // !GAME_H

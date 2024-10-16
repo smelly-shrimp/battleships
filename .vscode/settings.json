@@ -114,6 +114,7 @@
     "chrono": "cpp",
     "thread": "cpp",
     "regex": "cpp",
-    "map": "cpp"
+    "map": "cpp",
+    "__tree": "cpp"
   }
 }

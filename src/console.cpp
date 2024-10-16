@@ -15,7 +15,7 @@ void Console::drawLine(string color, bool isError)
     }
     else _drawChars(80, color);
 
-    cout << "\033[0m" << endl;
+    cout << Tools::colors["endf"] << endl;
 }
 
 string Console::input(string msg)
@@ -37,7 +37,7 @@ bool Console::isAnswer(string arg, string valid) {
 
 void Console::drawError(string msg)
 {
-    drawLine("\x1B[31m", true);
+    drawLine(Tools::colors["red"], true);
     cout << msg << endl;
 
     Tools::waitMs(1500);

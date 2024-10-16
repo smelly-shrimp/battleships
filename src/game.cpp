@@ -33,7 +33,7 @@ void Game::setGameState(GameStates state)
             arrange.inputShips();
             break;
         default:
-            cout << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << endl;
+            cout << Tools::colors["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::colors["endf"] << endl;
             exit(0);
     }
 }
@@ -42,3 +42,8 @@ GameStates Game::getGameState()
 {
     return _state;
 }
+
+// Player *Game::getCurrPlayer()
+// {
+//     return _pcurr;
+// }
