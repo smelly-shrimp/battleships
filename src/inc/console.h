@@ -12,6 +12,7 @@ class Console
         void drawLine(string color = "", bool isError = false);
         string input(string msg);
         bool isAnswer(string arg, string valid);
+        void drawError(string msg);
     private:
         void _drawChars(int length, string color);
 };

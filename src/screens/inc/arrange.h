@@ -10,7 +10,11 @@ class Arrange : public Screen
         void print() override;
         void inputShips();
     private:
+        int _x;
+        int _y;
         void _printList();
+        void _askAgain();
+        // bool isNum(string st);
 };
 
 #endif // !ARRANGE_H

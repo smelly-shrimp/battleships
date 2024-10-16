@@ -18,12 +18,7 @@ Player* Welcome::inputEnemy()
     }
     else {
         print();
-        _console.drawLine("\x1B[31m", true);
-        cout << "As I can see, you're 'Livin' in an Amish paradise'" << endl;
-
-        Tools::waitMs(1500);
-
-        Tools::clearConsole();
+        _console.drawError("As I can see, you're 'Livin' in an Amish paradise'");
         print();
         inputEnemy();
     }

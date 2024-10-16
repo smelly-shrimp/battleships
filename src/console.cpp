@@ -2,6 +2,7 @@
 #include <regex>
 #include <vector>
 #include "console.h"
+#include "tools.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ void Console::drawLine(string color, bool isError)
         _drawChars(36, color);
     }
     else _drawChars(80, color);
-    
+
     cout << "\033[0m" << endl;
 }
 
@@ -32,6 +33,15 @@ string Console::input(string msg)
 bool Console::isAnswer(string arg, string valid) {
     regex re(valid);
     return regex_match(arg.c_str(), re);
+}
+
+void Console::drawError(string msg)
+{
+    drawLine("\x1B[31m", true);
+    cout << msg << endl;
+
+    Tools::waitMs(1500);
+    Tools::clearConsole();
 }
 
 void Console::_drawChars(int length, string color)
