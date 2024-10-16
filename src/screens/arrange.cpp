@@ -1,4 +1,5 @@
 #include <iostream>
+#include <regex>
 #include "arrange.h"
 #include "fman.h"
 
@@ -13,16 +14,13 @@ void Arrange::print()
 void Arrange::inputShips()
 {
     string ans = _console.input("To position: <a-j><1-10>");
+    regex re{"[a-j][0-9]{1,2}"};
 
-    // if (ans.length() == 2 || ans.length() == 3) {
-    //     if (isNum(ans.erase(0, 1))) {
-    //         // _x = stoi(ans.erase(0, 1));
-    //         _y = int(tolower(ans.at(0))) - 96;
-    //     }
-    // }
-    // else _askAgain();
-
-    
+    if (regex_match(ans, re)) {
+        int x = stoi(ans.erase(0, 1));
+        _x = x;
+        _y = int(tolower(ans.at(0)));
+    }    
 }
 
 void Arrange::_printList()
@@ -41,12 +39,3 @@ void Arrange::_askAgain()
     print();
     inputShips();
 }
-
-// bool Arrange::isNum(string st)
-// {
-//     for (char s : st) {
-//         if (!isdigit(s)) return false;
-//     }
-
-//     return true;
-// }

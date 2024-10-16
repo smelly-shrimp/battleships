@@ -14,7 +14,6 @@ class Arrange : public Screen
         int _y;
         void _printList();
         void _askAgain();
-        // bool isNum(string st);
 };
 
 #endif // !ARRANGE_H
