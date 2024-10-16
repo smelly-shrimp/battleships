@@ -11,7 +11,7 @@ Grid::Grid()
     _clear();
 }
 
-void Grid::setSquare(int x, int y, int val)
+void Grid::setShip(int x, int y, int rotation, int val)
 {
     _grid[x][y] = val;
 }
@@ -44,6 +44,8 @@ string Grid::getShipList()
         for (int j = 0; j <= i; j++) ss << " __";
         ss << endl;
     }
+
+    ss << "\n";
 
     return ss.str();
 }

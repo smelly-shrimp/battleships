@@ -8,10 +8,12 @@ class Arrange : public Screen
 {
     public:
         void print() override;
-        void inputShips();
+        void inputShipPos();
+        void inputShipRot();
     private:
         int _x;
         int _y;
+        int _rotation;
         void _printList();
         void _askAgain();
         void _printGrid();

@@ -11,10 +11,9 @@ void Arrange::print()
 {
     _printList();
     _printGrid();
-    // Fman::playAnim("arrange", false, false);
 }
 
-void Arrange::inputShips()
+void Arrange::inputShipPos()
 {
     string ans = _console.input("To position: <a-j><1-10>");
     regex re{"[a-j][0-9]{1,2}"};
@@ -26,23 +25,35 @@ void Arrange::inputShips()
 
         _x = x - 1;
         _y = int(tolower(ans.at(0))) - 97;
-
-        Game::getCurrPlayer()->grid.setSquare(_x, _y, 1);
-        _printList();
-        _printGrid();
     }
     else _askAgain();
+}
+
+void Arrange::inputShipRot()
+{
+    string ans = _console.input("To rotation: <(h)orizontal/(v)>ertical");
+    ans = Tools::lower(ans);
+    print();
+
+    if (_console.isAnswer(ans, "(h|horizontal)") || _console.isAnswer(ans, "(v|vertical)")) {
+        Game::getCurrPlayer()->grid.setShip(_x, _y, _rotation, 1);
+        _printList();
+        _printGrid();
+
+        if (_console.isAnswer(ans, "(h|horizontal)")) _rotation = 0;
+        else if (_console.isAnswer(ans, "(v|vertical)")) _rotation = 1;
+    }
+    else {
+        _console.drawError("Wrong rotation!");
+        print();
+        inputShipRot();
+    }
 }
 
 void Arrange::_printList()
 {
     Tools::clearConsole();
     cout << Game::getCurrPlayer()->grid.getShipList();
-    // cout << "4 × single-masted __ __ __ __" << endl;
-    // cout << "3 × two-masted    __ __ __" << endl;
-    // cout << "2 × three-masted  __ __" << endl;
-    // cout << "1 × four-masted   __" << endl;
-    // cout << endl;
 }
 
 void Arrange::_askAgain()
@@ -50,7 +61,7 @@ void Arrange::_askAgain()
     print();
     _console.drawError("You're stupid!");
     print();
-    inputShips();
+    inputShipPos();
 }
 
 void Arrange::_printGrid()

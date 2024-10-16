@@ -8,7 +8,7 @@ class Grid
 {
     public:
         Grid();
-        void setSquare(int x, int y, int val);
+        void setShip(int x, int y, int rotation, int val);
         string getGrid();
         string getShipList();
     private:

@@ -31,7 +31,8 @@ void Game::setGameState(GameStates state)
             break;
         case ARRANGE:
             arrange.print();
-            arrange.inputShips();
+            arrange.inputShipPos();
+            arrange.inputShipRot();
             break;
         default:
             cout << Tools::colors["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::colors["endf"] << endl;
