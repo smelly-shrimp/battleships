@@ -8,7 +8,7 @@ using namespace std;
 
 Grid::Grid()
 {
-    _clear();
+    _init();
 }
 
 void Grid::setShip(int x, int y, int rotation, int val, int length)
@@ -53,9 +53,24 @@ string Grid::getShipList()
     return ss.str();
 }
 
-void Grid::_clear()
+void Grid::_init()
 {
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) _grid[i][j] = 0;
     }
+
+    // for (int i = 0; i < sizeof(_ships) / sizeof(_ships[0]); i++) {
+    //     _ships[i]
+    // }
+
+    _ships[0] = new OneMasted;
+    _ships[1] = new OneMasted;
+    _ships[2] = new OneMasted;
+    _ships[3] = new OneMasted;
+    _ships[4] = new TwoMasted;
+    _ships[5] = new TwoMasted;
+    _ships[6] = new TwoMasted;
+    _ships[7] = new ThreeMasted;
+    _ships[8] = new ThreeMasted;
+    _ships[9] = new FourMasted;
 }

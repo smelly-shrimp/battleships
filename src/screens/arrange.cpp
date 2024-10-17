@@ -19,14 +19,15 @@ void Arrange::inputShip()
     int len = 4;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < i + 1; j++) {
-            inputShipPos();
-            inputShipRot(len);
+            _inputShipPos();
+            if (len > 1) _inputShipRot(len);
+            else _createShip(len);
         }
         len -= 1;
     }
 }
 
-void Arrange::inputShipPos()
+void Arrange::_inputShipPos()
 {
     string ans = _console.input("To position: <a-j><1-10>", Game::getCurrPlayer()->getName());
     regex re{"[a-j][0-9]{1,2}"};
@@ -44,7 +45,7 @@ void Arrange::inputShipPos()
     print();
 }
 
-void Arrange::inputShipRot(int length)
+void Arrange::_inputShipRot(int length)
 {
     string ans = _console.input("To rotation: <(h)orizontal/(v)>ertical", Game::getCurrPlayer()->getName());
     ans = Tools::lower(ans);
@@ -53,14 +54,19 @@ void Arrange::inputShipRot(int length)
         if (_console.isAnswer(ans, "(h|horizontal)")) _rotation = 0;
         else _rotation = 1;
 
-        Game::getCurrPlayer()->grid.setShip(_x, _y, _rotation, 1, length);
-        print();
+        _createShip(length);
     }
     else {
         _console.drawError("Wrong rotation!");
         print();
-        inputShipRot(length);
+        _inputShipRot(length);
     }
+}
+
+void Arrange::_createShip(int length)
+{
+    Game::getCurrPlayer()->grid.setShip(_x, _y, _rotation, 1, length);
+    print();
 }
 
 void Arrange::_askAgain()
@@ -68,5 +74,5 @@ void Arrange::_askAgain()
     print();
     _console.drawError("You're stupid!");
     print();
-    inputShipPos();
+    _inputShipPos();
 }

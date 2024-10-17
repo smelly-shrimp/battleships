@@ -9,13 +9,14 @@ class Arrange : public Screen
     public:
         void print() override;
         void inputShip();
-        void inputShipPos();
-        void inputShipRot(int length);
     private:
         int _x;
         int _y;
         int _rotation;
         void _askAgain();
+        void _inputShipPos();
+        void _inputShipRot(int length);
+        void _createShip(int length);
 };
 
 #endif // !ARRANGE_H
