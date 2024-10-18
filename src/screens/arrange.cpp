@@ -30,13 +30,11 @@ void Arrange::inputShip()
 void Arrange::_inputShipPos()
 {
     string ans = _console.input("To position: <a-j><1-10>", Game::getCurrPlayer()->getName());
-    // regex re{"[a-j][0-9]{1,2}"};
     regex re{"[a-j]([1-9]|10)"};
 
     if (regex_match(ans, re)) {
         string anst{ans};
         int x = stoi(anst.erase(0, 1));
-        if (x <= 0 || x > 10) _askAgain();
 
         _x = x - 1;
         _y = int(tolower(ans.at(0))) - 97;

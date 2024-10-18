@@ -18,6 +18,7 @@ class Grid
         void _init();
         int _grid[10][10];
         vector<Ship*> _ships;
+        Ship* _currShip;
 };
 
 #endif // !GRID_H

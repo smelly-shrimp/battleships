@@ -18,12 +18,13 @@ void Grid::setShip(int x, int y, int rotation, int val, int length)
     for (int i = 0; i < _ships.size(); i++) {
         if (_ships.at(i)->getLength() == length && !_ships.at(i)->isUsed()) {
             _ships.at(i)->use();
+            _currShip = _ships.at(i);
             break;
         }
     }
 
     for (int i = 0; i < length; i++) {
-        rotation == 0 ? _grid[x + i][y] = val : _grid[x][y + i] = val;
+        rotation == 0 ? _grid[x][y + i] = val : _grid[x + i][y] = val;
     }
 }
 
@@ -37,7 +38,7 @@ string Grid::getGrid()
         ss << char(65 + y) << " ";
 
         for (int x = 0; x < _ships.size(); x++) {
-            ss << (_grid[x][y] == 0 ? "__" : "\u2588\u2588" ) << " ";
+            ss << (_grid[y][x] == 0 ? "__" : "\u2588\u2588" ) << " ";
         }
 
         ss << endl;
