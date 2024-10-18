@@ -30,7 +30,8 @@ void Arrange::inputShip()
 void Arrange::_inputShipPos()
 {
     string ans = _console.input("To position: <a-j><1-10>", Game::getCurrPlayer()->getName());
-    regex re{"[a-j][0-9]{1,2}"};
+    // regex re{"[a-j][0-9]{1,2}"};
+    regex re{"[a-j]([1-9]|10)"};
 
     if (regex_match(ans, re)) {
         string anst{ans};

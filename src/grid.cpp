@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <ios>
 #include "grid.h"
+#include "ship.h"
 
 using namespace std;
 
@@ -13,6 +14,13 @@ Grid::Grid()
 
 void Grid::setShip(int x, int y, int rotation, int val, int length)
 {
+    for (int i = 0; i < sizeof(_ships) / sizeof(_ships[0]); i++) {
+        if (_ships[i]->getLength() == length && !_ships[i]->isUsed()) {
+            _ships[i]->use();
+            break;
+        }
+    }
+
     for (int i = 0; i < length; i++) {
         rotation == 0 ? _grid[x + i][y] = val : _grid[x][y + i] = val;
     }
@@ -42,9 +50,14 @@ string Grid::getShipList()
     string names[4] = { "four-masted  ", "three-masted ", "two-masted   ", "single-masted" };
     int size = sizeof(names) / sizeof(names[0]);
     ss << "\n\n";
+
+    int curr = 0;
     for (int i = 0; i < size; i++) {
         ss << names[i];
-        for (int j = 0; j <= i; j++) ss << " __";
+        for (int j = 0; j <= i; j++) {
+            ss << (_ships[curr]->isUsed() ? " \u2588\u2588" : " __");
+            curr += 1;
+        }
         ss << endl;
     }
 
@@ -59,18 +72,8 @@ void Grid::_init()
         for (int j = 0; j < 10; j++) _grid[i][j] = 0;
     }
 
-    // for (int i = 0; i < sizeof(_ships) / sizeof(_ships[0]); i++) {
-    //     _ships[i]
-    // }
-
-    _ships[0] = new OneMasted;
-    _ships[1] = new OneMasted;
-    _ships[2] = new OneMasted;
-    _ships[3] = new OneMasted;
-    _ships[4] = new TwoMasted;
-    _ships[5] = new TwoMasted;
-    _ships[6] = new TwoMasted;
-    _ships[7] = new ThreeMasted;
-    _ships[8] = new ThreeMasted;
-    _ships[9] = new FourMasted;
+    int vals[10] = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+    for (int i = 0; i < sizeof(_ships) / sizeof(_ships[0]); i++) {
+        _ships[i] = new Ship(vals[i]);
+    }
 }
