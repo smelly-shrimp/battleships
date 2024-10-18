@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <sstream>
 #include <iomanip>
 #include <ios>
@@ -14,9 +15,9 @@ Grid::Grid()
 
 void Grid::setShip(int x, int y, int rotation, int val, int length)
 {
-    for (int i = 0; i < sizeof(_ships) / sizeof(_ships[0]); i++) {
-        if (_ships[i]->getLength() == length && !_ships[i]->isUsed()) {
-            _ships[i]->use();
+    for (int i = 0; i < _ships.size(); i++) {
+        if (_ships.at(i)->getLength() == length && !_ships.at(i)->isUsed()) {
+            _ships.at(i)->use();
             break;
         }
     }
@@ -30,11 +31,12 @@ string Grid::getGrid()
 {
     ostringstream ss;
     ss << "========= OCEAN GRID ==========" << endl
-        << ". 01 02 03 04 05 06 07 08 09 10" << endl;
+       << ". 01 02 03 04 05 06 07 08 09 10" << endl;
         
-    for (int y = 0; y < 10; y++) {
+    for (int y = 0; y < _ships.size(); y++) {
         ss << char(65 + y) << " ";
-        for (int x = 0; x < 10; x++) {
+
+        for (int x = 0; x < _ships.size(); x++) {
             ss << (_grid[x][y] == 0 ? "__" : "\u2588\u2588" ) << " ";
         }
 
@@ -48,20 +50,21 @@ string Grid::getShipList()
 {
     ostringstream ss;
     string names[4] = { "four-masted  ", "three-masted ", "two-masted   ", "single-masted" };
-    int size = sizeof(names) / sizeof(names[0]);
+
     ss << "\n\n";
 
     int curr = 0;
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < 4; i++) {
         ss << names[i];
-        for (int j = 0; j <= i; j++) {
-            ss << (_ships[curr]->isUsed() ? " \u2588\u2588" : " __");
+        for (int j = 0; j <= i && curr < _ships.size(); j++) {
+            ss << (_ships.at(curr)->isUsed() ? " \u2588\u2588" : " __");
             curr += 1;
         }
+
         ss << endl;
     }
 
-    ss << "\n";
+    ss << endl;
 
     return ss.str();
 }
@@ -73,7 +76,7 @@ void Grid::_init()
     }
 
     int vals[10] = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
-    for (int i = 0; i < sizeof(_ships) / sizeof(_ships[0]); i++) {
-        _ships[i] = new Ship(vals[i]);
+    for (int i = 0; i < sizeof(vals) / sizeof(vals[0]); i++) {
+        _ships.push_back(new Ship(vals[i]));
     }
 }
