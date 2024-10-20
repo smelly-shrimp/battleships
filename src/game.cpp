@@ -29,7 +29,8 @@ void Game::setGameState(GameStates state)
             p1 = new Human("PLAYER_1");
             p2 = welcome.inputEnemy();
             setCurrPlayer(p1);
-            setGameState(GameStates::ARRANGE);
+            setCurrEnemy(p2);
+            setGameState(GameStates::SHOOTING);
             break;
         case ARRANGE:
             arrange.print();
@@ -37,6 +38,9 @@ void Game::setGameState(GameStates state)
             break;
         case SHOOTING:
             shooting.print();
+            shooting.inputShot();
+            // Game::setGameState(GameStates::SHOOTING);
+            break;
         default:
             cout << Tools::colors["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::colors["endf"] << endl;
             exit(0);
@@ -53,7 +57,17 @@ void Game::setCurrPlayer(Player* p)
     _currPlayer = p;
 }
 
+void Game::setCurrEnemy(Player *p)
+{
+    _currEnemy = p;
+}
+
 Player *Game::getCurrPlayer()
 {
     return _currPlayer;
+}
+
+Player *Game::getCurrEnemy()
+{
+    return _currEnemy;
 }

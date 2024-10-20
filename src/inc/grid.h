@@ -14,6 +14,7 @@ class Grid
         std::string getShipList();
         bool isAvaible(int col, int row, int len, int orient);
     private:
+        std::string _fillGrid(int i);
         void _init();
         int _grid[10][10];
         std::vector<Ship*> _ships;

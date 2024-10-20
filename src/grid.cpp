@@ -5,6 +5,8 @@
 #include <ios>
 #include "grid.h"
 #include "ship.h"
+#include "game.h"
+#include "fman.h"
 
 using namespace std;
 
@@ -44,32 +46,47 @@ void Grid::setShip(int col, int row, int len, int orient, int val)
 string Grid::getGrid()
 {
     ostringstream ss;
-    ss << "========= OCEAN GRID ==========" << endl
-       << ". 01 02 03 04 05 06 07 08 09 10" << endl;
-        
-    for (int i = 0; i < _ships.size(); i++) {
-        ss << char(65 + i) << " ";
+    string enemy = Game::getCurrEnemy()->getName();
 
-        for (int j = 0; j < _ships.size(); j++) {
-            switch (_grid[i][j])
-            {
-            case SHIP:
-                ss << "██" << " ";
-                break;
-            case OCCUP:
-                ss << "><" << " ";
-                break;
-            default:
-                ss << "░░" << " ";
-                break;
-            }
+    switch(Game::getGameState())
+    {
+    case ARRANGE:
+        ss << "        ========= OCEAN GRID ==========\n"
+        << "        . 01 02 03 04 05 06 07 08 09 10\n";
+            
+        for (int i = 0; i < 10; i++) {
+            ss << "        " << char(65 + i) << " ";
+            ss << _fillGrid(i);
+            ss << "\n";
         }
 
         ss << "\n";
-    }
 
-    ss << "\n\n";
-    
+        break;
+
+    case SHOOTING:
+        if (enemy == "PLAYER_1") Fman::playAnim("player1", false, false);
+        else if (enemy == "PLAYER_2") Fman::playAnim("player2", false, false);
+        else Fman::playAnim("computer", false, false);
+
+        ss << "       ========= OCEAN GRID ==========>|<======== TARGET GRID =========\n"
+        <<    "       . 01 02 03 04 05 06 07 08 09 10  . 01 02 03 04 05 06 07 08 09 10\n";
+
+        for (int i = 0; i < 10; i++) {
+            ss << "       " << char(65 + i) << " ";
+            ss << _fillGrid(i);
+            ss << " " << char(65 + i) << " ";
+            ss << _fillGrid(i);
+            ss << "\n";
+        }
+
+        ss << "\n";
+
+        break;
+    default:
+        printf("Unkown type!\n");
+    }
+        
     return ss.str();
 }
 
@@ -82,7 +99,7 @@ string Grid::getShipList()
 
     int curr = 0;
     for (int i = 0; i < 4; i++) {
-        ss << names[i];
+        ss << "        " << names[i];
         for (int j = 0; j <= i && curr < _ships.size(); j++) {
             ss << (_ships.at(curr)->isUsed() ? " ██" : " ░░");
             curr += 1;
@@ -91,6 +108,28 @@ string Grid::getShipList()
     }
 
     ss << "\n";
+
+    return ss.str();
+}
+
+string Grid::_fillGrid(int i)
+{
+    ostringstream ss;
+
+    for (int j = 0; j < 10; j++) {
+        switch (_grid[i][j])
+        {
+        case SHIP:
+            ss << "██ ";
+            break;
+        case OCCUP:
+            ss << ">< ";
+            break;
+        default:
+            ss << "░░ ";
+            break;
+        }
+    }
 
     return ss.str();
 }

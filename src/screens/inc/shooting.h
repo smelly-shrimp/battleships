@@ -7,6 +7,7 @@ class Shooting : public Screen
 {
     public:
         void print() override;
+        void inputShot();
 };
 
 #endif // !SHOOTING_H
