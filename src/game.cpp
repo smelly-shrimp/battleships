@@ -17,6 +17,7 @@ void Game::setGameState(GameStates state)
     Welcome welcome;
     Arrange arrange;
     Shooting shooting;
+    int arrangeMode;
 
     Tools::clearConsole();
     
@@ -30,6 +31,7 @@ void Game::setGameState(GameStates state)
             welcome.print();
             p1 = new Human("PLAYER_1");
             p2 = welcome.selectEnemy();
+            arrangeMode = welcome.selectArrangeMode();
             setCurrPlayer(p1);
             setCurrEnemy(p2);
 

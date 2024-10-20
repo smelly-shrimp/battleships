@@ -30,3 +30,22 @@ Player* Welcome::selectEnemy()
         selectEnemy();
     }
 }
+
+int Welcome::selectArrangeMode()
+{
+    string ans = _console.input("To arrange: manual => M; automatic => A");
+    ans = Tools::lower(ans);
+
+    if (_console.isAnswer(ans, "(m|manual)")) {
+        return 0;
+    }
+    else if (_console.isAnswer(ans, "(a|auto|automatic)")) {
+        return 1;
+    }
+    else {
+        print();
+        _console.drawError(format("There's no such mode as {}!", ans));
+        print();
+        selectArrangeMode();
+    }
+}

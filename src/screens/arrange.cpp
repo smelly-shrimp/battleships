@@ -25,6 +25,9 @@ void Arrange::selectShip()
     }
 
     _console.drawInfo("You've just arranged all of your ships!");
+    auto player = Game::getCurrPlayer();
+    Game::setCurrPlayer(Game::getCurrEnemy());
+    Game::setCurrEnemy(player);
 }
 
 void Arrange::_selectShipPos()

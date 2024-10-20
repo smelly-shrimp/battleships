@@ -168,7 +168,6 @@ string Grid::_fillGrid(int i)
             break;
         default:
             ss << "░░ ";
-            break;
         }
     }
 

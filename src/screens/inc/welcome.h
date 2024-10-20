@@ -9,6 +9,7 @@ class Welcome : public Screen
     public:
         void print() override;
         Player* selectEnemy();
+        int selectArrangeMode();
 };
 
 #endif // !WELCOME_H
