@@ -8,11 +8,13 @@
 class Arrange : public Screen
 {
     public:
+        Arrange();
         void print() override;
-        void selectShip();
+        void selectShip(int arrangeMode);
     private:
         int _len;
         void _selectShipPos();
+        void _autoSelectShipPos();
         int _setOrient(std::smatch matches);
         void _askAgain(std::string msg);
 };

@@ -27,6 +27,7 @@ class Game
         inline static GameStates _state;
         inline static Player* _currPlayer;
         inline static Player* _currEnemy;
+        inline static int arrangeMode{};
 };
 
 #endif // !GAME_H

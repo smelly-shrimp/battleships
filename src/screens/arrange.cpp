@@ -8,18 +8,23 @@
 
 using namespace std;
 
+Arrange::Arrange()
+{
+    srand(time(0));
+}
+
 void Arrange::print()
 {
     cout << Game::getCurrPlayer()->grid.getShipList();
     cout << Game::getCurrPlayer()->grid.reloadGrid();
 }
 
-void Arrange::selectShip()
+void Arrange::selectShip(int arrangeMode)
 {
     _len = 4;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < i + 1; j++) {
-            _selectShipPos();
+            arrangeMode == 0 ? _selectShipPos() : _autoSelectShipPos();
         }
         _len -= 1;
     }
@@ -61,6 +66,20 @@ void Arrange::_selectShipPos()
         _askAgain("Wrong position!");
         _selectShipPos();
     }
+}
+
+void Arrange::_autoSelectShipPos()
+{
+    int col{rand() % 10};
+    int row{rand() % 10};
+    int orient{rand() % 2};
+
+    if (!Game::getCurrPlayer()->grid.isAvaible(col, row, _len, orient)) {
+        _autoSelectShipPos();
+        return;
+    }
+
+    Game::getCurrPlayer()->grid.createShip(col, row, _len, orient, 1);
 }
 
 int Arrange::_setOrient(smatch matches)

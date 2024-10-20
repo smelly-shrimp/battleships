@@ -17,7 +17,6 @@ void Game::setGameState(GameStates state)
     Welcome welcome;
     Arrange arrange;
     Shooting shooting;
-    int arrangeMode;
 
     Tools::clearConsole();
     
@@ -39,7 +38,7 @@ void Game::setGameState(GameStates state)
             break;
         case ARRANGE:
             arrange.print();
-            arrange.selectShip();
+            arrange.selectShip(arrangeMode);
             break;
         case SHOOTING:
             shooting.print();
