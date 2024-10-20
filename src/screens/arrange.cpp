@@ -23,6 +23,8 @@ void Arrange::selectShip()
         }
         _len -= 1;
     }
+
+    _console.drawInfo("You've just arranged all of your ships!");
 }
 
 void Arrange::_selectShipPos()
@@ -49,8 +51,7 @@ void Arrange::_selectShipPos()
             return;
         }
 
-        // _createShip(col, row, orient);
-        Game::getCurrPlayer()->grid.setShip(col, row, _len, orient, 1);
+        Game::getCurrPlayer()->grid.createShip(col, row, _len, orient, 1);
         print();
     }
     else {
@@ -73,12 +74,6 @@ int Arrange::_setOrient(smatch matches)
 
     return 0;
 }
-
-// void Arrange::_createShip(int col, int row, int orient)
-// {
-//     Game::getCurrPlayer()->grid.setShip(col, row, _len, orient, 1);
-//     print();
-// }
 
 void Arrange::_askAgain(string msg)
 {

@@ -42,7 +42,6 @@ void Game::setGameState(GameStates state)
         case SHOOTING:
             shooting.print();
             shooting.selectShot();
-            // Game::setGameState(GameStates::SHOOTING);
             break;
         default:
             cout << Tools::colors["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::colors["endf"] << endl;

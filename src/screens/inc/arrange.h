@@ -14,7 +14,6 @@ class Arrange : public Screen
         int _len;
         void _selectShipPos();
         int _setOrient(std::smatch matches);
-        // void _createShip(int col, int row, int orient);
         void _askAgain(std::string msg);
 };
 

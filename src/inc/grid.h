@@ -2,6 +2,7 @@
 #define GRID_H
 
 #include <string>
+#include <array>
 #include <vector>
 #include "ship.h"
 
@@ -15,18 +16,20 @@ class Grid
 {
     public:
         Grid();
-        void setShip(int col, int row, int len, int orient, int val);
+        void createShip(int col, int row, int len, int orient, int val);
         std::string reloadGrid();
         std::string getShipList();
         bool isAvaible(int col, int row, int len, int orient);
         void setSquare(int col, int row, int val);
     private:
-        std::string _fillOceanGrid(int i);
-        std::string _fillTargetGrid(int i);
         void _init();
-        int _grid[10][10];
+        void _useShip(int len);
+        void _setShip(int col, int row, int len, int orient);
+        void _setOccup(int col, int row, int len, int orient);
+        std::string _fillGrid(int i);
+        std::array<std::array<int, 10>, 10> _grid{0};
+
         std::vector<Ship*> _ships;
-        Ship* _currShip;
 };
 
 #endif // !GRID_H

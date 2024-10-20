@@ -1,8 +1,7 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 
-#include <iostream>
-#include <vector>
+#include <string>
 
 class Console
 {
@@ -12,7 +11,6 @@ class Console
         void drawInfo(std::string msg);
         void drawError(std::string msg);
     private:
-        void _drawChars(int length, std::string color);
         void _drawLine(std::string color = "", bool isError = false);
 };
 

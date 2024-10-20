@@ -1,4 +1,5 @@
 #include <string>
+#include <format>
 #include <chrono>
 #include <thread>
 #include "tools.h"
@@ -23,4 +24,13 @@ string Tools::lower(string st)
     }
 
     return r;
+}
+
+std::string Tools::insertChars(string c, int t)
+{
+    string s;
+    for (int i = 0; i < t; i++) {
+        s = format("{}{}", s, c);
+    }
+    return s;
 }

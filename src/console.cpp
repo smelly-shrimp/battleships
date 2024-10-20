@@ -1,17 +1,16 @@
 #include <iostream>
 #include <regex>
-#include <vector>
 #include "console.h"
 #include "tools.h"
 #include "game.h"
 
-using namespace std;
+using std::cout, std::cin, std::getline, std::string, std::regex;
 
 string Console::input(string msg, string name)
 {
     _drawLine();
 
-    cout << msg << endl;
+    cout << msg << "\n";
     string arg;
     cout << name << " $ ";
     getline(cin, arg);
@@ -27,34 +26,31 @@ bool Console::isAnswer(string arg, string valid) {
 void Console::drawInfo(std::string msg)
 {
     _drawLine(Tools::colors["green"], false);
-    cout << msg << endl;
+    cout << msg << "\n";
 
-    Tools::waitMs(1000);
+    Tools::waitMs(2000);
     Tools::clearConsole();
 }
 
 void Console::drawError(string msg)
 {
     _drawLine(Tools::colors["red"], true);
-    cout << msg << endl;
+    cout << msg << "\n";
 
     Tools::waitMs(2000);
     Tools::clearConsole();
 }
 
-void Console::_drawChars(int length, string color)
-{
-    for (int i = 0; i < length; i++) cout << color << "\u2594";
-}
-
 void Console::_drawLine(string color, bool isError)
 {
-    if (isError) {
-        _drawChars(36, color);
-        cout << " ERROR ";
-        _drawChars(36, color);
-    }
-    else _drawChars(80, color);
+    cout << color;
 
-    cout << Tools::colors["endf"] << endl;
+    if (isError) {
+        cout << Tools::insertChars("\u2594", 36);
+        cout << " ERROR ";
+        cout << Tools::insertChars("\u2594", 36);
+    }
+    else cout << Tools::insertChars("\u2594", 80);
+
+    cout << Tools::colors["endf"] << "\n";
 }
