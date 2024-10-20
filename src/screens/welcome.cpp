@@ -1,12 +1,18 @@
 #include <string>
+#include <format>
 #include "welcome.h"
 #include "tools.h"
 #include "fman.h"
 #include "player.h"
 
-using namespace std;
+using std::string, std::format;
 
-Player* Welcome::inputEnemy()
+void Welcome::print()
+{
+    Fman::playAnim("welcome", false, false);
+}
+
+Player* Welcome::selectEnemy()
 {
     string ans = _console.input("To play with: human => H; computer => C");
     ans = Tools::lower(ans);
@@ -19,13 +25,8 @@ Player* Welcome::inputEnemy()
     }
     else {
         print();
-        _console.drawError("As I can see, you're 'Livin' in an Amish paradise'");
+        _console.drawError(format("There's no such user as {}!", ans));
         print();
-        inputEnemy();
+        selectEnemy();
     }
-}
-
-void Welcome::print()
-{
-    Fman::playAnim("welcome", false, false);
 }

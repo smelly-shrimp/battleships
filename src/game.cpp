@@ -23,22 +23,25 @@ void Game::setGameState(GameStates state)
     switch(Game::getGameState()) {
         case INTRO:
             intro.print();
+
+            setGameState(GameStates::WELCOME);
             break;
         case WELCOME:
             welcome.print();
             p1 = new Human("PLAYER_1");
-            p2 = welcome.inputEnemy();
+            p2 = welcome.selectEnemy();
             setCurrPlayer(p1);
             setCurrEnemy(p2);
-            setGameState(GameStates::SHOOTING);
+
+            setGameState(GameStates::ARRANGE);
             break;
         case ARRANGE:
             arrange.print();
-            arrange.inputShip();
+            arrange.selectShip();
             break;
         case SHOOTING:
             shooting.print();
-            shooting.inputShot();
+            shooting.selectShot();
             // Game::setGameState(GameStates::SHOOTING);
             break;
         default:

@@ -8,7 +8,7 @@ class Welcome : public Screen
 {
     public:
         void print() override;
-        Player* inputEnemy();
+        Player* selectEnemy();
 };
 
 #endif // !WELCOME_H

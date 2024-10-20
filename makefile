@@ -39,7 +39,7 @@ $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
 # Build step for C++ source
 $(BUILD_DIR)/%.cpp.o: %.cpp
 	mkdir -p $(dir $@)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ -std=c++20
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ -std=c++2b
 
 run:
 	clear

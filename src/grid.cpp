@@ -6,7 +6,6 @@
 #include "grid.h"
 #include "ship.h"
 #include "game.h"
-#include "fman.h"
 
 using namespace std;
 
@@ -14,6 +13,7 @@ using namespace std;
 #define OCCUP -1
 #define EMPTY 0
 #define SHIP 1
+#define HIT 2;
 
 Grid::Grid()
 {
@@ -31,22 +31,21 @@ void Grid::setShip(int col, int row, int len, int orient, int val)
     }
 
     for (int i = 0; i < len; i++) {
-        orient == 0 ? _setSquare(col + i, row, SHIP) : _setSquare(col, row + i, SHIP);
+        orient == 0 ? setSquare(col + i, row, SHIP) : setSquare(col, row + i, SHIP);
     }
 
     for (int i = 0; i < len + 2; i++) {
-        orient == 0 ? _setSquare(col + i - 1, row - 1, OCCUP) : _setSquare(col + 1, row + i - 1, OCCUP);
-        orient == 0 ? _setSquare(col + i - 1, row + 1, OCCUP) : _setSquare(col - 1, row + i - 1, OCCUP);
+        orient == 0 ? setSquare(col + i - 1, row - 1, OCCUP) : setSquare(col + 1, row + i - 1, OCCUP);
+        orient == 0 ? setSquare(col + i - 1, row + 1, OCCUP) : setSquare(col - 1, row + i - 1, OCCUP);
         if (i <= 0 || i >= len + 1) {
-            orient == 0 ? _setSquare(col + i - 1, row, OCCUP) : _setSquare(col, row + i - 1, OCCUP);
+            orient == 0 ? setSquare(col + i - 1, row, OCCUP) : setSquare(col, row + i - 1, OCCUP);
         }
     }
 }
 
-string Grid::getGrid()
+string Grid::reloadGrid()
 {
     ostringstream ss;
-    string enemy = Game::getCurrEnemy()->getName();
 
     switch(Game::getGameState())
     {
@@ -56,7 +55,7 @@ string Grid::getGrid()
             
         for (int i = 0; i < 10; i++) {
             ss << "        " << char(65 + i) << " ";
-            ss << _fillGrid(i);
+            ss << _fillOceanGrid(i);
             ss << "\n";
         }
 
@@ -65,18 +64,14 @@ string Grid::getGrid()
         break;
 
     case SHOOTING:
-        if (enemy == "PLAYER_1") Fman::playAnim("player1", false, false);
-        else if (enemy == "PLAYER_2") Fman::playAnim("player2", false, false);
-        else Fman::playAnim("computer", false, false);
-
         ss << "       ========= OCEAN GRID ==========>|<======== TARGET GRID =========\n"
         <<    "       . 01 02 03 04 05 06 07 08 09 10  . 01 02 03 04 05 06 07 08 09 10\n";
 
         for (int i = 0; i < 10; i++) {
             ss << "       " << char(65 + i) << " ";
-            ss << _fillGrid(i);
+            ss << _fillTargetGrid(i);
             ss << " " << char(65 + i) << " ";
-            ss << _fillGrid(i);
+            ss << _fillTargetGrid(i);
             ss << "\n";
         }
 
@@ -112,7 +107,29 @@ string Grid::getShipList()
     return ss.str();
 }
 
-string Grid::_fillGrid(int i)
+string Grid::_fillOceanGrid(int i)
+{
+    ostringstream ss;
+
+    for (int j = 0; j < 10; j++) {
+        switch (_grid[i][j])
+        {
+        case SHIP:
+            ss << "██ ";
+            break;
+        case OCCUP:
+            ss << ">< ";
+            break;
+        default:
+            ss << "░░ ";
+            break;
+        }
+    }
+
+    return ss.str();
+}
+
+std::string Grid::_fillTargetGrid(int i)
 {
     ostringstream ss;
 
@@ -162,13 +179,7 @@ void Grid::_init()
     }
 }
 
-int Grid::_getSquare(int col, int row)
-{
-    if (col >= 10 || col < 0 || row >= 10 || row < 0) return FORBIDDEN;
-    return _grid[row][col];
-}
-
-void Grid::_setSquare(int col, int row, int val)
+void Grid::setSquare(int col, int row, int val)
 {
     if (col < 10 && col >= 0 && row < 10 && row >= 0) {
         _grid[row][col] = val;

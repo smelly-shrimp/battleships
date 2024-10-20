@@ -115,6 +115,7 @@
     "thread": "cpp",
     "regex": "cpp",
     "map": "cpp",
-    "__tree": "cpp"
+    "__tree": "cpp",
+    "print": "cpp"
   }
 }

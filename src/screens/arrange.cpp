@@ -1,4 +1,5 @@
 #include <iostream>
+#include <format>
 #include <regex>
 #include "arrange.h"
 #include "fman.h"
@@ -10,31 +11,31 @@ using namespace std;
 void Arrange::print()
 {
     cout << Game::getCurrPlayer()->grid.getShipList();
-    cout << Game::getCurrPlayer()->grid.getGrid();
+    cout << Game::getCurrPlayer()->grid.reloadGrid();
 }
 
-void Arrange::inputShip()
+void Arrange::selectShip()
 {
     _len = 4;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < i + 1; j++) {
-            _inputShipPos();
+            _selectShipPos();
         }
         _len -= 1;
     }
 }
 
-void Arrange::_inputShipPos()
+void Arrange::_selectShipPos()
 {
     string ans = _console.input(
-        string("To position: <a-j><1-10>") + (_len > 1 ? " <(h)orizontal/(v)ertical>" : ""),
+        format("To position: <a-j><1-10> {}", _len > 1 ? "<(h)orizontal/(v)ertical>" : ""),
         Game::getCurrPlayer()->getName()
     );
 
     regex ren("(([a-j])([1-9]|10)) (h|v)");
     regex rex("(([a-j])([1-9]|10))");
-
     smatch matches;
+
     if (regex_match(ans, matches, (_len > 1 ? ren : rex))) {
         int col = stoi(matches[3].str().c_str()) - 1;
         int row = int(tolower(matches[2].str().c_str()[0])) - 97;
@@ -44,15 +45,17 @@ void Arrange::_inputShipPos()
 
         if (!Game::getCurrPlayer()->grid.isAvaible(col, row, _len, orient)) {
             _askAgain("Wrong or occupied position");
-            _inputShipPos();
+            _selectShipPos();
             return;
         }
 
-        _createShip(col, row, orient);
+        // _createShip(col, row, orient);
+        Game::getCurrPlayer()->grid.setShip(col, row, _len, orient, 1);
+        print();
     }
     else {
         _askAgain("Wrong position!");
-        _inputShipPos();
+        _selectShipPos();
     }
 }
 
@@ -65,17 +68,17 @@ int Arrange::_setOrient(smatch matches)
     else if (regex_match(matches[4].str(), rev)) return 1;
     else {
         _askAgain("Wrong rotation!");
-        _inputShipPos();
+        _selectShipPos();
     }
 
     return 0;
 }
 
-void Arrange::_createShip(int col, int row, int orient)
-{
-    Game::getCurrPlayer()->grid.setShip(col, row, _len, orient, 1);
-    print();
-}
+// void Arrange::_createShip(int col, int row, int orient)
+// {
+//     Game::getCurrPlayer()->grid.setShip(col, row, _len, orient, 1);
+//     print();
+// }
 
 void Arrange::_askAgain(string msg)
 {

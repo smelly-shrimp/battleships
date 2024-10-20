@@ -5,22 +5,28 @@
 #include <vector>
 #include "ship.h"
 
+enum GridType
+{
+    OCEAN,
+    TARGET,
+};
+
 class Grid
 {
     public:
         Grid();
         void setShip(int col, int row, int len, int orient, int val);
-        std::string getGrid();
+        std::string reloadGrid();
         std::string getShipList();
         bool isAvaible(int col, int row, int len, int orient);
+        void setSquare(int col, int row, int val);
     private:
-        std::string _fillGrid(int i);
+        std::string _fillOceanGrid(int i);
+        std::string _fillTargetGrid(int i);
         void _init();
         int _grid[10][10];
         std::vector<Ship*> _ships;
         Ship* _currShip;
-        int _getSquare(int col, int row);
-        void _setSquare(int col, int row, int val);
 };
 
 #endif // !GRID_H

@@ -7,12 +7,13 @@
 class Console
 {
     public:
-        void drawLine(std::string color = "", bool isError = false);
         std::string input(std::string msg, std::string name = "CAPTAIN HOOK");
         bool isAnswer(std::string arg, std::string valid);
+        void drawInfo(std::string msg);
         void drawError(std::string msg);
     private:
         void _drawChars(int length, std::string color);
+        void _drawLine(std::string color = "", bool isError = false);
 };
 
 #endif // !CONSOLE_H

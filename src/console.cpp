@@ -7,21 +7,9 @@
 
 using namespace std;
 
-void Console::drawLine(string color, bool isError)
-{
-    if (isError) {
-        _drawChars(36, color);
-        cout << " ERROR ";
-        _drawChars(36, color);
-    }
-    else _drawChars(80, color);
-
-    cout << Tools::colors["endf"] << endl;
-}
-
 string Console::input(string msg, string name)
 {
-    drawLine();
+    _drawLine();
 
     cout << msg << endl;
     string arg;
@@ -36,16 +24,37 @@ bool Console::isAnswer(string arg, string valid) {
     return regex_match(arg.c_str(), re);
 }
 
-void Console::drawError(string msg)
+void Console::drawInfo(std::string msg)
 {
-    drawLine(Tools::colors["red"], true);
+    _drawLine(Tools::colors["green"], false);
     cout << msg << endl;
 
-    Tools::waitMs(1500);
+    Tools::waitMs(1000);
+    Tools::clearConsole();
+}
+
+void Console::drawError(string msg)
+{
+    _drawLine(Tools::colors["red"], true);
+    cout << msg << endl;
+
+    Tools::waitMs(2000);
     Tools::clearConsole();
 }
 
 void Console::_drawChars(int length, string color)
 {
     for (int i = 0; i < length; i++) cout << color << "\u2594";
+}
+
+void Console::_drawLine(string color, bool isError)
+{
+    if (isError) {
+        _drawChars(36, color);
+        cout << " ERROR ";
+        _drawChars(36, color);
+    }
+    else _drawChars(80, color);
+
+    cout << Tools::colors["endf"] << endl;
 }

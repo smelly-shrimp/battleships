@@ -9,12 +9,12 @@ class Arrange : public Screen
 {
     public:
         void print() override;
-        void inputShip();
+        void selectShip();
     private:
         int _len;
-        void _inputShipPos();
+        void _selectShipPos();
         int _setOrient(std::smatch matches);
-        void _createShip(int col, int row, int orient);
+        // void _createShip(int col, int row, int orient);
         void _askAgain(std::string msg);
 };
 
