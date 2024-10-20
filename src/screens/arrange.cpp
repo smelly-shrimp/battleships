@@ -22,6 +22,8 @@ void Arrange::inputShip()
         }
         _len -= 1;
     }
+
+    Game::setGameState(GameStates::SHOOTING);
 }
 
 void Arrange::_inputShipPos()

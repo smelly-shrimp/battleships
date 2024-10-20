@@ -3,6 +3,7 @@
 #include "intro.h"
 #include "welcome.h"
 #include "arrange.h"
+#include "shooting.h"
 #include "tools.h"
 #include "player.h"
 
@@ -15,6 +16,7 @@ void Game::setGameState(GameStates state)
     Intro intro;
     Welcome welcome;
     Arrange arrange;
+    Shooting shooting;
 
     Tools::clearConsole();
     
@@ -33,6 +35,8 @@ void Game::setGameState(GameStates state)
             arrange.print();
             arrange.inputShip();
             break;
+        case SHOOTING:
+            shooting.print();
         default:
             cout << Tools::colors["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::colors["endf"] << endl;
             exit(0);
