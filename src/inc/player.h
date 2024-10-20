@@ -1,18 +1,17 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <iostream>
+#include <string>
 #include "grid.h"
-using namespace std;
 
 class Player
 {
     public:
         Grid grid;
-        Player(string name);
-        string getName();
+        Player(std::string name);
+        std::string getName();
     private:
-        string _name;
+        std::string _name;
 };
 
 class Human : public Player

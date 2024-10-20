@@ -1,7 +1,8 @@
 #ifndef ARRANGE_H
 #define ARRANGE_H
 
-#include <iostream>
+#include <string>
+#include <regex>
 #include "screen.h"
 
 class Arrange : public Screen
@@ -10,13 +11,11 @@ class Arrange : public Screen
         void print() override;
         void inputShip();
     private:
-        int _x;
-        int _y;
-        int _rotation;
-        void _askAgain();
+        int _len;
         void _inputShipPos();
-        void _inputShipRot(int length);
-        void _createShip(int length);
+        int _setOrient(std::smatch matches);
+        void _createShip(int x, int y, int orient);
+        void _askAgain(std::string msg);
 };
 
 #endif // !ARRANGE_H

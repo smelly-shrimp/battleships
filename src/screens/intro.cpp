@@ -2,8 +2,6 @@
 #include "game.h"
 #include "fman.h"
 
-using namespace std;
-
 void Intro::print()
 {
     Fman::playAnim("intro", false, false);

@@ -1,6 +1,7 @@
+#include <string>
 #include "ship.h"
 
-#include <iostream>
+using namespace std;
 
 Ship::Ship(int length)
 {

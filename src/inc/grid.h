@@ -5,20 +5,20 @@
 #include <vector>
 #include "ship.h"
 
-using namespace std;
-
 class Grid
 {
     public:
         Grid();
-        void setShip(int x, int y, int rotation, int val, int length);
-        string getGrid();
-        string getShipList();
+        void setShip(int x, int y, int len, int orient, int val);
+        std::string getGrid();
+        std::string getShipList();
+        bool isAvaible(int i, int j, int len, int orient);
     private:
         void _init();
         int _grid[10][10];
-        vector<Ship*> _ships;
+        std::vector<Ship*> _ships;
         Ship* _currShip;
+        void _fillOccup();
 };
 
 #endif // !GRID_H

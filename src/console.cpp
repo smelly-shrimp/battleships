@@ -26,7 +26,7 @@ string Console::input(string msg, string name)
     cout << msg << endl;
     string arg;
     cout << name << " $ ";
-    cin >> arg;
+    getline(cin, arg);
 
     return arg;
 }

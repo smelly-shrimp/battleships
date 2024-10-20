@@ -11,67 +11,75 @@ void Arrange::print()
 {
     cout << Game::getCurrPlayer()->grid.getShipList();
     cout << Game::getCurrPlayer()->grid.getGrid();
-    cout << "\n\n";
+    cout << endl << endl;
 }
 
 void Arrange::inputShip()
 {
-    int len = 4;
+    _len = 4;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < i + 1; j++) {
             _inputShipPos();
-            if (len > 1) _inputShipRot(len);
-            else _createShip(len);
         }
-        len -= 1;
+        _len -= 1;
     }
 }
 
 void Arrange::_inputShipPos()
 {
-    string ans = _console.input("To position: <a-j><1-10>", Game::getCurrPlayer()->getName());
-    regex re{"[a-j]([1-9]|10)"};
+    string ans = _console.input(
+        string("To position: <a-j><1-10>") + (_len > 1 ? " <(h)orizontal/(v)ertical>" : ""),
+        Game::getCurrPlayer()->getName()
+    );
 
-    if (regex_match(ans, re)) {
-        string anst{ans};
-        int x = stoi(anst.erase(0, 1));
+    regex ren("(([a-j])([1-9]|10)) (h|v)");
+    regex rex("(([a-j])([1-9]|10))");
 
-        _x = x - 1;
-        _y = int(tolower(ans.at(0))) - 97;
-    }
-    else _askAgain();
+    smatch matches;
+    if (regex_match(ans, matches, (_len > 1 ? ren : rex))) {
+        int y = int(tolower(matches[2].str().c_str()[0])) - 97;
+        int x = stoi(matches[3].str().c_str()) - 1;
+        int orient = 0;
+        
+        if (_len > 1) orient = _setOrient(matches);
 
-    print();
-}
+        if (!Game::getCurrPlayer()->grid.isAvaible(x, y, _len, orient)) {
+            _askAgain("Wrong or occupied position");
+            _inputShipPos();
+            return;
+        }
 
-void Arrange::_inputShipRot(int length)
-{
-    string ans = _console.input("To rotation: <(h)orizontal/(v)>ertical", Game::getCurrPlayer()->getName());
-    ans = Tools::lower(ans);
-
-    if (_console.isAnswer(ans, "(h|horizontal)") || _console.isAnswer(ans, "(v|vertical)")) {
-        if (_console.isAnswer(ans, "(h|horizontal)")) _rotation = 0;
-        else _rotation = 1;
-
-        _createShip(length);
+        _createShip(x, y, orient);
     }
     else {
-        _console.drawError("Wrong rotation!");
-        print();
-        _inputShipRot(length);
+        _askAgain("Wrong position!");
+        _inputShipPos();
     }
 }
 
-void Arrange::_createShip(int length)
+int Arrange::_setOrient(smatch matches)
 {
-    Game::getCurrPlayer()->grid.setShip(_x, _y, _rotation, 1, length);
+    regex reh("(h|horizontal)");
+    regex rev("(v|vertical)");
+
+    if (regex_match(matches[4].str(), reh)) return 0;
+    else if (regex_match(matches[4].str(), rev)) return 1;
+    else {
+        _askAgain("Wrong rotation!");
+        _inputShipPos();
+    }
+
+    return 0;
+}
+
+void Arrange::_createShip(int x, int y, int orient)
+{
+    Game::getCurrPlayer()->grid.setShip(x, y, _len, orient, 1);
     print();
 }
 
-void Arrange::_askAgain()
+void Arrange::_askAgain(string msg)
 {
+    _console.drawError(msg);
     print();
-    _console.drawError("You're stupid!");
-    print();
-    _inputShipPos();
 }

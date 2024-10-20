@@ -3,15 +3,14 @@
 
 #include <map>
 #include <string>
-using namespace std;
 
 class Tools
 {
     public:
         static void clearConsole();
         static void waitMs(int ms);
-        static string lower(string st);
-        inline static map<string, string> colors = { { "red", "\x1B[31m" }, { "endf", "\033[0m" } };
+        static std::string lower(std::string st);
+        inline static std::map<std::string, std::string> colors = { { "red", "\x1B[31m" }, { "endf", "\033[0m" } };
 };
 
 #endif // !TOOLS_H
