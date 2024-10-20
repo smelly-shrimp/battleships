@@ -9,16 +9,17 @@ class Grid
 {
     public:
         Grid();
-        void setShip(int x, int y, int len, int orient, int val);
+        void setShip(int col, int row, int len, int orient, int val);
         std::string getGrid();
         std::string getShipList();
-        bool isAvaible(int i, int j, int len, int orient);
+        bool isAvaible(int col, int row, int len, int orient);
     private:
         void _init();
         int _grid[10][10];
         std::vector<Ship*> _ships;
         Ship* _currShip;
-        void _fillOccup();
+        int _getSquare(int col, int row);
+        void _setSquare(int col, int row, int val);
 };
 
 #endif // !GRID_H

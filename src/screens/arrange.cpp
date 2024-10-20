@@ -11,7 +11,6 @@ void Arrange::print()
 {
     cout << Game::getCurrPlayer()->grid.getShipList();
     cout << Game::getCurrPlayer()->grid.getGrid();
-    cout << endl << endl;
 }
 
 void Arrange::inputShip()
@@ -37,19 +36,19 @@ void Arrange::_inputShipPos()
 
     smatch matches;
     if (regex_match(ans, matches, (_len > 1 ? ren : rex))) {
-        int y = int(tolower(matches[2].str().c_str()[0])) - 97;
-        int x = stoi(matches[3].str().c_str()) - 1;
+        int col = stoi(matches[3].str().c_str()) - 1;
+        int row = int(tolower(matches[2].str().c_str()[0])) - 97;
         int orient = 0;
         
         if (_len > 1) orient = _setOrient(matches);
 
-        if (!Game::getCurrPlayer()->grid.isAvaible(x, y, _len, orient)) {
+        if (!Game::getCurrPlayer()->grid.isAvaible(col, row, _len, orient)) {
             _askAgain("Wrong or occupied position");
             _inputShipPos();
             return;
         }
 
-        _createShip(x, y, orient);
+        _createShip(col, row, orient);
     }
     else {
         _askAgain("Wrong position!");
@@ -72,14 +71,15 @@ int Arrange::_setOrient(smatch matches)
     return 0;
 }
 
-void Arrange::_createShip(int x, int y, int orient)
+void Arrange::_createShip(int col, int row, int orient)
 {
-    Game::getCurrPlayer()->grid.setShip(x, y, _len, orient, 1);
+    Game::getCurrPlayer()->grid.setShip(col, row, _len, orient, 1);
     print();
 }
 
 void Arrange::_askAgain(string msg)
 {
+    print();
     _console.drawError(msg);
     print();
 }

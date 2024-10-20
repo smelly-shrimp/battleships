@@ -8,12 +8,17 @@
 
 using namespace std;
 
+#define FORBIDDEN -13;
+#define OCCUP -1
+#define EMPTY 0
+#define SHIP 1
+
 Grid::Grid()
 {
     _init();
 }
 
-void Grid::setShip(int x, int y, int len, int rot, int val)
+void Grid::setShip(int col, int row, int len, int orient, int val)
 {
     for (int i = 0; i < _ships.size(); i++) {
         if (_ships.at(i)->getLength() == len && !_ships.at(i)->isUsed()) {
@@ -24,10 +29,16 @@ void Grid::setShip(int x, int y, int len, int rot, int val)
     }
 
     for (int i = 0; i < len; i++) {
-        rot == 0 ? _grid[y][x + i] = val : _grid[y + i][x] = val;
+        orient == 0 ? _setSquare(col + i, row, SHIP) : _setSquare(col, row + i, SHIP);
     }
 
-    _fillOccup();
+    for (int i = 0; i < len + 2; i++) {
+        orient == 0 ? _setSquare(col + i - 1, row - 1, OCCUP) : _setSquare(col + 1, row + i - 1, OCCUP);
+        orient == 0 ? _setSquare(col + i - 1, row + 1, OCCUP) : _setSquare(col - 1, row + i - 1, OCCUP);
+        if (i <= 0 || i >= len + 1) {
+            orient == 0 ? _setSquare(col + i - 1, row, OCCUP) : _setSquare(col, row + i - 1, OCCUP);
+        }
+    }
 }
 
 string Grid::getGrid()
@@ -42,10 +53,10 @@ string Grid::getGrid()
         for (int j = 0; j < _ships.size(); j++) {
             switch (_grid[i][j])
             {
-            case 1:
+            case SHIP:
                 ss << "██" << " ";
                 break;
-            case -1:
+            case OCCUP:
                 ss << "><" << " ";
                 break;
             default:
@@ -54,8 +65,10 @@ string Grid::getGrid()
             }
         }
 
-        ss << endl;
+        ss << "\n";
     }
+
+    ss << "\n\n";
     
     return ss.str();
 }
@@ -65,7 +78,7 @@ string Grid::getShipList()
     ostringstream ss;
     string names[4] = { "four-masted  ", "three-masted ", "two-masted   ", "single-masted" };
 
-    ss << endl << endl;
+    ss << "\n\n";
 
     int curr = 0;
     for (int i = 0; i < 4; i++) {
@@ -74,25 +87,23 @@ string Grid::getShipList()
             ss << (_ships.at(curr)->isUsed() ? " ██" : " ░░");
             curr += 1;
         }
-
-        ss << endl;
+        ss << "\n";
     }
 
-    ss << endl;
+    ss << "\n";
 
     return ss.str();
 }
 
-bool Grid::isAvaible(int i, int j, int len, int orient)
+bool Grid::isAvaible(int col, int row, int len, int orient)
 {
-    printf("%d %d %d %d", i + len, j + len, len, orient);
-    if (orient == 0 ? i + len > 10 : j + len > 10) return false;
+    if (orient == 0 ? col + len > 10 : row + len > 10) return false;
 
     for (int k = 0; k < len + 2; k++) {
         for (int l = 0; l < 3; l++) {
             int val = orient == 0 ?
-                _grid[j + l - 1][i + k - 1]
-                : _grid[i + k - 1][j + l - 1];
+                _grid[row + l - 1][col + k - 1]
+                : _grid[row + k - 1][col + l - 1];
             if (val == 1) return false;
         }
     }
@@ -112,18 +123,15 @@ void Grid::_init()
     }
 }
 
-void Grid::_fillOccup()
+int Grid::_getSquare(int col, int row)
 {
-    int posI[8] = { -1, -1, -1, 0, 1, 1, 1, 0 };
-    int posJ[8] = { -1, 0, 1, 1, 1, 0, -1, -1 };
+    if (col >= 10 || col < 0 || row >= 10 || row < 0) return FORBIDDEN;
+    return _grid[row][col];
+}
 
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            for (int k = 0; k < 8; k++) {
-                if (_grid[i][j] == 1 && _grid[i + posI[k]][j + posJ[k]] == 0) {
-                    _grid[i + posI[k]][j + posJ[k]] = -1;
-                }
-            }
-        }
+void Grid::_setSquare(int col, int row, int val)
+{
+    if (col < 10 && col >= 0 && row < 10 && row >= 0) {
+        _grid[row][col] = val;
     }
 }
