@@ -15,6 +15,7 @@ Arrange::Arrange()
 
 void Arrange::print()
 {
+    Tools::clearConsole();
     cout << Game::getCurrPlayer()->grid.getShipList();
     cout << Game::getCurrPlayer()->grid.reload();
 }
@@ -28,10 +29,7 @@ int Arrange::selectArrangeMode()
     if (_console.isAnswer(ans, "(m|manual)")) return 0;
     else if (_console.isAnswer(ans, "(a|auto|automatic)")) return 1;
     else {
-        printf("BAR");
-        // print();
-        _console.drawError(format("There's no such mode as {}!", ans));
-        // print();
+        _askAgain(format("There's no such mode as {}!", ans));
         selectArrangeMode();
     }
 
@@ -49,7 +47,7 @@ void Arrange::selectShip(int arrangeMode)
     }
 
     if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
-        // print();
+        print();
         _console.drawInfo("You've just arranged all of your ships!");
     }
     Game::changePlayers();
@@ -57,6 +55,7 @@ void Arrange::selectShip(int arrangeMode)
 
 void Arrange::_selectShipPos()
 {
+    print();
     string ans = _console.input(
         format("To position: <a-j><1-10> {}", _len > 1 ? "<(h)orizontal/(v)ertical>" : ""),
         Game::getCurrPlayer()->getName()
@@ -80,7 +79,6 @@ void Arrange::_selectShipPos()
         }
 
         Game::getCurrPlayer()->grid.createShip(col, row, _len, orient, 1);
-        // print();
     }
     else {
         _askAgain("Wrong position!");
@@ -119,23 +117,6 @@ int Arrange::_setOrient(smatch matches)
 
 void Arrange::_askAgain(string msg)
 {
-    // print();
+    print();
     _console.drawError(msg);
-    // print();
 }
-
-// -1: MISS
-// 0: MISS
-// 1: HIT
-
-// player 1: c10 (0), i1 (0), a6 (1), i7 (-1)
-// c10: HIT,
-// i1: MISS,
-// a6: MISS,
-// i7: HIT,
-
-// player 2: a2 (0), j10 (0), j8 (1), b3 (-1)
-// a2: MISS,
-// j10: HIT,
-// j8: MISS,
-// b3: MISS

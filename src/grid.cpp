@@ -75,8 +75,7 @@ string Grid::getShipList()
     ostringstream ss;
     array<string, 4> names{ "four-masted  ", "three-masted ", "two-masted   ", "single-masted" };
 
-    ss << "\n" << Tools::insertChars(" ", 32) << "» INFORMATION  «\n";
-    ss << Tools::insertChars("▔", 80) << "\n";
+    ss << "\n" << Tools::insertChars("━", 33) << " » ARRANGING « " << Tools::insertChars("━", 32) << "\n\n";
 
     int curr = 0;
     for (int i = 0; i < 4; i++) {

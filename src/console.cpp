@@ -26,18 +26,16 @@ bool Console::isAnswer(string arg, string valid) {
 void Console::drawInfo(std::string msg)
 {
     _drawLine(Tools::colors["green"], false);
-    cout << msg << "\n";
-
-    Tools::waitMs(2000);
+    cout << msg << " (ENTER to proceed)\n";
+    getc(stdin);
 }
 
 void Console::drawError(string msg)
 {
     _drawLine(Tools::colors["red"], true);
-    cout << msg << "\n";
+    cout << msg << " (ENTER to proceed)\n";
 
-    Tools::waitMs(2000);
-    Tools::clearConsole();
+    getc(stdin);
 }
 
 void Console::_drawLine(string color, bool isError)
@@ -45,11 +43,11 @@ void Console::_drawLine(string color, bool isError)
     cout << color;
 
     if (isError) {
-        cout << Tools::insertChars("▔", 36);
+        cout << Tools::insertChars("━", 36);
         cout << " ERROR ";
-        cout << Tools::insertChars("▔", 36);
+        cout << Tools::insertChars("━", 36);
     }
-    else cout << Tools::insertChars("▔", 80);
+    else cout << Tools::insertChars("━", 80);
 
     cout << Tools::colors["endf"] << "\n";
 }

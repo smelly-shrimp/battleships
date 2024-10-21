@@ -14,6 +14,7 @@ void Welcome::print()
 
 Player* Welcome::selectEnemy()
 {
+    print();
     string ans = _console.input("To play with: human => H; computer => C");
     ans = Tools::lower(ans);
 
@@ -24,11 +25,15 @@ Player* Welcome::selectEnemy()
         return new Comp("COMP", PlayerTypes::COMP);
     }
     else {
-        // print();
-        _console.drawError(format("There's no such user as {}!", ans));
-        // print();
+        _askAgain(format("There's no such user as {}!", ans));
         selectEnemy();
     }
 
     return 0;
+}
+
+void Welcome::_askAgain(string msg)
+{
+    print();
+    _console.drawError(msg);
 }
