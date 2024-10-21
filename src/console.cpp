@@ -6,13 +6,13 @@
 
 using std::cout, std::cin, std::getline, std::string, std::regex;
 
-string Console::input(string msg, string name)
+string Console::input(string msg)
 {
     _drawLine(Tools::colors["magenta"]);
 
     cout << msg << "\n";
     string arg;
-    cout << name << " $ ";
+    cout << Game::getCurrPlayer()->getName() << " $ ";
     getline(cin, arg);
 
     return arg;

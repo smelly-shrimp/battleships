@@ -60,14 +60,14 @@ void Game::_play()
         switch(_state) {
         case INTRO:
             intro.print();
-
             _state = GameStates::WELCOME;
             break;
         case WELCOME:
-            welcome.print();
             p1 = new Human("PLAYER_1", PlayerTypes::HUMAN);
-            p2 = welcome.selectEnemy();
             setCurrPlayer(p1);
+
+            welcome.print();
+            p2 = welcome.selectEnemy();
             setCurrEnemy(p2);
 
             _state = GameStates::ARRANGE;

@@ -56,10 +56,7 @@ void Arrange::selectShip(int arrangeMode)
 void Arrange::_selectShipPos()
 {
     print();
-    string ans = _console.input(
-        format("To position: <a-j><1-10> {}", _len > 1 ? "<(h)orizontal/(v)ertical>" : ""),
-        Game::getCurrPlayer()->getName()
-    );
+    string ans = _console.input(format("To position: <a-j><1-10> {}", _len > 1 ? "<(h)orizontal/(v)ertical>" : ""));
 
     regex ren("(([a-j])([1-9]|10)) (h|v)");
     regex rex("(([a-j])([1-9]|10))");

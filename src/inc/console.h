@@ -6,7 +6,7 @@
 class Console
 {
     public:
-        std::string input(std::string msg, std::string name = "CAPTAIN HOOK");
+        std::string input(std::string msg);
         bool isAnswer(std::string arg, std::string valid);
         void drawInfo(std::string msg);
         void drawError(std::string msg);

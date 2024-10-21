@@ -21,7 +21,7 @@ void Shooting::_selectShotPos()
 {
     // print();
 
-    string ans = _console.input("To shot: <a-j><1-10>", Game::getCurrPlayer()->getName());
+    string ans = _console.input("To shot: <a-j><1-10>");
 
     regex rex{"(([a-j])([1-9]|10))"};
     smatch matches;
