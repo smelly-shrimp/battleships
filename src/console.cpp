@@ -29,7 +29,7 @@ void Console::drawInfo(std::string msg)
     cout << msg << "\n";
 
     Tools::waitMs(2000);
-    Tools::clearConsole();
+    // Tools::clearConsole();
 }
 
 void Console::drawError(string msg)

@@ -9,45 +9,10 @@
 
 using namespace std;
 
-void Game::setGameState(GameStates state)
+Game::Game()
 {
-    _state = state;
-
-    Intro intro;
-    Welcome welcome;
-    Arrange arrange;
-    Shooting shooting;
-
-    Tools::clearConsole();
-    
-    switch(Game::getGameState()) {
-        case INTRO:
-            intro.print();
-
-            setGameState(GameStates::WELCOME);
-            break;
-        case WELCOME:
-            welcome.print();
-            p1 = new Human("PLAYER_1");
-            p2 = welcome.selectEnemy();
-            arrangeMode = welcome.selectArrangeMode();
-            setCurrPlayer(p1);
-            setCurrEnemy(p2);
-
-            setGameState(GameStates::ARRANGE);
-            break;
-        case ARRANGE:
-            arrange.print();
-            arrange.selectShip(arrangeMode);
-            break;
-        case SHOOTING:
-            shooting.print();
-            shooting.selectShot();
-            break;
-        default:
-            cout << Tools::colors["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::colors["endf"] << endl;
-            exit(0);
-    }
+    _state = GameStates::INTRO;
+    _play();
 }
 
 GameStates Game::getGameState()
@@ -73,4 +38,58 @@ Player *Game::getCurrPlayer()
 Player *Game::getCurrEnemy()
 {
     return _currEnemy;
+}
+
+void Game::changePlayers()
+{
+    Player* player = Game::getCurrPlayer();
+    Game::setCurrPlayer(Game::getCurrEnemy());
+    Game::setCurrEnemy(player);
+}
+
+void Game::_play()
+{
+    Intro intro;
+    Welcome welcome;
+    Arrange arrange;
+    Shooting shooting;
+
+    while (true) {
+        Tools::clearConsole();
+
+        switch(_state) {
+        case INTRO:
+            intro.print();
+
+            _state = GameStates::WELCOME;
+            break;
+        case WELCOME:
+            welcome.print();
+            p1 = new Human("PLAYER_1", PlayerTypes::HUMAN);
+            p2 = welcome.selectEnemy();
+            setCurrPlayer(p1);
+            setCurrEnemy(p2);
+
+            _state = GameStates::ARRANGE;
+            break;
+        case ARRANGE:
+            for (int i = 0; i < 2; i++) {
+                cout << getCurrPlayer()->getName();
+                if (getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
+                    arrangeMode = arrange.selectArrangeMode();
+                    arrange.print();
+                    arrange.selectShip(arrangeMode);
+                }
+                else arrange.selectShip(1);
+            }
+            break;
+        case SHOOTING:
+            shooting.print();
+            shooting.selectShot();
+            break;
+        default:
+            cout << Tools::colors["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::colors["endf"] << endl;
+            exit(0);
+        }
+    }
 }

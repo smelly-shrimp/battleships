@@ -19,6 +19,26 @@ void Arrange::print()
     cout << Game::getCurrPlayer()->grid.reloadGrid();
 }
 
+int Arrange::selectArrangeMode()
+{
+    print();
+
+    string ans = _console.input("To arrange: manual => M; automatic => A");
+    ans = Tools::lower(ans);
+
+    if (_console.isAnswer(ans, "(m|manual)")) return 0;
+    else if (_console.isAnswer(ans, "(a|auto|automatic)")) return 1;
+    else {
+        printf("BAR");
+        print();
+        _console.drawError(format("There's no such mode as {}!", ans));
+        print();
+        selectArrangeMode();
+    }
+
+    return 0;
+}
+
 void Arrange::selectShip(int arrangeMode)
 {
     _len = 4;
@@ -30,9 +50,7 @@ void Arrange::selectShip(int arrangeMode)
     }
 
     _console.drawInfo("You've just arranged all of your ships!");
-    auto player = Game::getCurrPlayer();
-    Game::setCurrPlayer(Game::getCurrEnemy());
-    Game::setCurrEnemy(player);
+    Game::changePlayers();
 }
 
 void Arrange::_selectShipPos()
@@ -80,6 +98,7 @@ void Arrange::_autoSelectShipPos()
     }
 
     Game::getCurrPlayer()->grid.createShip(col, row, _len, orient, 1);
+    print();
 }
 
 int Arrange::_setOrient(smatch matches)

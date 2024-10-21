@@ -9,6 +9,7 @@ class Arrange : public Screen
 {
     public:
         Arrange();
+        int selectArrangeMode();
         void print() override;
         void selectShip(int arrangeMode);
     private:

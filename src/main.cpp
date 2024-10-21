@@ -3,5 +3,6 @@
 
 int main() {
     setlocale(LC_ALL, "");
-    Game::setGameState(GameStates::WELCOME);
+    // Game::play(GameStates::WELCOME);
+    Game game;
 }
