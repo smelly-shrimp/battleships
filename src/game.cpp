@@ -11,7 +11,7 @@ using namespace std;
 
 Game::Game()
 {
-    _state = GameStates::INTRO;
+    _state = GameStates::WELCOME;
     _play();
 }
 
@@ -74,18 +74,24 @@ void Game::_play()
             break;
         case ARRANGE:
             for (int i = 0; i < 2; i++) {
-                cout << getCurrPlayer()->getName();
                 if (getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
                     arrangeMode = arrange.selectArrangeMode();
                     arrange.print();
                     arrange.selectShip(arrangeMode);
                 }
                 else arrange.selectShip(1);
+                
             }
+
+            _state = GameStates::SHOOTING;
             break;
         case SHOOTING:
-            shooting.print();
-            shooting.selectShot();
+            while (true) {
+                shooting.print();
+                shooting.selectShot();
+                changePlayers();
+            }
+            exit(0);
             break;
         default:
             cout << Tools::colors["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::colors["endf"] << endl;

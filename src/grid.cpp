@@ -13,6 +13,8 @@ using std::cout, std::string, std::ostringstream, std::array;
 #define EMPTY 0
 #define SHIP 1
 #define HIT 2
+#define MISS -2
+#define OWN_HIT 3
 
 Grid::Grid()
 {
@@ -26,7 +28,7 @@ void Grid::createShip(int col, int row, int len, int orient, int val)
     _setOccup(col, row, len, orient);
 }
 
-string Grid::reloadGrid()
+string Grid::reload()
 {
     ostringstream ss;
 
@@ -38,7 +40,7 @@ string Grid::reloadGrid()
             
         for (int i = 0; i < _grid.size(); i++) {
             ss << "        " << char(65 + i) << " ";
-            ss << _fillGrid(i);
+            ss << _asString(i);
             ss << "\n";
         }
 
@@ -52,9 +54,9 @@ string Grid::reloadGrid()
 
         for (int i = 0; i < _grid.size(); i++) {
             ss << Tools::insertChars(" ", 8) << char(65 + i) << " ";
-            ss << _fillGrid(i);
+            ss << _asString(i, GridType::OCEAN);
             ss << " " << char(65 + i) << " ";
-            ss << _fillGrid(i);
+            ss << _asString(i, GridType::TARGET);
             ss << "\n";
         }
 
@@ -73,7 +75,8 @@ string Grid::getShipList()
     ostringstream ss;
     array<string, 4> names{ "four-masted  ", "three-masted ", "two-masted   ", "single-masted" };
 
-    ss << "\n\n";
+    ss << "\n" << Tools::insertChars(" ", 32) << "» INFORMATION  «\n";
+    ss << Tools::insertChars("▔", 80) << "\n";
 
     int curr = 0;
     for (int i = 0; i < 4; i++) {
@@ -117,6 +120,11 @@ void Grid::setSquare(int col, int row, int val)
     }
 }
 
+int Grid::getSquare(int col, int row)
+{
+    return _grid[row][col];
+}
+
 void Grid::_init()
 {
     array<int, 10> vals{ 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
@@ -153,21 +161,38 @@ void Grid::_setOccup(int col, int row, int len, int orient)
     }
 }
 
-string Grid::_fillGrid(int i)
+string Grid::_asString(int i, GridType type)
 {
     ostringstream ss;
 
     for (int j = 0; j < _grid.size(); j++) {
-        switch (_grid[i][j])
-        {
-        case SHIP:
-            ss << "██ ";
-            break;
-        case OCCUP:
-            ss << ">< ";
-            break;
-        default:
-            ss << "░░ ";
+        if (type == GridType::OCEAN) {
+            switch (_grid[i][j])
+            {
+            case SHIP:
+                ss << "██ ";
+                break;
+            case OCCUP:
+                ss << "·· ";
+                break;
+            case OWN_HIT:
+                ss << "»« ";
+            default:
+                ss << "░░ ";
+            }
+        }
+        else {
+            switch (_grid[i][j])
+            {
+            case HIT:
+                ss << "██ ";
+                break;
+            case MISS:
+                ss << "▂▂ ";
+                break;
+            default:
+                ss << "░░ ";
+            }
         }
     }
 

@@ -24,9 +24,9 @@ Player* Welcome::selectEnemy()
         return new Comp("COMP", PlayerTypes::COMP);
     }
     else {
-        print();
+        // print();
         _console.drawError(format("There's no such user as {}!", ans));
-        print();
+        // print();
         selectEnemy();
     }
 
