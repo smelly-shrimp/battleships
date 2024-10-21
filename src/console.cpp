@@ -8,7 +8,7 @@ using std::cout, std::cin, std::getline, std::string, std::regex;
 
 string Console::input(string msg)
 {
-    _drawLine(Tools::colors["magenta"]);
+    _drawLine(Tools::ft["magenta"]);
 
     cout << msg << "\n";
     string arg;
@@ -25,14 +25,14 @@ bool Console::isAnswer(string arg, string valid) {
 
 void Console::drawInfo(std::string msg)
 {
-    _drawLine(Tools::colors["green"], false);
+    _drawLine(Tools::ft["green"], false);
     cout << msg << " (ENTER to proceed)\n";
     getc(stdin);
 }
 
 void Console::drawError(string msg)
 {
-    _drawLine(Tools::colors["red"], true);
+    _drawLine(Tools::ft["red"], true);
     cout << msg << " (ENTER to proceed)\n";
 
     getc(stdin);
@@ -54,5 +54,5 @@ void Console::_drawLine(string color, bool isError)
 
     if (isError) drawHeader("ERROR");
     else cout << Tools::insertChars("━", 80);
-    cout << Tools::colors["endf"];
+    cout << Tools::ft["endf"];
 }

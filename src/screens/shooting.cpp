@@ -4,6 +4,7 @@
 #include "shooting.h"
 #include "game.h"
 #include "console.h"
+#include "tools.h"
 
 #define SHIP 1
 #define HIT 2
@@ -36,13 +37,12 @@ void Shooting::_selectShotPos()
         int col = stoi(matches[3].str().c_str()) - 1;
         int row = int(tolower(matches[2].str().c_str()[0])) - 97;
 
-        cout << Game::getCurrPlayer()->getName() << "\n";
         switch (Game::getCurrEnemy()->grid.getSquare(col, row))
         {
             case SHIP:
                 // Game::getCurrPlayer()->grid.setSquare(col, row, 2);
                 // Game::getCurrEnemy()->grid.setSquare(col, row, 3);
-                _console.drawInfo("You hit a ship!");
+                _console.drawInfo(format("You hit a ship on {}{}{}{}!", Tools::ft["underline"], rowNe, colNe, Tools::ft["endf"]));
                 _selectShotPos();
                 break;
             // case MISS:

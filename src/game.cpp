@@ -94,7 +94,7 @@ void Game::_play()
             exit(0);
             break;
         default:
-            cout << Tools::colors["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::colors["endf"] << endl;
+            cout << Tools::ft["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::ft["endf"] << endl;
             exit(0);
         }
     }
