@@ -10,6 +10,7 @@ class Console
         bool isAnswer(std::string arg, std::string valid);
         void drawInfo(std::string msg);
         void drawError(std::string msg);
+        void drawHeader(std::string action, bool isTop = false);
     private:
         void _drawLine(std::string color = "", bool isError = false);
 };

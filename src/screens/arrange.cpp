@@ -16,6 +16,7 @@ Arrange::Arrange()
 void Arrange::print()
 {
     Tools::clearConsole();
+    _console.drawHeader("ARRANGE", true);
     cout << Game::getCurrPlayer()->grid.getShipList();
     cout << Game::getCurrPlayer()->grid.reload();
 }

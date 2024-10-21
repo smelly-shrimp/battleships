@@ -38,16 +38,21 @@ void Console::drawError(string msg)
     getc(stdin);
 }
 
+void Console::drawHeader(std::string action, bool isTop)
+{
+    int spaceReq = action.length() + 6;
+    int lSide{80 / 2 - spaceReq / 2};
+    int rSide{lSide - spaceReq % 2};
+
+    cout << "\n" << Tools::insertChars("━", lSide) << " » " << action << " « " << Tools::insertChars("━", rSide) << "\n";
+    if (isTop) cout << "\n";
+}
+
 void Console::_drawLine(string color, bool isError)
 {
     cout << color;
 
-    if (isError) {
-        cout << Tools::insertChars("━", 36);
-        cout << " ERROR ";
-        cout << Tools::insertChars("━", 36);
-    }
+    if (isError) drawHeader("ERROR");
     else cout << Tools::insertChars("━", 80);
-
-    cout << Tools::colors["endf"] << "\n";
+    cout << Tools::colors["endf"];
 }
