@@ -1,13 +1,19 @@
 #include <iostream>
+#include <format>
 #include <regex>
 #include "shooting.h"
 #include "game.h"
 #include "console.h"
 
-using std::cout, std::string, std::regex, std::smatch, std::stoi;
+#define SHIP 1
+#define HIT 2
+#define MISS 3
+
+using std::cout, std::string, std::format, std::regex, std::smatch, std::stoi;
 
 void Shooting::print()
 {
+    _console.drawHeader(format("ATTACKING {}", Game::getCurrEnemy()->getName()), true);
     cout << Game::getCurrPlayer()->grid.getShipList();
     cout << Game::getCurrPlayer()->grid.reload();
 }
@@ -19,33 +25,33 @@ void Shooting::selectShot()
 
 void Shooting::_selectShotPos()
 {
-    // print();
-
     string ans = _console.input("To shot: <a-j><1-10>");
 
     regex rex{"(([a-j])([1-9]|10))"};
     smatch matches;
 
     if (regex_match(ans, matches, rex)) {
+        string colNe = matches[3];
+        string rowNe = matches[2];
         int col = stoi(matches[3].str().c_str()) - 1;
         int row = int(tolower(matches[2].str().c_str()[0])) - 97;
 
-        // print();
         cout << Game::getCurrPlayer()->getName() << "\n";
         switch (Game::getCurrEnemy()->grid.getSquare(col, row))
         {
-            case 1:
-                Game::getCurrPlayer()->grid.setSquare(col, row, 2);
-                Game::getCurrEnemy()->grid.setSquare(col, row, 3);
+            case SHIP:
+                // Game::getCurrPlayer()->grid.setSquare(col, row, 2);
+                // Game::getCurrEnemy()->grid.setSquare(col, row, 3);
                 _console.drawInfo("You hit a ship!");
                 _selectShotPos();
                 break;
-            case -2:
-                _console.drawError("This square has been already been shoted!");
-                _selectShotPos();
-                break;
+            // case MISS:
+            //     _console.drawError("This square has been already been shoted!");
+                // _askAgain(format("This square has been already been shoted!"));
+            //     _selectShotPos();
+                // break;
             default:
-                Game::getCurrPlayer()->grid.setSquare(col, row, -2);
+                // Game::getCurrPlayer()->grid.setSquare(col, row, MISS);
                 _console.drawInfo("You missed!");
                 break;
         }
@@ -58,7 +64,6 @@ void Shooting::_selectShotPos()
 
 void Shooting::_askAgain(string msg)
 {
-    // print();
+    print();
     _console.drawError(msg);
-    // print();
 }

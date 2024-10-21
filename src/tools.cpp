@@ -8,6 +8,16 @@ using namespace std;
 
 void Tools::clearConsole()
 {
+    // #if __linux__
+    //     system("clear");
+    // #elif __APPLE__
+    //     system("clear");
+    // #elif _WIN32
+    //     system("cls");
+    // #else
+    //     printf("\033[2J");
+    // #endif
+
     printf("\033[2J");
 }
 

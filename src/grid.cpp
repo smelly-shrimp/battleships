@@ -8,13 +8,20 @@
 
 using std::cout, std::string, std::ostringstream, std::array;
 
-#define FORBIDDEN -13;
+// #define FORBIDDEN -13;
+// #define OCCUP -1
+// #define EMPTY 0
+// #define SHIP 1
+// #define HIT 2
+// #define MISS -2
+// #define OWN_HIT 3
+
+// #define FORBIDDEN -13
+// #define EMPTY 0
 #define OCCUP -1
-#define EMPTY 0
 #define SHIP 1
 #define HIT 2
-#define MISS -2
-#define OWN_HIT 3
+#define MISS 3
 
 Grid::Grid()
 {
@@ -172,8 +179,8 @@ string Grid::_asString(int i, GridType type)
             case OCCUP:
                 ss << "·· ";
                 break;
-            case OWN_HIT:
-                ss << "»« ";
+            // case OWN_HIT:
+            //     ss << "»« ";
             default:
                 ss << "░░ ";
             }
