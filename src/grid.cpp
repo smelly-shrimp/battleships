@@ -2,6 +2,8 @@
 #include <sstream>
 #include "grid.h"
 
+#define OCCUP -1
+
 using std::array, std::stringstream;
 
 Grid::Grid()
@@ -64,21 +66,25 @@ std::string Grid::asString(int val)
     }
     // else if (val >= 8 && val) {}
     else if (val == -1) {
-        ss << "••";
+        // ss << "••";
+        // ss << "><";
+        ss << "><";
     }
     else ss << "▁▁";
 
-    // switch(val)
-    // {
-    //     case 1: // example
-    //         ss << "██";
-    //         break;
-    //     default:
-    //         ss << "▁▁";
-    // }
-
     ss << " ";
     return ss.str();
+}
+
+void Grid::setOccup(int col, int row, int len, int orient)
+{
+    for (int i{}; i < len + 2; i++) {
+        orient == 0 ? setSquare(col + i - 1, row - 1, OCCUP) : setSquare(col + 1, row + i - 1, OCCUP);
+        orient == 0 ? setSquare(col + i - 1, row + 1, OCCUP) : setSquare(col - 1, row + i - 1, OCCUP);
+        if (i <= 0 || i >= len + 1) {
+            orient == 0 ? setSquare(col + i - 1, row, OCCUP) : setSquare(col, row + i - 1, OCCUP);
+        }
+    }
 }
 
 Ship* Grid::getCurrShip()

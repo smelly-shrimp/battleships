@@ -24,6 +24,7 @@ class Grid
         std::string asString(int val);
         Ship* getCurrShip();
         void setCurrShip(int idx);
+        void setOccup(int col, int row, int len, int orient);
     private:
         std::array<std::array<int, 10>, 10> _grid{0};
         std::array<Ship*, 10> _ships;

@@ -112,6 +112,8 @@ void Arrange::_selectShipPos()
                 (orient == 0 ? col + i : col), (orient == 0 ? row : row + i),
                 Game::getCurrPlayer()->grid.getCurrShip()->getId()
             );
+
+            Game::getCurrPlayer()->grid.setOccup(col, row, _len, orient);
         }
     }
     else {
@@ -136,16 +138,9 @@ void Arrange::_autoSelectShipPos()
             (orient == 0 ? col + i : col), (orient == 0 ? row : row + i),
             Game::getCurrPlayer()->grid.getCurrShip()->getId()
         );
+
+        Game::getCurrPlayer()->grid.setOccup(col, row, _len, orient);
     }
-
-    
-
-    // if (!Game::getCurrPlayer()->grid.isAvaible(col, row, _len, orient)) {
-    //     _autoSelectShipPos();
-    //     return;
-    // }
-
-    // Game::getCurrPlayer()->grid.createShip(col, row, _len, orient, 1);
 }
 
 int Arrange::_setOrient(smatch matches)
