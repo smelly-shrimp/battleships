@@ -45,7 +45,6 @@ void Console::drawHeader(std::string action, bool isTop)
 
     if (isTop) cout << "\n";
     cout << Tools::insertChars("━", lSide) << " » " << action << " « " << Tools::insertChars("━", rSide) << "\n";
-    if (isTop) cout << "\n";
 }
 
 void Console::_drawLine(string color, bool isError)

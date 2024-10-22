@@ -3,6 +3,9 @@
 #include "grid.h"
 
 #define OCCUP -1
+#define MISS 1
+#define HIT 2
+#define SUNK 3
 
 using std::array, std::stringstream;
 
@@ -57,20 +60,26 @@ std::array<std::array<int, 10>, 10> Grid::getGrid()
     return _grid;
 }
 
-std::string Grid::asString(int val)
+std::string Grid::asString(int val, bool isTarget)
 {
     stringstream ss;
 
-    if (val >= 8 && val % 8 == 0) {
-        ss << "██";
+    if (isTarget) {
+        if (val >= 8 && val % 8 == HIT) ss << "▒▒";
+        else if (val == 1) ss << "⋅⋅";
+        else ss << "░░";
     }
-    // else if (val >= 8 && val) {}
-    else if (val == -1) {
-        // ss << "••";
-        // ss << "><";
-        ss << "><";
+    else {
+        if (val >= 8 && val % 8 == 0) ss << "██";
+        // else if (val >= 8 && val) {}
+        // else if (val == -1) {
+        //     // ss << "••";
+        //     ss << "⋅⋅";
+        //     // ss << "><";
+        // }
+        else ss << "══";
+        // else ss << "▁▁";
     }
-    else ss << "▁▁";
 
     ss << " ";
     return ss.str();

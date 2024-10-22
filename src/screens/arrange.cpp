@@ -23,7 +23,7 @@ void Arrange::print()
 
     int curr{};
     for (int i{}; i < names.size(); i++) {
-        cout << Tools::insertChars(" ", 8) << names.at(i) << " ";
+        cout << Tools::insertChars(" ", 2) << names.at(i) << " ";
 
         for (int j{}; j <= i && curr < grid.getShipList().size(); j++) {
             cout << (grid.getShipList().at(curr)->isUsed() ? "██" : "▁▁");
@@ -35,20 +35,21 @@ void Arrange::print()
 
     cout << "\n";
 
-    cout << Tools::insertChars(" ", 8) << "========== OCEAN GRID =========\n"
-         << Tools::insertChars(" ", 8) << ". 01 02 03 04 05 06 07 08 09 10\n";
+    cout << Tools::insertChars(" ", 2) << "┌───┬───────── OCEAN GRID ──────────┐\n"
+         << Tools::insertChars(" ", 2) << "│   │ 01 02 03 04 05 06 07 08 09 10 │\n"
+         << Tools::insertChars(" ", 2) << "├───┼──┼──┼──┼──┼──┼──┼──┼──┼──┼──┼─┤\n";
 
     for (int i{}; i < grid.getGrid().size(); i++) {
-        cout << Tools::insertChars(" ", 8) << char(65 + i) << " ";
+        cout << Tools::insertChars(" ", 2) << "│ " << char(65 + i) << " ┼ ";
 
         for (int j{}; j < grid.getGrid().size(); j++) {
             cout << grid.asString(grid.getSquare(i, j));
         }
 
-        cout << "\n";
+        cout << "│\n";
     }
 
-    cout << "\n";
+    cout << Tools::insertChars(" ", 2) << "└" << Tools::insertChars("─", 35) << "┘\n";
 }
 
 Mode Arrange::selectArrangeMode()

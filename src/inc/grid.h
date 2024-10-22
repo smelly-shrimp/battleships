@@ -21,7 +21,7 @@ class Grid
         bool isAvailable(int col, int row, int len, int orient);
         std::array<Ship*, 10> getShipList();
         std::array<std::array<int, 10>, 10> getGrid();
-        std::string asString(int val);
+        std::string asString(int val, bool isTarget = false);
         Ship* getCurrShip();
         void setCurrShip(int idx);
         void setOccup(int col, int row, int len, int orient);

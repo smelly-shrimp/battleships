@@ -1,4 +1,5 @@
 #include <iostream>
+#include <array>
 #include <format>
 #include <regex>
 #include "shooting.h"
@@ -9,13 +10,49 @@
 #define HIT 1
 #define MISS 3
 
-using std::cout, std::string, std::format, std::regex, std::smatch, std::stoi;
+using std::cout, std::array, std::string, std::format, std::regex, std::smatch, std::stoi;
 
 void Shooting::print()
 {
+    auto grid{Game::getCurrPlayer()->grid};
+    array<string, 4> names{ "four-masted  ", "three-masted ", "two-masted   ", "single-masted" };
+
     _console.drawHeader(format("ATTACKING {}", Game::getCurrEnemy()->getName()), true);
-    // cout << Game::getCurrPlayer()->grid.getShipList();
-    // cout << Game::getCurrPlayer()->grid.reload();
+
+    int curr{};
+    for (int i{}; i < names.size(); i++) {
+        cout << Tools::insertChars(" ", 2) << names.at(i) << " ";
+
+        for (int j{}; j <= i && curr < grid.getShipList().size(); j++) {
+            cout << (grid.getShipList().at(curr)->isSink() ? "██" : "▁▁");
+            curr++;
+        }
+
+        cout << "\n";
+    }
+
+    cout << "\n";
+
+    cout << Tools::insertChars(" ", 2) << "┌───┬───────── OCEAN GRID ──────────┐ ┌───┬──────── TARGET GRID ──────────┐\n"
+         << Tools::insertChars(" ", 2) << "│   │ 01 02 03 04 05 06 07 08 09 10 │ │   │ 01 02 03 04 05 06 07 08 09 10 │\n"
+         << Tools::insertChars(" ", 2) << "├───┼──┼──┼──┼──┼──┼──┼──┼──┼──┼──┼─┤ ├───┼──┼──┼──┼──┼──┼──┼──┼──┼──┼──┼─┤\n";
+
+    for (int i{}; i < grid.getGrid().size(); i++) {
+        cout << Tools::insertChars(" ", 2) << "│ " << char(65 + i) << " ┼ ";
+        for (int j{}; j < grid.getGrid().size(); j++) {
+            cout << grid.asString(grid.getSquare(i, j));
+        }
+        cout << "│";
+
+        cout << " │ " << char(65 + i) << " ┼ ";
+        for (int j{}; j < grid.getGrid().size(); j++) {
+            cout << grid.asString(grid.getSquare(i, j), true);
+        }
+        cout << "│\n";
+    }
+
+    cout << Tools::insertChars(" ", 2) << "└" << Tools::insertChars("─", 35) << "┘"
+         << " └" << Tools::insertChars("─", 35) << "┘\n";
 }
 
 void Shooting::selectShot()
