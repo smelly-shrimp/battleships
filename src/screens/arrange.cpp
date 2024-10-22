@@ -1,4 +1,5 @@
 #include <iostream>
+#include <array>
 #include <format>
 #include <regex>
 #include "arrange.h"
@@ -6,7 +7,7 @@
 #include "game.h"
 #include "tools.h"
 
-using namespace std;
+using std::cout, std::array, std::string, std::format, std::stoi, std::regex, std::smatch;
 
 Arrange::Arrange()
 {
@@ -15,10 +16,21 @@ Arrange::Arrange()
 
 void Arrange::print()
 {
-    // Tools::clearConsole();
+    auto grid{Game::getCurrPlayer()->grid};
+
     _console.drawHeader("ARRANGE", true);
-    cout << Game::getCurrPlayer()->grid.getShipList();
-    cout << Game::getCurrPlayer()->grid.reload();
+    cout << Tools::insertChars(" ", 8) << "========== OCEAN GRID =========\n"
+         << Tools::insertChars(" ", 8) << ". 01 02 03 04 05 06 07 08 09 10\n";
+
+    for (int i{}; i < grid.getGrid().size(); i++) {
+        cout << Tools::insertChars(" ", 8) << char(65 + i) << " ";
+
+        for (int j{}; j < grid.getGrid().size(); j++) {
+            cout << grid.asString(grid.getSquare(i, j));
+        }
+
+        cout << "\n";
+    }
 }
 
 int Arrange::selectArrangeMode()
@@ -70,13 +82,13 @@ void Arrange::_selectShipPos()
         
         if (_len > 1) orient = _setOrient(matches);
 
-        if (!Game::getCurrPlayer()->grid.isAvaible(col, row, _len, orient)) {
-            _askAgain("Wrong or occupied position");
-            _selectShipPos();
-            return;
-        }
+        // if (!Game::getCurrPlayer()->grid.isAvaible(col, row, _len, orient)) {
+        //     _askAgain("Wrong or occupied position");
+        //     _selectShipPos();
+        //     return;
+        // }
 
-        Game::getCurrPlayer()->grid.createShip(col, row, _len, orient, 1);
+        // Game::getCurrPlayer()->grid.createShip(col, row, _len, orient, 1);
     }
     else {
         _askAgain("Wrong position!");
@@ -90,12 +102,12 @@ void Arrange::_autoSelectShipPos()
     int row{rand() % 10};
     int orient{rand() % 2};
 
-    if (!Game::getCurrPlayer()->grid.isAvaible(col, row, _len, orient)) {
-        _autoSelectShipPos();
-        return;
-    }
+    // if (!Game::getCurrPlayer()->grid.isAvaible(col, row, _len, orient)) {
+    //     _autoSelectShipPos();
+    //     return;
+    // }
 
-    Game::getCurrPlayer()->grid.createShip(col, row, _len, orient, 1);
+    // Game::getCurrPlayer()->grid.createShip(col, row, _len, orient, 1);
 }
 
 int Arrange::_setOrient(smatch matches)

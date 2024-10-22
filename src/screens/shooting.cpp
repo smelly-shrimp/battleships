@@ -14,8 +14,8 @@ using std::cout, std::string, std::format, std::regex, std::smatch, std::stoi;
 void Shooting::print()
 {
     _console.drawHeader(format("ATTACKING {}", Game::getCurrEnemy()->getName()), true);
-    cout << Game::getCurrPlayer()->grid.getShipList();
-    cout << Game::getCurrPlayer()->grid.reload();
+    // cout << Game::getCurrPlayer()->grid.getShipList();
+    // cout << Game::getCurrPlayer()->grid.reload();
 }
 
 void Shooting::selectShot()
@@ -39,19 +39,19 @@ void Shooting::_selectShotPos()
 
         print();
 
-        int currSquare = Game::getCurrEnemy()->grid.getSquare(col, row);
-        cout << currSquare << "\n";
-        if (currSquare >= 8 && currSquare % 4 == 0) {
-            Game::getCurrPlayer()->grid.setSquare(col, row, Game::getCurrPlayer()->grid.getSquare(col, row) + HIT);
-            _console.drawInfo(format("You hit a ship on {}{}{}{}!", Tools::ft["underline"], rowNe, colNe, Tools::ft["endf"]));
-        }
-        // else if (currSquare % 4 == HIT) {
-
+        // int currSquare = Game::getCurrEnemy()->grid.getSquare(col, row);
+        // cout << currSquare << "\n";
+        // if (currSquare >= 8 && currSquare % 4 == 0) {
+        //     Game::getCurrPlayer()->grid.setSquare(col, row, Game::getCurrPlayer()->grid.getSquare(col, row) + HIT);
+        //     _console.drawInfo(format("You hit a ship on {}{}{}{}!", Tools::ft["underline"], rowNe, colNe, Tools::ft["endf"]));
         // }
-        else {
-            Game::getCurrPlayer()->grid.setSquare(col, row, Game::getCurrPlayer()->grid.getSquare(col, row) + MISS);
-            _console.drawInfo("You missed!");
-        }
+        // // else if (currSquare % 4 == HIT) {
+
+        // // }
+        // else {
+        //     Game::getCurrPlayer()->grid.setSquare(col, row, Game::getCurrPlayer()->grid.getSquare(col, row) + MISS);
+        //     _console.drawInfo("You missed!");
+        // }
 
         // switch (currSquare)
         // {
