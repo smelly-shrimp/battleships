@@ -75,9 +75,10 @@ void Game::_play()
         case ARRANGE:
             for (int i = 0; i < 2; i++) {
                 if (getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
-                    arrangeMode = arrange.selectArrangeMode();
-                    arrange.print();
-                    arrange.selectShip(arrangeMode);
+                    arrange.selectShip(arrange.selectArrangeMode());
+                    // arrangeMode = arrange.selectArrangeMode();
+                    // arrange.print();
+                    // arrange.selectShip(arrangeMode);
                 }
                 else arrange.selectShip(1);
                 

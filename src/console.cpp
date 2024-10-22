@@ -34,7 +34,6 @@ void Console::drawError(string msg)
 {
     _drawLine(Tools::ft["red"], true);
     cout << msg << " (ENTER to proceed)\n";
-
     getc(stdin);
 }
 
@@ -44,7 +43,8 @@ void Console::drawHeader(std::string action, bool isTop)
     int lSide{80 / 2 - spaceReq / 2};
     int rSide{lSide - spaceReq % 2};
 
-    cout << "\n" << Tools::insertChars("━", lSide) << " » " << action << " « " << Tools::insertChars("━", rSide) << "\n";
+    if (isTop) cout << "\n";
+    cout << Tools::insertChars("━", lSide) << " » " << action << " « " << Tools::insertChars("━", rSide) << "\n";
     if (isTop) cout << "\n";
 }
 

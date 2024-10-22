@@ -17,8 +17,24 @@ Arrange::Arrange()
 void Arrange::print()
 {
     auto grid{Game::getCurrPlayer()->grid};
+    array<string, 4> names{ "four-masted  ", "three-masted ", "two-masted   ", "single-masted" };
 
     _console.drawHeader("ARRANGE", true);
+
+    int curr{};
+    for (int i{}; i < names.size(); i++) {
+        cout << Tools::insertChars(" ", 8) << names.at(i) << " ";
+
+        for (int j{}; j <= i && curr < grid.getShipList().size(); j++) {
+            cout << (grid.getShipList().at(curr)->isUsed() ? "██" : "▁▁");
+            curr++;
+        }
+
+        cout << "\n";
+    }
+
+    cout << "\n";
+
     cout << Tools::insertChars(" ", 8) << "========== OCEAN GRID =========\n"
          << Tools::insertChars(" ", 8) << ". 01 02 03 04 05 06 07 08 09 10\n";
 
@@ -31,13 +47,14 @@ void Arrange::print()
 
         cout << "\n";
     }
+
+    cout << "\n";
 }
 
 int Arrange::selectArrangeMode()
 {
     print();
-    string ans = _console.input("To arrange: manual => M; automatic => A");
-    ans = Tools::lower(ans);
+    string ans = Tools::lower(_console.input("To arrange: manual => M; automatic => A"));
 
     if (_console.isAnswer(ans, "(m|manual)")) return 0;
     else if (_console.isAnswer(ans, "(a|auto|automatic)")) return 1;
