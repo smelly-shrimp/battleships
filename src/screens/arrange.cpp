@@ -64,9 +64,9 @@ void Arrange::_selectShipPos()
     smatch matches;
 
     if (regex_match(ans, matches, (_len > 1 ? ren : rex))) {
-        int col = stoi(matches[3].str().c_str()) - 1;
-        int row = int(tolower(matches[2].str().c_str()[0])) - 97;
-        int orient = 0;
+        int col{stoi(matches[3].str().c_str()) - 1};
+        int row{int(tolower(matches[2].str().c_str()[0])) - 97};
+        int orient{};
         
         if (_len > 1) orient = _setOrient(matches);
 

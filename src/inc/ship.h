@@ -5,18 +5,21 @@
 
 class Ship
 {
-    protected:
-        std::string _type;
-        int _length;
-        bool _isUsed;
-        bool _isShotDown;
     public:
-        Ship(int length);
+        Ship(int id, int length);
+        int getId();
         std::string getType();
         int getLength();
+        bool isSink();
         bool isUsed();
-        void shotDown();
+        void sink();
         void use();
+    private:
+        int _id;
+        std::string _type;
+        int _len;
+        bool _isUsed;
+        bool _isSink;
 };
 
 #endif // !SHIP_H

@@ -3,9 +3,15 @@
 
 using namespace std;
 
-Ship::Ship(int length)
+Ship::Ship(int id, int length)
 {
-    _length = length;
+    _id = 8 * id;
+    _len = length;
+}
+
+int Ship::getId()
+{
+    return _id;
 }
 
 string Ship::getType()
@@ -15,7 +21,12 @@ string Ship::getType()
 
 int Ship::getLength()
 {
-    return _length;
+    return _len;
+}
+
+bool Ship::isSink()
+{
+    return _isSink;
 }
 
 bool Ship::isUsed()
@@ -23,9 +34,9 @@ bool Ship::isUsed()
     return _isUsed;
 }
 
-void Ship::shotDown()
+void Ship::sink()
 {
-    _isShotDown = true;
+    _isSink = true;
 }
 
 void Ship::use()

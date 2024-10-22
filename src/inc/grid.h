@@ -25,6 +25,7 @@ class Grid
     private:
         void _init();
         void _useShip(int len);
+        void _sinkShip();
         void _setShip(int col, int row, int len, int orient);
         void _setOccup(int col, int row, int len, int orient);
         std::string _asString(int i, GridType type = OCEAN);

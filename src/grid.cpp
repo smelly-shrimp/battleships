@@ -8,16 +8,6 @@
 
 using std::cout, std::string, std::ostringstream, std::array;
 
-// #define FORBIDDEN -13;
-// #define OCCUP -1
-// #define EMPTY 0
-// #define SHIP 1
-// #define HIT 2
-// #define MISS -2
-// #define OWN_HIT 3
-
-// #define FORBIDDEN -13
-// #define EMPTY 0
 #define OCCUP -1
 #define SHIP 1
 #define HIT 2
@@ -86,7 +76,8 @@ string Grid::getShipList()
     for (int i = 0; i < 4; i++) {
         ss << Tools::insertChars(" ", 8) << names.at(i);
         for (int j = 0; j <= i && curr < _ships.size(); j++) {
-            ss << (_ships.at(curr)->isUsed() ? " ██" : " ░░");
+            if (Game::getGameState() == GameStates::ARRANGE) ss << (_ships.at(curr)->isUsed() ? " ██" : " ░░");
+            else ss << (_ships.at(curr)->isSink() ? " ██" : " ░░");
             curr += 1;
         }
         ss << "\n";
@@ -133,7 +124,7 @@ void Grid::_init()
 {
     array<int, 10> vals{ 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
     for (int i = 0; i < vals.size(); i++) {
-        _ships.push_back(new Ship(vals[i]));
+        _ships.emplace_back(new Ship(i + 1, vals[i]));
     }
 }
 
@@ -145,6 +136,11 @@ void Grid::_useShip(int len)
             break;
         }
     }
+}
+
+void Grid::_sinkShip()
+{
+
 }
 
 void Grid::_setShip(int col, int row, int len, int orient)
@@ -171,6 +167,11 @@ string Grid::_asString(int i, GridType type)
 
     for (int j = 0; j < _grid.size(); j++) {
         if (type == GridType::OCEAN) {
+            // if (_grid[i][j] >= 8 && _grid[i][j] % 4 == 0) {
+            //     ss << "██ ";
+            //     continue;
+            // }
+
             switch (_grid[i][j])
             {
             case SHIP:
