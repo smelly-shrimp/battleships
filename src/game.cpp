@@ -7,7 +7,7 @@
 #include "tools.h"
 #include "player.h"
 
-using namespace std;
+using std::cout;
 
 Game::Game()
 {
@@ -76,11 +76,8 @@ void Game::_play()
             for (int i = 0; i < 2; i++) {
                 if (getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
                     arrange.selectShip(arrange.selectArrangeMode());
-                    // arrangeMode = arrange.selectArrangeMode();
-                    // arrange.print();
-                    // arrange.selectShip(arrangeMode);
                 }
-                else arrange.selectShip(1);
+                else arrange.selectShip(Mode::AUTO);
                 
             }
 
@@ -95,7 +92,7 @@ void Game::_play()
             exit(0);
             break;
         default:
-            cout << Tools::ft["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::ft["endf"] << endl;
+            cout << Tools::ft["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::ft["endf"] << "\n";
             exit(0);
         }
     }

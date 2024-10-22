@@ -5,13 +5,19 @@
 #include <regex>
 #include "screen.h"
 
+enum class Mode
+{
+    MANUAL,
+    AUTO
+};
+
 class Arrange : public Screen
 {
     public:
         Arrange();
-        int selectArrangeMode();
+        Mode selectArrangeMode();
         void print() override;
-        void selectShip(int arrangeMode);
+        void selectShip(Mode arrangeMode);
     private:
         int _len;
         void _selectShipPos();

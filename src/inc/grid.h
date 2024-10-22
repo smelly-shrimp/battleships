@@ -22,9 +22,12 @@ class Grid
         std::array<Ship*, 10> getShipList();
         std::array<std::array<int, 10>, 10> getGrid();
         std::string asString(int val);
+        Ship* getCurrShip();
+        void setCurrShip(int idx);
     private:
         std::array<std::array<int, 10>, 10> _grid{0};
         std::array<Ship*, 10> _ships;
+        Ship* _currShip;
 };
 
 #endif // !GRID_H

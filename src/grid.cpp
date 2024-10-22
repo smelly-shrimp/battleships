@@ -37,7 +37,7 @@ bool Grid::isAvailable(int col, int row, int len, int orient)
                     ? _grid[row + j - 1][col + i - 1]
                     : _grid[row + i - 1][col + j - 1];
                 
-                if (val == 1) return false;
+                if (val >= 8 && val % 8 == 0) return false;
             }
         }
     }
@@ -59,15 +59,34 @@ std::string Grid::asString(int val)
 {
     stringstream ss;
 
-    switch(val)
-    {
-        case 1: // example
-            ss << "██";
-            break;
-        default:
-            ss << "▁▁";
+    if (val >= 8 && val % 8 == 0) {
+        ss << "██";
     }
+    // else if (val >= 8 && val) {}
+    else if (val == -1) {
+        ss << "••";
+    }
+    else ss << "▁▁";
+
+    // switch(val)
+    // {
+    //     case 1: // example
+    //         ss << "██";
+    //         break;
+    //     default:
+    //         ss << "▁▁";
+    // }
 
     ss << " ";
     return ss.str();
+}
+
+Ship* Grid::getCurrShip()
+{
+    return _currShip;
+}
+
+void Grid::setCurrShip(int idx)
+{
+    _currShip = _ships[idx];
 }

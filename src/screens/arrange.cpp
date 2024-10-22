@@ -19,7 +19,7 @@ void Arrange::print()
     auto grid{Game::getCurrPlayer()->grid};
     array<string, 4> names{ "four-masted  ", "three-masted ", "two-masted   ", "single-masted" };
 
-    _console.drawHeader("ARRANGE", true);
+    _console.drawHeader(format("ARRANGING {}", Game::getCurrPlayer()->getName()), true);
 
     int curr{};
     for (int i{}; i < names.size(); i++) {
@@ -51,29 +51,32 @@ void Arrange::print()
     cout << "\n";
 }
 
-int Arrange::selectArrangeMode()
+Mode Arrange::selectArrangeMode()
 {
     print();
     string ans = Tools::lower(_console.input("To arrange: manual => M; automatic => A"));
 
-    if (_console.isAnswer(ans, "(m|manual)")) return 0;
-    else if (_console.isAnswer(ans, "(a|auto|automatic)")) return 1;
+    if (_console.isAnswer(ans, "(m|manual)")) return Mode::MANUAL;
+    else if (_console.isAnswer(ans, "(a|auto|automatic)")) return Mode::AUTO;
     else {
         _askAgain(format("There's no such mode as {}!", ans));
         selectArrangeMode();
     }
 
-    return 0;
+    return Mode::MANUAL;
 }
 
-void Arrange::selectShip(int arrangeMode)
+void Arrange::selectShip(Mode arrangeMode)
 {
     _len = 4;
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < i + 1; j++) {
-            arrangeMode == 0 ? _selectShipPos() : _autoSelectShipPos();
+    int curr{};
+    for (int i{}; i < 4; i++) {
+        for (int j{}; j <= i; j++) {
+            Game::getCurrPlayer()->grid.setCurrShip(curr);
+            arrangeMode == Mode::MANUAL ? _selectShipPos() : _autoSelectShipPos();
+            curr++;
         }
-        _len -= 1;
+        _len--;
     }
 
     if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
@@ -88,24 +91,28 @@ void Arrange::_selectShipPos()
     print();
     string ans = _console.input(format("To position: <a-j><1-10> {}", _len > 1 ? "<(h)orizontal/(v)ertical>" : ""));
 
-    regex ren("(([a-j])([1-9]|10)) (h|v)");
-    regex rex("(([a-j])([1-9]|10))");
+    regex re("(([a-j])([1-9]|10)) (h|v)");
     smatch matches;
 
-    if (regex_match(ans, matches, (_len > 1 ? ren : rex))) {
+    if (regex_match(ans, matches, re)) {
         int col{stoi(matches[3].str().c_str()) - 1};
         int row{int(tolower(matches[2].str().c_str()[0])) - 97};
         int orient{};
         
         if (_len > 1) orient = _setOrient(matches);
 
-        // if (!Game::getCurrPlayer()->grid.isAvaible(col, row, _len, orient)) {
-        //     _askAgain("Wrong or occupied position");
-        //     _selectShipPos();
-        //     return;
-        // }
+        if (!Game::getCurrPlayer()->grid.isAvailable(col, row, _len, orient)) {
+            _askAgain("Wrong or occupied position!");
+            _selectShipPos();
+            return;
+        }
 
-        // Game::getCurrPlayer()->grid.createShip(col, row, _len, orient, 1);
+        for (int i{}; i < _len; i++) {
+            Game::getCurrPlayer()->grid.setSquare(
+                (orient == 0 ? col + i : col), (orient == 0 ? row : row + i),
+                Game::getCurrPlayer()->grid.getCurrShip()->getId()
+            );
+        }
     }
     else {
         _askAgain("Wrong position!");
@@ -118,6 +125,20 @@ void Arrange::_autoSelectShipPos()
     int col{rand() % 10};
     int row{rand() % 10};
     int orient{rand() % 2};
+
+    if (!Game::getCurrPlayer()->grid.isAvailable(col, row, _len, orient)) {
+        _autoSelectShipPos();
+        return;
+    }
+
+    for (int i{}; i < _len; i++) {
+        Game::getCurrPlayer()->grid.setSquare(
+            (orient == 0 ? col + i : col), (orient == 0 ? row : row + i),
+            Game::getCurrPlayer()->grid.getCurrShip()->getId()
+        );
+    }
+
+    
 
     // if (!Game::getCurrPlayer()->grid.isAvaible(col, row, _len, orient)) {
     //     _autoSelectShipPos();
