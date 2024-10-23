@@ -19,9 +19,14 @@ string Ship::getType()
     return _type;
 }
 
-int Ship::getLength()
+int Ship::getLen()
 {
     return _len;
+}
+
+void Ship::setLen(int len)
+{
+    _len = len;
 }
 
 bool Ship::isSink()

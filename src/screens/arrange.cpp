@@ -96,26 +96,19 @@ void Arrange::_selectShipPos()
     smatch matches;
 
     if (regex_match(ans, matches, re)) {
-        int col{stoi(matches[3].str().c_str()) - 1};
         int row{int(tolower(matches[2].str().c_str()[0])) - 97};
+        int col{stoi(matches[3].str().c_str()) - 1};
         int orient{};
         
         if (_len > 1) orient = _setOrient(matches);
 
-        if (!Game::getCurrPlayer()->grid.isAvailable(col, row, _len, orient)) {
+        if (!Game::getCurrPlayer()->grid.isAvailable(row, col, _len, orient)) {
             _askAgain("Wrong or occupied position!");
             _selectShipPos();
             return;
         }
 
-        for (int i{}; i < _len; i++) {
-            Game::getCurrPlayer()->grid.setSquare(
-                (orient == 0 ? col + i : col), (orient == 0 ? row : row + i),
-                Game::getCurrPlayer()->grid.getCurrShip()->getId()
-            );
-
-            Game::getCurrPlayer()->grid.setOccup(col, row, _len, orient);
-        }
+        _createShip(row, col, orient);
     }
     else {
         _askAgain("Wrong position!");
@@ -125,23 +118,16 @@ void Arrange::_selectShipPos()
 
 void Arrange::_autoSelectShipPos()
 {
-    int col{rand() % 10};
     int row{rand() % 10};
+    int col{rand() % 10};
     int orient{rand() % 2};
 
-    if (!Game::getCurrPlayer()->grid.isAvailable(col, row, _len, orient)) {
+    if (!Game::getCurrPlayer()->grid.isAvailable(row, col, _len, orient)) {
         _autoSelectShipPos();
         return;
     }
 
-    for (int i{}; i < _len; i++) {
-        Game::getCurrPlayer()->grid.setSquare(
-            (orient == 0 ? col + i : col), (orient == 0 ? row : row + i),
-            Game::getCurrPlayer()->grid.getCurrShip()->getId()
-        );
-
-        Game::getCurrPlayer()->grid.setOccup(col, row, _len, orient);
-    }
+    _createShip(row, col, orient);
 }
 
 int Arrange::_setOrient(smatch matches)
@@ -157,6 +143,18 @@ int Arrange::_setOrient(smatch matches)
     }
 
     return 0;
+}
+
+void Arrange::_createShip(int row, int col, int orient)
+{
+    for (int i{}; i < _len; i++) {
+        Game::getCurrPlayer()->grid.setSquare(
+            (orient == 0 ? row : row + i), (orient == 0 ? col + i : col),
+            Game::getCurrPlayer()->grid.getCurrShip()->getId()
+        );
+
+        Game::getCurrPlayer()->grid.setOccup(row, col, _len, orient);
+    }
 }
 
 void Arrange::_askAgain(string msg)

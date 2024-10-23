@@ -9,7 +9,8 @@ class Ship
         Ship(int id, int length);
         int getId();
         std::string getType();
-        int getLength();
+        int getLen();
+        void setLen(int len);
         bool isSink();
         bool isUsed();
         void sink();

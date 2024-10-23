@@ -7,8 +7,13 @@
 #include "console.h"
 #include "tools.h"
 
-#define HIT 1
-#define MISS 3
+#define OCCUP -1
+#define EMPTY 0
+#define SHIP 1
+#define MISS 2
+#define HIT 3
+#define SUNK 4
+#define HIT_OWN 5
 
 using std::cout, std::array, std::string, std::format, std::regex, std::smatch, std::stoi;
 
@@ -32,6 +37,8 @@ void Shooting::print()
     }
 
     cout << "\n";
+
+    cout << Game::getCurrPlayer()->getName() << "\n";
 
     cout << Tools::insertChars(" ", 2) << "┌───┬───────── OCEAN GRID ──────────┐ ┌───┬──────── TARGET GRID ──────────┐\n"
          << Tools::insertChars(" ", 2) << "│   │ 01 02 03 04 05 06 07 08 09 10 │ │   │ 01 02 03 04 05 06 07 08 09 10 │\n"
@@ -62,52 +69,53 @@ void Shooting::selectShot()
 
 void Shooting::_selectShotPos()
 {
-    print();
     string ans = _console.input("To shot: <a-j><1-10>");
 
     regex rex{"(([a-j])([1-9]|10))"};
     smatch matches;
 
     if (regex_match(ans, matches, rex)) {
-        string colNe = matches[3];
         string rowNe = matches[2];
-        int col = stoi(matches[3].str().c_str()) - 1;
+        string colNe = matches[3];
         int row = int(tolower(matches[2].str().c_str()[0])) - 97;
+        int col = stoi(matches[3].str().c_str()) - 1;
 
-        print();
+        int val = Game::getCurrEnemy()->grid.getSquare(row, col);
+        cout << val << "\n";
 
-        // int currSquare = Game::getCurrEnemy()->grid.getSquare(col, row);
-        // cout << currSquare << "\n";
-        // if (currSquare >= 8 && currSquare % 4 == 0) {
-        //     Game::getCurrPlayer()->grid.setSquare(col, row, Game::getCurrPlayer()->grid.getSquare(col, row) + HIT);
-        //     _console.drawInfo(format("You hit a ship on {}{}{}{}!", Tools::ft["underline"], rowNe, colNe, Tools::ft["endf"]));
-        // }
-        // // else if (currSquare % 4 == HIT) {
+        // rework
+        if (val >= 8 && val % 8 == 0) { // ship
+            Game::getCurrEnemy()->grid.setSquare(row, col, HIT_OWN);
+            Game::getCurrPlayer()->grid.setSquare(row, col, HIT);
 
-        // // }
-        // else {
-        //     Game::getCurrPlayer()->grid.setSquare(col, row, Game::getCurrPlayer()->grid.getSquare(col, row) + MISS);
-        //     _console.drawInfo("You missed!");
-        // }
+            Ship* ship = Game::getCurrPlayer()->grid.getShipByVal(val);
+            print();
+            if (ship->getLen() > 0) {
+                ship->setLen(ship->getLen() - 1);
 
-        // switch (currSquare)
-        // {
-        //     case SHIP:
-        //         // Game::getCurrPlayer()->grid.setSquare(col, row, 2);
-        //         // Game::getCurrEnemy()->grid.setSquare(col, row, 3);
-        //         _console.drawInfo(format("You hit a ship on {}{}{}{}!", Tools::ft["underline"], rowNe, colNe, Tools::ft["endf"]));
-        //         _selectShotPos();
-        //         break;
-        //     // case MISS:
-        //     //     _console.drawError("This square has been already been shoted!");
-        //         // _askAgain(format("This square has been already been shoted!"));
-        //     //     _selectShotPos();
-        //         // break;
-        //     default:
-        //         // Game::getCurrPlayer()->grid.setSquare(col, row, MISS);
-        //         _console.drawInfo("You missed!");
-        //         break;
-        // }
+                _console.drawInfo(
+                    format("You hit the ship on {}{}{}{}!",
+                    Tools::ft["underline"], rowNe, colNe, Tools::ft["endf"])
+                );
+            }
+            else _console.drawInfo("You sunk the ship on!");
+
+            print();
+            _selectShotPos();
+            return;
+        }
+        else if (val == HIT || val == MISS) { // shoted again
+            _askAgain("You cannot shot to already shot square!");
+            _selectShotPos();
+            return;
+        }
+        else { // miss
+            Game::getCurrPlayer()->grid.setSquare(row, col, MISS);
+            print();
+            _console.drawInfo("You missed!");
+        }
+
+        Game::changePlayers();
     }
     else {
         _askAgain("Wrong position");

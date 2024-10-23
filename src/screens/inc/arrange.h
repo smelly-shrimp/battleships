@@ -23,6 +23,7 @@ class Arrange : public Screen
         void _selectShipPos();
         void _autoSelectShipPos();
         int _setOrient(std::smatch matches);
+        void _createShip(int row, int col, int orient);
         void _askAgain(std::string msg);
 };
 

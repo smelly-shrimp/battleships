@@ -87,7 +87,7 @@ void Game::_play()
             while (true) {
                 shooting.print();
                 shooting.selectShot();
-                changePlayers();
+                // changePlayers();
             }
             exit(0);
             break;
