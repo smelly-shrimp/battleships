@@ -23,9 +23,10 @@ bool Console::isAnswer(string arg, string valid) {
     return regex_match(arg.c_str(), re);
 }
 
-void Console::drawInfo(std::string msg)
+void Console::drawInfo(std::string msg, bool isBad)
 {
-    _drawLine(Tools::ft["green"], false);
+    if (isBad) _drawLine(Tools::ft["yellow"], false);
+    else _drawLine(Tools::ft["green"], false);
     cout << msg << " (ENTER to proceed)\n";
     getc(stdin);
 }

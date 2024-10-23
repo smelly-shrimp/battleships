@@ -158,7 +158,8 @@ void Arrange::_createShip(int row, int col, int orient)
             (orient == 0 ? row : row + i), (orient == 0 ? col + i : col),
             Game::getCurrPlayer()->grid.getCurrShip()->getId()
         );
-
+        Game::getCurrPlayer()->grid.getCurrShip()->setPos(row, col);
+        Game::getCurrPlayer()->grid.getCurrShip()->setOrient(orient);
         Game::getCurrPlayer()->grid.setOccup(row, col, _len, orient);
     }
 }

@@ -90,7 +90,6 @@ void Game::_play()
                     break;
                 }
             }
-            exit(0);
             break;
         default:
             cout << Tools::ft["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::ft["endf"] << "\n";

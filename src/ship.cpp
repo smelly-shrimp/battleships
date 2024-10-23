@@ -1,12 +1,13 @@
 #include <string>
 #include "ship.h"
 
-using namespace std;
+using std::map, std::string;
 
-Ship::Ship(int id, int length)
+Ship::Ship(int id, int len)
 {
     _id = 8 * id;
-    _len = length;
+    _len = len;
+    this->len = _len;
 }
 
 int Ship::getId()
@@ -27,6 +28,17 @@ int Ship::getLen()
 void Ship::setLen(int len)
 {
     _len = len;
+}
+
+void Ship::setPos(int row, int col)
+{
+    _pos["row"] = row;
+    _pos["col"] = col;
+}
+
+map<string, int> Ship::getPos()
+{
+    return _pos;
 }
 
 void Ship::setOrient(int orient)

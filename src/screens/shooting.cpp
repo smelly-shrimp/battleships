@@ -82,25 +82,27 @@ int Shooting::selectShot()
         if (val >= 8 && val % 8 == 0) {
             print();
 
-            Ship* ship = Game::getCurrPlayer()->grid.getShipByVal(val);
-            if (ship->getLen() > 1) {
+            Ship* ship = Game::getCurrEnemy()->grid.getShipByVal(val);
+            cout << ship->len << "\n";
+            if (ship->len > 1) {
                 Game::getCurrEnemy()->grid.setSquare(row, col, HIT);
                 print();
-
-                ship->setLen(ship->getLen() - 1);
-
                 _console.drawInfo(
                     format("You hit the ship on {}{}{}{}!",
                     Tools::ft["underline"], rowNe, colNe, Tools::ft["endf"])
                 );
+
+                ship->len -= 1;
             }
             else {
-                ship->sink();
+                Game::getCurrPlayer()->grid.getShipByVal(val)->sink();
                 int orient = ship->getOrient();
+                auto pos = ship->getPos();
 
                 for (int i{}; i < ship->getLen(); i++) {
                     Game::getCurrEnemy()->grid.setSquare(
-                        (orient == 0 ? row : row + i), (orient == 0 ? col + i : col),
+                        (orient == 0 ? pos["row"] : pos["row"] + i),
+                        (orient == 0 ? pos["col"] + i : pos["col"]),
                         SUNK
                     );
                 }
@@ -111,41 +113,36 @@ int Shooting::selectShot()
 
             print();
             selectShot();
-            return;
+            return 0;
         }
         else if (val == MISS || (val >= 8 && val % 8 == 0)) {
             _askAgain("You cannot shot to square which has already been shoted!");
             selectShot();
-            return;
+            return 0;
         }
         else {
             Game::getCurrEnemy()->grid.setSquare(row, col, MISS);
             print();
-            _console.drawInfo("You missed!");
+            _console.drawInfo("You missed!", true);
         }
-
-        auto egrid{Game::getCurrEnemy()->grid};
 
         bool isEnd{}; 
-        int curr{};
-        for (int i{}; i < 4; i++) {
-            for (int j{}; j <= i && curr < egrid.getShipList().size(); j++) {
-                
-                curr++;
-            }
-
-            cout << "\n";
-        }
+        // for (Ship* ship : Game::getCurrEnemy()->grid.getShipList()) {
+        //     if (!ship->isSink()) {
+        //         isEnd = true;
+        //         break;
+        //     }
+        // }
         
-        if (isEnd) {
-            return 1;
-        }
+        if (isEnd) return 1;
         else Game::changePlayers();
     }
     else {
         _askAgain("Wrong position");
         selectShot();
     }
+
+    return 0;
 }
 
 void Shooting::_askAgain(string msg)

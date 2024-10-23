@@ -8,7 +8,7 @@ class Console
     public:
         std::string input(std::string msg);
         bool isAnswer(std::string arg, std::string valid);
-        void drawInfo(std::string msg);
+        void drawInfo(std::string msg, bool isBad = false);
         void drawError(std::string msg);
         void drawHeader(std::string action, bool isTop = false);
     private:

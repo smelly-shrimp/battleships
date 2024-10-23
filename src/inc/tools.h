@@ -15,6 +15,7 @@ class Tools
             { "red", "\x1B[31m" },
             { "green", "\033[32m" },
             { "magenta", "\033[35m" },
+            { "yellow", "\033[33m" },
             { "underline", "\033[4m" },
             { "endf", "\033[0m" } };
 };
