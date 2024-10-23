@@ -4,12 +4,11 @@
 #include "grid.h"
 
 #define OCCUP -1
-// #define EMPTY 0
-// #define SHIP 1
-// #define MISS 2
-// #define HIT 3
-// #define SUNK 4
-// #define HIT_OWN 5
+#define EMPTY 0
+#define SHIP 1
+#define MISS 2
+#define HIT 3
+#define SUNK 4
 
 using std::array, std::map, std::stringstream;
 
@@ -69,47 +68,14 @@ std::string Grid::asString(int val, bool isTarget)
     stringstream ss;
 
     if (isTarget) {
-        // if (val == HIT) ss << "██";
-        // else if (val == MISS) ss << "⋅⋅";
-        // else ss << "══";
-        // switch (val)
-        // {
-        // case HIT:
-        //     ss << "❯❮";
-        //     break;
-        // case MISS:
-        //     ss << "••";
-        //     break;
-        // case SUNK:
-        //     ss << "██";
-        //     break;
-        // default:
-        //     ss << "══";
-        // }
+        if (val == HIT) ss << "❯❮";
+        else if (val == MISS) ss << "••";
+        else ss << "══";
     }
     else {
-        // switch (val)
-        // {
-        // case SHIP:
-        //     ss << "██";
-        //     break;
-        // case HIT_OWN:
-        //     ss << "❯❮";
-        //     break;
-        // default:
-        //     ss << "══";
-        // }
-        // if (val >= 8 && val % 8 == 0) ss << "██";
-        // else if (val == HIT) {
-        //     ss << "❯❮";
-        // }
-        // // else if (val == -1) {
-        // //     // ss << "••";
-        // //     ss << "⋅⋅";
-        // //     // ss << "><";
-        // // }
-        // else ss << "══";
-        // else ss << "▁▁";
+        if (val >= 8 && val % 8 == 0) ss << "██";
+        else if (val == HIT) ss << "❯❮";
+        else ss << "══";
     }
 
     ss << " ";

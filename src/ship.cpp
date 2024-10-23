@@ -29,6 +29,16 @@ void Ship::setLen(int len)
     _len = len;
 }
 
+void Ship::setOrient(int orient)
+{
+    _orient = orient;
+}
+
+int Ship::getOrient()
+{
+    return _orient;
+}
+
 bool Ship::isSink()
 {
     return _isSink;

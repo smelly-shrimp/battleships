@@ -11,6 +11,8 @@ class Ship
         std::string getType();
         int getLen();
         void setLen(int len);
+        void setOrient(int orient);
+        int getOrient();
         bool isSink();
         bool isUsed();
         void sink();
@@ -19,6 +21,7 @@ class Ship
         int _id;
         std::string _type;
         int _len;
+        int _orient;
         bool _isUsed;
         bool _isSink;
 };

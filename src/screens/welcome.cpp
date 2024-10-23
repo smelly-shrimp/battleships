@@ -25,7 +25,7 @@ Player* Welcome::selectEnemy()
         return new Comp("COMP", PlayerTypes::COMP);
     }
     else {
-        _askAgain(format("There's no such user as {}!", ans));
+        _askAgain(format("There's no such user as \"{}\"!", ans));
         selectEnemy();
     }
 

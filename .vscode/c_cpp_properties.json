@@ -6,7 +6,7 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/src/inc"
             ],
-            "compilerPath": "/usr/bin/clang",
+            "compilerPath": "/usr/bin/g++",
             "cStandard": "${default}",
             "cppStandard": "c++20",
             "intelliSenseMode": "macos-clang-arm64",

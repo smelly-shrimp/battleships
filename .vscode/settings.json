@@ -116,6 +116,8 @@
     "regex": "cpp",
     "map": "cpp",
     "__tree": "cpp",
-    "print": "cpp"
+    "print": "cpp",
+    "memory": "cpp",
+    "forward_list": "cpp"
   }
 }

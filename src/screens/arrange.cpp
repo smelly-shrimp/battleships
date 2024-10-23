@@ -62,6 +62,7 @@ Mode Arrange::selectArrangeMode()
     else {
         _askAgain(format("There's no such mode as {}!", ans));
         selectArrangeMode();
+        // return 0;
     }
 
     return Mode::MANUAL;
@@ -81,6 +82,11 @@ void Arrange::selectShip(Mode arrangeMode)
     }
 
     if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
+        for (int i{}; i < 10; i++) {
+            for (int j{}; j < 10; j++) {
+                cout << Game::getCurrPlayer()->grid.getGrid()[i][j];
+            }
+        }
         print();
         _console.drawInfo("You've just arranged all of your ships!");
     }
