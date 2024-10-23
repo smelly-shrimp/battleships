@@ -8,9 +8,8 @@ class Shooting : public Screen
 {
     public:
         void print() override;
-        void selectShot();
+        int selectShot();
     private:
-        void _selectShotPos();
         void _askAgain(std::string msg);
 };
 

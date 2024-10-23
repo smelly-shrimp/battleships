@@ -86,8 +86,9 @@ void Game::_play()
         case SHOOTING:
             while (true) {
                 shooting.print();
-                shooting.selectShot();
-                // changePlayers();
+                if (shooting.selectShot() == 1) {
+                    break;
+                }
             }
             exit(0);
             break;

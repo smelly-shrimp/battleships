@@ -26,7 +26,7 @@ void Arrange::print()
         cout << Tools::insertChars(" ", 2) << names.at(i) << " ";
 
         for (int j{}; j <= i && curr < grid.getShipList().size(); j++) {
-            cout << (grid.getShipList().at(curr)->isUsed() ? "██" : "▁▁");
+            cout << (grid.getShipList().at(curr)->isUsed() ? "██ " : "▁▁ ");
             curr++;
         }
 

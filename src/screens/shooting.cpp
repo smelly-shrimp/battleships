@@ -29,7 +29,7 @@ void Shooting::print()
         cout << Tools::insertChars(" ", 2) << names.at(i) << " ";
 
         for (int j{}; j <= i && curr < pgrid.getShipList().size(); j++) {
-            cout << (pgrid.getShipList().at(curr)->isSink() ? "██" : "▁▁");
+            cout << (pgrid.getShipList().at(curr)->isSink() ? "██ " : "▁▁ ");
             curr++;
         }
 
@@ -62,12 +62,7 @@ void Shooting::print()
          << " └" << Tools::insertChars("─", 35) << "┘\n";
 }
 
-void Shooting::selectShot()
-{
-    _selectShotPos();
-}
-
-void Shooting::_selectShotPos()
+int Shooting::selectShot()
 {
     print();
 
@@ -85,11 +80,13 @@ void Shooting::_selectShotPos()
         int val = Game::getCurrEnemy()->grid.getSquare(row, col);
 
         if (val >= 8 && val % 8 == 0) {
-            Game::getCurrEnemy()->grid.setSquare(row, col, HIT);
             print();
 
             Ship* ship = Game::getCurrPlayer()->grid.getShipByVal(val);
             if (ship->getLen() > 1) {
+                Game::getCurrEnemy()->grid.setSquare(row, col, HIT);
+                print();
+
                 ship->setLen(ship->getLen() - 1);
 
                 _console.drawInfo(
@@ -107,16 +104,19 @@ void Shooting::_selectShotPos()
                         SUNK
                     );
                 }
+                print();
 
                 _console.drawInfo("You sunk the ship!");
             }
 
             print();
-            _selectShotPos();
+            selectShot();
+            return;
         }
         else if (val == MISS || (val >= 8 && val % 8 == 0)) {
             _askAgain("You cannot shot to square which has already been shoted!");
-            _selectShotPos();
+            selectShot();
+            return;
         }
         else {
             Game::getCurrEnemy()->grid.setSquare(row, col, MISS);
@@ -124,43 +124,27 @@ void Shooting::_selectShotPos()
             _console.drawInfo("You missed!");
         }
 
-        // if (val >= 8 && val % 8 == 0) { // ship
-        //     Game::getCurrPlayer()->grid.setSquare(row, col, HIT);
-        //     // Game::getCurrEnemy()->grid.setSquare(row, col, HIT_OWN);
-        //     // Game::getCurrPlayer()->grid.setSquare(row, col, HIT);
+        auto egrid{Game::getCurrEnemy()->grid};
 
-        //     Ship* ship = Game::getCurrPlayer()->grid.getShipByVal(val);
-        //     print();
-        //     if (ship->getLen() > 0) {
-        //         ship->setLen(ship->getLen() - 1);
+        bool isEnd{}; 
+        int curr{};
+        for (int i{}; i < 4; i++) {
+            for (int j{}; j <= i && curr < egrid.getShipList().size(); j++) {
+                
+                curr++;
+            }
 
-        //         _console.drawInfo(
-        //             format("You hit the ship on {}{}{}{}!",
-        //             Tools::ft["underline"], rowNe, colNe, Tools::ft["endf"])
-        //         );
-        //     }
-        //     else _console.drawInfo("You sunk the ship on!");
-
-        //     print();
-        //     _selectShotPos();
-        //     return;
-        // }
-        // else if (val == HIT || val == MISS) { // shoted again
-        //     _askAgain("You cannot shot to already shot square!");
-        //     _selectShotPos();
-        //     return;
-        // }
-        // else { // miss
-        //     Game::getCurrPlayer()->grid.setSquare(row, col, MISS);
-        //     print();
-        //     _console.drawInfo("You missed!");
-        // }
-
-        Game::changePlayers();
+            cout << "\n";
+        }
+        
+        if (isEnd) {
+            return 1;
+        }
+        else Game::changePlayers();
     }
     else {
         _askAgain("Wrong position");
-        _selectShotPos();
+        selectShot();
     }
 }
 
