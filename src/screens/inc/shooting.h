@@ -10,6 +10,8 @@ class Shooting : public Screen
         void print() override;
         int selectShot();
     private:
+        void _selectShotPos();
+        void _autoSelectShotPos();
         void _askAgain(std::string msg);
 };
 

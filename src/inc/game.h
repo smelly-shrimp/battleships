@@ -10,6 +10,7 @@ enum GameStates
     WELCOME,
     ARRANGE,
     SHOOTING,
+    END,
 };
 
 class Game

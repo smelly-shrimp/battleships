@@ -64,10 +64,12 @@ void Shooting::print()
 
 int Shooting::selectShot()
 {
-    print();
+    if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
+        _selectShotPos();
+    }
+    else _autoSelectShotPos();
 
     string ans = _console.input("To shot: <a-j><1-10>");
-
     regex rex{"(([a-j])([1-9]|10))"};
     smatch matches;
 
@@ -83,7 +85,6 @@ int Shooting::selectShot()
             print();
 
             Ship* ship = Game::getCurrEnemy()->grid.getShipByVal(val);
-            cout << ship->len << "\n";
             if (ship->len > 1) {
                 Game::getCurrEnemy()->grid.setSquare(row, col, HIT);
                 print();
@@ -127,12 +128,6 @@ int Shooting::selectShot()
         }
 
         bool isEnd{}; 
-        // for (Ship* ship : Game::getCurrEnemy()->grid.getShipList()) {
-        //     if (!ship->isSink()) {
-        //         isEnd = true;
-        //         break;
-        //     }
-        // }
         
         if (isEnd) return 1;
         else Game::changePlayers();
@@ -143,6 +138,15 @@ int Shooting::selectShot()
     }
 
     return 0;
+}
+
+void Shooting::_selectShotPos()
+{
+    print();
+}
+
+void Shooting::_autoSelectShotPos()
+{
 }
 
 void Shooting::_askAgain(string msg)

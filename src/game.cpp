@@ -6,6 +6,7 @@
 #include "shooting.h"
 #include "tools.h"
 #include "player.h"
+#include "end.h"
 
 using std::cout;
 
@@ -53,6 +54,7 @@ void Game::_play()
     Welcome welcome;
     Arrange arrange;
     Shooting shooting;
+    End end;
 
     while (true) {
         Tools::clearConsole();
@@ -73,7 +75,7 @@ void Game::_play()
             _state = GameStates::ARRANGE;
             break;
         case ARRANGE:
-            for (int i = 0; i < 2; i++) {
+            for (int i{}; i < 2; i++) {
                 if (getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
                     arrange.selectShip(arrange.selectArrangeMode());
                 }
@@ -85,12 +87,17 @@ void Game::_play()
             break;
         case SHOOTING:
             while (true) {
-                shooting.print();
-                if (shooting.selectShot() == 1) {
-                    break;
-                }
+                shooting.selectShot();
+                // if (shooting.selectShot() == 1) break;
             }
+
+            _state = GameStates::END;
             break;
+        case END:
+            end.print();
+            end.saveScores();
+
+            exit(0);
         default:
             cout << Tools::ft["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::ft["endf"] << "\n";
             exit(0);

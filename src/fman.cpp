@@ -1,4 +1,7 @@
 #include <iostream>
+#include <regex>
+#include <ctime>
+#include <ctime>
 #include <vector>
 #include <fstream>
 #include <format>
@@ -47,6 +50,39 @@ void Fman::playAnim(string file, bool isClear, bool isPingPong)
     }
 
     _frames.clear();
+}
+
+void Fman::readData()
+{
+    ifstream data("data");
+
+    regex id("#(.+)$");
+    regex round("^ @round([1-9][0-9]*): (.+$)");
+
+    smatch matches;
+    string line;
+    while (getline(data, line)) {
+        if (regex_match(line, matches, id)) {
+            string id = matches[1];
+        }
+        else if (regex_match(line, matches, round)) {
+            string winner = matches[2];
+        }
+    }
+
+    data.close();
+}
+
+void Fman::writeData()
+{
+    time_t timestamp = time(NULL);
+    struct tm datetime = *localtime(&timestamp);
+    char time[50];
+    strftime(time, 50, "%m.%d.%y %H.%M.%S", &datetime);
+
+    ofstream data;
+    data.open("data");
+    data << "#" << time << ": ";
 }
 
 void Fman::_pingPong(vector<string> f, int i)
