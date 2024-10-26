@@ -82,8 +82,7 @@ void Game::_play()
                 else arrange.selectShip(Mode::AUTO);
                 
             }
-            exit(0);
-            // _state = GameStates::SHOOTING;
+            _state = GameStates::SHOOTING;
             break;
         case SHOOTING:
             while (true) {

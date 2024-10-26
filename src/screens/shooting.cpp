@@ -29,10 +29,9 @@ int Shooting::selectShot()
 {   
     if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
         _selectShotPos();
+        Game::changePlayers();
     }
     else _autoSelectShotPos();
-
-    Game::changePlayers();
 
     return 0;
 }
@@ -48,8 +47,8 @@ void Shooting::_selectShotPos()
     int row, col;
 
     if (regex_match(ans, matches, rex)) {
-        string rowName = matches[2];
-        string colName = matches[3];
+        string rowName{matches[2]};
+        string colName{matches[3]};
 
         row = int(tolower(matches[2].str().c_str()[0])) - 97;
         col = stoi(matches[3].str().c_str()) - 1;
@@ -78,8 +77,14 @@ void Shooting::_selectShotPos()
 
 void Shooting::_autoSelectShotPos()
 {
-    int row = 4;
-    int col = 3;
+    int row{4};
+    int col{3};
+    char rowName{char(97 + row)};
+
+    Game::getCurrEnemy()->grid->setSquare(row, col, HIT);
+    Game::changePlayers();
+    print();
+    _console.drawInfo(format("COMP shoted on {}{}{}{}", Tools::ft["underline"], rowName, col, Tools::ft["endf"]), true);
 }
 
 void Shooting::_hit(int row, int col, int val, string rowName, string colName)
