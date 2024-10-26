@@ -16,40 +16,8 @@ Arrange::Arrange()
 
 void Arrange::print()
 {
-    auto grid{Game::getCurrPlayer()->grid};
-    array<string, 4> names{ "four-masted  ", "three-masted ", "two-masted   ", "single-masted" };
-
-    _console.drawHeader(format("ARRANGING {}", Game::getCurrPlayer()->getName()), true);
-
-    int curr{};
-    for (int i{}; i < names.size(); i++) {
-        cout << Tools::insertChars(" ", 2) << names.at(i) << " ";
-
-        for (int j{}; j <= i && curr < grid.getShipList().size(); j++) {
-            cout << (grid.getShipList().at(curr)->isUsed() ? "██ " : "▁▁ ");
-            curr++;
-        }
-
-        cout << "\n";
-    }
-
-    cout << "\n";
-
-    cout << Tools::insertChars(" ", 2) << "┌───┬───────── OCEAN GRID ──────────┐\n"
-         << Tools::insertChars(" ", 2) << "│   │ 01 02 03 04 05 06 07 08 09 10 │\n"
-         << Tools::insertChars(" ", 2) << "├───┼──┼──┼──┼──┼──┼──┼──┼──┼──┼──┼─┤\n";
-
-    for (int i{}; i < grid.getGrid().size(); i++) {
-        cout << Tools::insertChars(" ", 2) << "│ " << char(65 + i) << " ┼ ";
-
-        for (int j{}; j < grid.getGrid().size(); j++) {
-            cout << grid.asString(grid.getSquare(i, j));
-        }
-
-        cout << "│\n";
-    }
-
-    cout << Tools::insertChars(" ", 2) << "└" << Tools::insertChars("─", 35) << "┘\n";
+    _console.drawShipList(format("ARRANGING {}", Game::getCurrPlayer()->getName()), true);
+    _console.drawGrid(true);
 }
 
 Mode Arrange::selectArrangeMode()
@@ -74,7 +42,7 @@ void Arrange::selectShip(Mode arrangeMode)
     int curr{};
     for (int i{}; i < 4; i++) {
         for (int j{}; j <= i; j++) {
-            Game::getCurrPlayer()->grid.setCurrShip(curr);
+            Game::getCurrPlayer()->grid->setCurrShip(curr);
             arrangeMode == Mode::MANUAL ? _selectShipPos() : _autoSelectShipPos();
             curr++;
         }
@@ -82,14 +50,15 @@ void Arrange::selectShip(Mode arrangeMode)
     }
 
     if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
-        for (int i{}; i < 10; i++) {
-            for (int j{}; j < 10; j++) {
-                cout << Game::getCurrPlayer()->grid.getGrid()[i][j];
-            }
-        }
+        // for (int i{}; i < 10; i++) {
+        //     for (int j{}; j < 10; j++) {
+        //         cout << Game::getCurrPlayer()->grid.getGrid()[i][j];
+        //     }
+        // }
         print();
         _console.drawInfo("You've just arranged all of your ships!");
     }
+    
     Game::changePlayers();
 }
 
@@ -108,7 +77,7 @@ void Arrange::_selectShipPos()
         
         if (_len > 1) orient = _setOrient(matches);
 
-        if (!Game::getCurrPlayer()->grid.isAvailable(row, col, _len, orient)) {
+        if (!Game::getCurrPlayer()->grid->isAvailable(row, col, _len, orient)) {
             _askAgain("Wrong or occupied position!");
             _selectShipPos();
             return;
@@ -128,7 +97,7 @@ void Arrange::_autoSelectShipPos()
     int col{rand() % 10};
     int orient{rand() % 2};
 
-    if (!Game::getCurrPlayer()->grid.isAvailable(row, col, _len, orient)) {
+    if (!Game::getCurrPlayer()->grid->isAvailable(row, col, _len, orient)) {
         _autoSelectShipPos();
         return;
     }
@@ -153,14 +122,15 @@ int Arrange::_setOrient(smatch matches)
 
 void Arrange::_createShip(int row, int col, int orient)
 {
+    auto grid{Game::getCurrPlayer()->grid};
     for (int i{}; i < _len; i++) {
-        Game::getCurrPlayer()->grid.setSquare(
+            grid->setSquare(
             (orient == 0 ? row : row + i), (orient == 0 ? col + i : col),
-            Game::getCurrPlayer()->grid.getCurrShip()->getId()
+            grid->getCurrShip()->getId()
         );
-        Game::getCurrPlayer()->grid.getCurrShip()->setPos(row, col);
-        Game::getCurrPlayer()->grid.getCurrShip()->setOrient(orient);
-        Game::getCurrPlayer()->grid.setOccup(row, col, _len, orient);
+        grid->getCurrShip()->setPos(row, col);
+        grid->getCurrShip()->setOrient(orient);
+        grid->setOccup(row, col, _len, orient);
     }
 }
 

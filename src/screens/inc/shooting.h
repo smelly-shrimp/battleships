@@ -12,6 +12,7 @@ class Shooting : public Screen
     private:
         void _selectShotPos();
         void _autoSelectShotPos();
+        void _hit(int row, int col, int val, std::string rowName, std::string colName);
         void _askAgain(std::string msg);
 };
 

@@ -13,7 +13,7 @@ enum PlayerTypes
 class Player
 {
     public:
-        Grid grid;
+        Grid* grid;
         Player(std::string name, PlayerTypes type);
         PlayerTypes getType();
         std::string getName();

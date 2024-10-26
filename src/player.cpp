@@ -5,6 +5,7 @@ using namespace std;
 
 Player::Player(string name, PlayerTypes type)
 {
+    grid = new Grid();
     _type = type;
     _name = name;
 }
