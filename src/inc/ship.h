@@ -20,12 +20,13 @@ class Ship
         bool isUsed();
         void sink();
         void use();
-        int len{};
+        void hit();
     private:
         int _id{};
         std::string _type{};
         std::map<std::string, int> _pos{ { "row", 0 }, { "col", 0 } };
         int _len{};
+        int _oLen{};
         int _orient{};
         bool _isUsed{};
         bool _isSink{};

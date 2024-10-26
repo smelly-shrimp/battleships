@@ -6,8 +6,7 @@ using std::map, std::string;
 Ship::Ship(int id, int len)
 {
     _id = 8 * id;
-    _len = len;
-    this->len = _len;
+    _oLen = len;
 }
 
 int Ship::getId()
@@ -69,4 +68,12 @@ void Ship::sink()
 void Ship::use()
 {
     _isUsed = true;
+}
+
+void Ship::hit()
+{
+    _len++;
+
+    if (_len < _oLen) _isSink = false;
+    else _isSink = true;
 }
