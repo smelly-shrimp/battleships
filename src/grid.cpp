@@ -39,7 +39,6 @@ bool Grid::isAvailable(int row, int col, int len, int orient)
     for (int i{}; i < len + 2; i++) {
         if (row + i - 1 < _grid.size() && row + i - 1 >= 0
             && col + i - 1 < _grid.size() && col + i - 1 >= 0) {
-
             for (int j{}; j < 3; j++) {
                 int val = orient == 0
                     ? _grid[row + j - 1][col + i - 1]
@@ -75,6 +74,7 @@ std::string Grid::asString(int val, bool isTarget)
     }
     else {
         if (val >= 8 && val % 8 == 0) ss << "██";
+        else if (val == OCCUP) ss << "••";
         else if (val == HIT || val == SUNK) ss << "❯❮";
         else ss << "══";
     }
