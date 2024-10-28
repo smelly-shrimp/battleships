@@ -36,18 +36,6 @@ class Shooting : public Screen
         void _selectShotPos();
         void _autoSelectShotPos();
         Reactions checkReaction(ShotPos& pos);
-
-    // public:
-    //     Shooting();
-    //     void print() override;
-    //     int selectShot();
-    // private:
-    //     Reactions checkReaction(int row, int col);
-    //     void _selectShotPos();
-    //     void _autoSelectShotPos(bool isHit = false);
-    //     void _hitShip(int row, int col);
-    //     void _sunkShip(Ship* ship);
-    //     void _askAgain(std::string msg);
 };
 
 #endif // !SHOOTING_H

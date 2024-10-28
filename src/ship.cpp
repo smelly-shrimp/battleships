@@ -6,7 +6,6 @@ using std::map, std::string;
 Ship::Ship(int id, int len)
 {
     _id = 8 * id;
-    // _len = len;
 }
 
 int Ship::getId()
@@ -52,7 +51,6 @@ int Ship::getOrient()
 
 bool Ship::isSink()
 {
-    // printf("%d\n", _isSink);
     return _isSink;
 }
 
