@@ -91,15 +91,15 @@ void Game::_play()
             while (true) {
                 if (shooting.selectShot() == 1) break;
             }
-
-            exit(0);
             _state = GameStates::END;
             break;
         case END:
             end.print();
-            end.saveScores();
-
-            exit(0);
+            if (end.isPlayAgain()) {
+                _state = GameStates::WELCOME;
+            }
+            else exit(0);
+            break;
         default:
             cout << Tools::ft["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::ft["endf"] << "\n";
             exit(0);

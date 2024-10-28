@@ -88,8 +88,8 @@ void Fman::writeData()
 void Fman::_pingPong(vector<string> f, int i)
 {
     cout << f.at(i) << endl;
-    Tools::waitMs(250);
+    Tools::waitMs(50);
     if (i < f.size() - 1) _pingPong(f, i + 1);
     cout << f.at(i) << endl;
-    Tools::waitMs(250);
+    Tools::waitMs(50);
 }

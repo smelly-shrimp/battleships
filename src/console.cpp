@@ -14,6 +14,7 @@ string Console::input(string msg)
     cout << msg << "\n";
     string arg;
     cout << Game::getCurrPlayer()->getName() << " $ ";
+
     getline(cin, arg);
 
     return arg;

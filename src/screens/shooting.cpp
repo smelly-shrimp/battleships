@@ -22,19 +22,26 @@ void Shooting::print()
 
 int Shooting::selectShot()
 {
-    while (true) {
-        if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
-            _selectShotPos();
-            if (Game::getCurrEnemy()->getType() == PlayerTypes::HUMAN) {
-                _console.drawShipList("", true, true);
-                _console.drawGrid(false, false, true);
-                _console.drawInfo("...");
-            }
+    if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
+        _selectShotPos();
+        if (Game::getCurrEnemy()->getType() == PlayerTypes::HUMAN) {
+            _console.drawShipList("", true, true);
+            _console.drawGrid(false, false, true);
+            _console.drawInfo("...");
         }
-        else _autoSelectShotPos();
-
-        Game::changePlayers();
     }
+    else _autoSelectShotPos();
+
+    int cnt{};
+    for (Ship* ship : Game::getCurrPlayer()->grid->getShipList()) {
+        if (ship->isSink()) cnt++;
+    }
+
+    if (cnt >= 9) return 1;
+
+    Game::changePlayers();
+    
+    return 0;
 }
 
 void Shooting::_selectShotPos()

@@ -7,6 +7,7 @@ class End : public Screen
 {
     public:
         void print() override;
+        bool isPlayAgain();
         void saveScores();
 };
 
