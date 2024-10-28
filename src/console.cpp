@@ -49,20 +49,24 @@ void Console::drawHeader(string action, bool isTop)
     cout << Tools::insertChars("━", lSide) << " » " << action << " « " << Tools::insertChars("━", rSide) << "\n";
 }
 
-void Console::drawShipList(string msg, bool isArrange)
+void Console::drawShipList(string msg, bool isArrange, bool isHidden)
 {
-    auto grid{Game::getCurrPlayer()->grid};
     array<string, 4> names{ "four-masted  ", "three-masted ", "two-masted   ", "single-masted" };
 
-    drawHeader(msg, true);
+    isHidden ? drawHeader("ENTER TO PROCEED", true) : drawHeader(msg, true);
 
     int curr{};
     for (int i{}; i < names.size(); i++) {
         cout << "  " << names.at(i) << " ";
 
-        for (int j{}; j <= i && curr < grid->getShipList().size(); j++) {
-            cout << (isArrange ? (grid->getShipList().at(curr)->isUsed() ? "██ " : "▁▁ ")
-                : (grid->getShipList().at(curr)->isSink() ? "██ " : "▁▁ "));
+        for (int j{}; j <= i && curr < Game::getCurrPlayer()->grid->getShipList().size(); j++) {
+            if (isHidden) {
+                cout << "?? ";
+            }
+            else {
+                if (isArrange) cout << (Game::getCurrPlayer()->grid->getShipList().at(curr)->isUsed() ? "██ " : "▁▁ ");
+                else cout << (Game::getCurrEnemy()->grid->getShipList().at(curr)->isSink() ? "██ " : "▁▁ ");
+            }
             curr++;
         }
 
@@ -72,7 +76,7 @@ void Console::drawShipList(string msg, bool isArrange)
     cout << "\n";
 }
 
-void Console::drawGrid(bool isArrange)
+void Console::drawGrid(bool isArrange, bool isComp, bool isHidden)
 {
     if (isArrange) {
         cout << "  ┌───┬───────── OCEAN GRID ──────────┐\n"
@@ -85,23 +89,30 @@ void Console::drawGrid(bool isArrange)
              << "  ├───┼──┼──┼──┼──┼──┼──┼──┼──┼──┼──┼─┤ ├───┼──┼──┼──┼──┼──┼──┼──┼──┼──┼──┼─┤\n";
     }
 
-    auto pgrid{Game::getCurrPlayer()->grid};
+    Grid* pgrid{};
+    Grid* egrid{};
+    if (isComp) {
+        pgrid = Game::getCurrEnemy()->grid;
+        egrid = Game::getCurrPlayer()->grid;
+    }
+    else {
+        pgrid = Game::getCurrPlayer()->grid;
+        egrid = Game::getCurrEnemy()->grid;
+    }
     
     for (int i{}; i < pgrid->getGrid().size(); i++) {
         cout << "  │ " << char(65 + i) << " ┼ ";
 
         for (int j{}; j < pgrid->getGrid().size(); j++) {
-            cout << pgrid->asString(pgrid->getSquare(i, j));
+            cout << (isHidden ? "?? " : pgrid->asString(pgrid->getSquare(i, j)));
         }
 
         if (!isArrange) {
-            auto egrid{Game::getCurrEnemy()->grid};
-
             cout << "│";
 
             cout << " │ " << char(65 + i) << " ┼ ";
             for (int j{}; j < egrid->getGrid().size(); j++) {
-                cout << egrid->asString(egrid->getSquare(i, j), true);
+                cout << (isHidden ? "?? " : egrid->asString(egrid->getSquare(i, j), true));
             }
         }
 

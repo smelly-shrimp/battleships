@@ -118,6 +118,7 @@
     "__tree": "cpp",
     "print": "cpp",
     "memory": "cpp",
-    "forward_list": "cpp"
+    "forward_list": "cpp",
+    "format": "cpp"
   }
 }

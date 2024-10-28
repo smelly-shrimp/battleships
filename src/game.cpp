@@ -56,6 +56,9 @@ void Game::_play()
     Shooting shooting;
     End end;
 
+    Player* p1{};
+    Player* p2{};
+
     while (true) {
         Tools::clearConsole();
 
@@ -80,17 +83,15 @@ void Game::_play()
                     arrange.selectShip(arrange.selectArrangeMode());
                 }
                 else arrange.selectShip(Mode::AUTO);
-                
             }
 
             _state = GameStates::SHOOTING;
             break;
         case SHOOTING:
             while (true) {
-                shooting.selectShot();
-                // if (shooting.selectShot() == 1) break;
+                if (shooting.selectShot() == 1) break;
             }
-            
+
             exit(0);
             _state = GameStates::END;
             break;

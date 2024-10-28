@@ -15,8 +15,15 @@ enum class SquareValues
 enum class Reactions
 {
     HIT,
+    SUNK,
     AGAIN,
     MISS,
+};
+
+struct ShotPos
+{
+    int row;
+    int col;
 };
 
 class Shooting : public Screen
@@ -26,12 +33,21 @@ class Shooting : public Screen
         void print() override;
         int selectShot();
     private:
-        Reactions checkReaction(int row, int col);
         void _selectShotPos();
-        void _autoSelectShotPos(bool isHit = false);
-        void _hitShip(int row, int col);
-        void _sunkShip(Ship* ship);
-        void _askAgain(std::string msg);
+        void _autoSelectShotPos();
+        Reactions checkReaction(ShotPos& pos);
+
+    // public:
+    //     Shooting();
+    //     void print() override;
+    //     int selectShot();
+    // private:
+    //     Reactions checkReaction(int row, int col);
+    //     void _selectShotPos();
+    //     void _autoSelectShotPos(bool isHit = false);
+    //     void _hitShip(int row, int col);
+    //     void _sunkShip(Ship* ship);
+    //     void _askAgain(std::string msg);
 };
 
 #endif // !SHOOTING_H

@@ -17,7 +17,7 @@ Arrange::Arrange()
 void Arrange::print()
 {
     _console.drawShipList(format("ARRANGING {}", Game::getCurrPlayer()->getName()), true);
-    _console.drawGrid(true);
+    _console.drawGrid(true, false);
 }
 
 Mode Arrange::selectArrangeMode()
@@ -49,6 +49,17 @@ void Arrange::selectShip(Mode mode)
         len--;
     }
 
+    if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
+        print();
+        _console.drawInfo("You've just arranged all of your ships!");
+
+        if (Game::getCurrEnemy()->getType() == PlayerTypes::HUMAN) {
+            _console.drawShipList("", true, true);
+            _console.drawGrid(true, false, true);
+            _console.drawInfo("...");
+        }
+    }
+    
     Game::changePlayers();
 }
 
@@ -109,10 +120,14 @@ void Arrange::_createShip(ShipPos& pos, int len)
             (pos.orient == 0 ? pos.row : pos.row + i), (pos.orient == 0 ? pos.col + i : pos.col),
             grid->getCurrShip()->getId()
         );
-        grid->getCurrShip()->setPos(pos.row, pos.col);
-        grid->getCurrShip()->setOrient(pos.orient);
-        grid->setOccup(pos.row, pos.col, len, pos.orient);
     }
+
+    // printf("%d %d %d %d\n", pos.row, pos.col, pos.orient, len);
+    grid->getCurrShip()->use();
+    grid->getCurrShip()->setPos(pos.row, pos.col);
+    grid->getCurrShip()->setLen(len);
+    grid->getCurrShip()->setOrient(pos.orient);
+    grid->setOccup(pos.row, pos.col, len, pos.orient, -1);
 }
 
 // int Arrange::_selectOrient(std::smatch matches)

@@ -18,7 +18,6 @@ class Ship
         int getOrient();
         bool isSink();
         bool isUsed();
-        void sink();
         void use();
         void hit();
     private:

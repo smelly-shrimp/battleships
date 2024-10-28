@@ -6,7 +6,7 @@ using std::map, std::string;
 Ship::Ship(int id, int len)
 {
     _id = 8 * id;
-    _oLen = len;
+    // _len = len;
 }
 
 int Ship::getId()
@@ -21,12 +21,12 @@ string Ship::getType()
 
 int Ship::getLen()
 {
-    return _len;
+    return _oLen;
 }
 
 void Ship::setLen(int len)
 {
-    _len = len;
+    _oLen = len;
 }
 
 void Ship::setPos(int row, int col)
@@ -52,17 +52,13 @@ int Ship::getOrient()
 
 bool Ship::isSink()
 {
+    // printf("%d\n", _isSink);
     return _isSink;
 }
 
 bool Ship::isUsed()
 {
     return _isUsed;
-}
-
-void Ship::sink()
-{
-    _isSink = true;
 }
 
 void Ship::use()
@@ -74,6 +70,5 @@ void Ship::hit()
 {
     _len++;
 
-    if (_len < _oLen) _isSink = false;
-    else _isSink = true;
+    if (_len >= _oLen) _isSink = true;
 }
