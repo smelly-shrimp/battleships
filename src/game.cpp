@@ -62,7 +62,8 @@ void Game::_play()
     while (true) {
         Tools::clearConsole();
 
-        switch(_state) {
+        switch(_state)
+        {
         case INTRO:
             intro.print();
             _state = GameStates::WELCOME;

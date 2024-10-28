@@ -26,10 +26,8 @@ Player* Welcome::selectEnemy()
     }
     else {
         _askAgain(format("There's no such user as \"{}\"!", ans));
-        selectEnemy();
+        return selectEnemy();
     }
-
-    return 0;
 }
 
 void Welcome::_askAgain(string msg)
