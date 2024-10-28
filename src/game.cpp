@@ -72,7 +72,6 @@ void Game::_play()
             p1 = new Human("PLAYER_1", PlayerTypes::HUMAN);
             setCurrPlayer(p1);
 
-            welcome.print();
             p2 = welcome.selectEnemy();
             setCurrEnemy(p2);
 
