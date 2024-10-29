@@ -8,7 +8,7 @@
 enum class Mode
 {
     MANUAL,
-    AUTO
+    AUTO,
 };
 
 struct ShipPos

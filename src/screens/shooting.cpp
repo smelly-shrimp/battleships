@@ -33,14 +33,14 @@ int Shooting::selectShot()
     else _autoSelectShotPos();
 
     int cnt{};
-    for (Ship* ship : Game::getCurrPlayer()->grid->getShipList()) {
+    for (Ship* ship : Game::getCurrEnemy()->grid->getShipList()) {
         if (ship->isSink()) cnt++;
     }
 
     if (cnt >= 9) return 1;
 
     Game::changePlayers();
-    
+
     return 0;
 }
 

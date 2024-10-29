@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "player.h"
+#include "screen.h"
 
 enum GameStates
 {
@@ -31,6 +32,8 @@ class Game
         inline static Player* _currPlayer;
         inline static Player* _currEnemy;
         inline static int arrangeMode{};
+        inline static void setScreen(Screen* screen);
+        inline static Screen* _screen{};
 };
 
 #endif // !GAME_H

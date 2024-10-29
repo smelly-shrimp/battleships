@@ -50,12 +50,6 @@ void Game::changePlayers()
 
 void Game::_play()
 {
-    Intro intro;
-    Welcome welcome;
-    Arrange arrange;
-    Shooting shooting;
-    End end;
-
     Player* p1{};
     Player* p2{};
 
@@ -65,44 +59,75 @@ void Game::_play()
         switch(_state)
         {
         case INTRO:
-            intro.print();
+            {
+            Intro* screen = new Intro();
+            setScreen(screen);
+
+            _screen->print();
             _state = GameStates::WELCOME;
             break;
+            }
         case WELCOME:
+            {
+            Welcome* screen = new Welcome();
+            setScreen(screen);
+
             p1 = new Human("PLAYER_1", PlayerTypes::HUMAN);
             setCurrPlayer(p1);
 
-            p2 = welcome.selectEnemy();
+            p2 = screen->selectEnemy();
             setCurrEnemy(p2);
 
             _state = GameStates::ARRANGE;
             break;
+            }
         case ARRANGE:
+            {
+            Arrange* screen = new Arrange();
+            setScreen(screen);
+                
             for (int i{}; i < 2; i++) {
                 if (getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
-                    arrange.selectShip(arrange.selectArrangeMode());
+                    screen->selectShip(screen->selectArrangeMode());
                 }
-                else arrange.selectShip(Mode::AUTO);
+                else screen->selectShip(Mode::AUTO);
             }
 
             _state = GameStates::SHOOTING;
             break;
+            }
         case SHOOTING:
+            {
+            Shooting* screen = new Shooting();
+            setScreen(screen);
+
             while (true) {
-                if (shooting.selectShot() == 1) break;
+                if (screen->selectShot() == 1) break;
             }
             _state = GameStates::END;
             break;
+            }
         case END:
-            end.print();
-            if (end.isPlayAgain()) {
+            {
+            End* screen = new End();
+            setScreen(screen);
+
+            screen->print();
+            if (screen->isPlayAgain()) {
                 _state = GameStates::WELCOME;
             }
             else exit(0);
             break;
+            }
         default:
             cout << Tools::ft["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::ft["endf"] << "\n";
             exit(0);
         }
     }
+}
+
+inline void Game::setScreen(Screen *screen)
+{
+    delete _screen;
+    _screen = screen;
 }
