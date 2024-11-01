@@ -34,18 +34,12 @@ void Grid::setSquare(int row, int col, int val)
 
 bool Grid::isAvailable(int row, int col, int len, int orient)
 {
-    if (orient == 0 ? row + len > _grid.size() : col + len > _grid.size() ) return false;
+    if (orient == 0 ? col + len > _grid.size() : row + len > _grid.size()) return false;
 
     for (int i{}; i < len + 2; i++) {
-        if (row + i - 1 < _grid.size() && row + i - 1 >= 0
-            && col + i - 1 < _grid.size() && col + i - 1 >= 0) {
-            for (int j{}; j < 3; j++) {
-                int val = orient == 0
-                    ? _grid[row + j - 1][col + i - 1]
-                    : _grid[row + i - 1][col + j - 1];
-                
-                if (val >= 8 && val % 8 == 0) return false;
-            }
+        for (int j{}; j < 3; j++) {
+            const int val = (orient == 0 ? _grid[row + j - 1][col + i - 1] : _grid[row + i - 1][col + j - 1]);
+            if (val != 0 && val != -1) return false;
         }
     }
 

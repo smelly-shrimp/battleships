@@ -54,7 +54,7 @@ void Shooting::_selectShotPos()
     int row{}, col{};
 
     if (regex_match(ans, matches, re)) {
-        row = int(tolower(matches[2].str().c_str()[0])) - 97;
+        row = static_cast<int>(tolower(matches[2].str().c_str()[0])) - 97;
         col = stoi(matches[3].str().c_str()) - 1;
 
         ShotPos pos{row, col};

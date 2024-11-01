@@ -102,7 +102,7 @@ void Console::drawGrid(bool isArrange, bool isComp, bool isHidden)
     }
     
     for (int i{}; i < pgrid->getGrid().size(); i++) {
-        cout << "  │ " << char(65 + i) << " ┼ ";
+        cout << "  │ " << static_cast<char>(65 + i) << " ┼ ";
 
         for (int j{}; j < pgrid->getGrid().size(); j++) {
             cout << (isHidden ? "?? " : pgrid->asString(pgrid->getSquare(i, j)));
@@ -111,7 +111,7 @@ void Console::drawGrid(bool isArrange, bool isComp, bool isHidden)
         if (!isArrange) {
             cout << "│";
 
-            cout << " │ " << char(65 + i) << " ┼ ";
+            cout << " │ " << static_cast<char>(65 + i) << " ┼ ";
             for (int j{}; j < egrid->getGrid().size(); j++) {
                 cout << (isHidden ? "?? " : egrid->asString(egrid->getSquare(i, j), true));
             }
