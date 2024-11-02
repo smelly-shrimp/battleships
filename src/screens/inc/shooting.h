@@ -33,9 +33,11 @@ class Shooting : public Screen
         void print() override;
         int selectShot();
     private:
+        int _stage{};
         void _selectShotPos();
-        void _autoSelectShotPos();
+        void _autoSelectShotPos(bool isHit, ShotPos hitPos = {0, 0});
         Reactions checkReaction(ShotPos& pos);
+        int _getMaxChunk();
 };
 
 #endif // !SHOOTING_H

@@ -1,10 +1,12 @@
+#include <array>
 #include <format>
 #include <regex>
 #include <string>
 #include "shooting.h"
 #include "game.h"
+#include "tools.h"
 
-using std::regex, std::smatch, std::stoi, std::string;
+using std::array, std::format, std::regex, std::smatch, std::stoi, std::string;
 
 Shooting::Shooting()
 {
@@ -30,7 +32,7 @@ int Shooting::selectShot()
             _console.drawInfo("...");
         }
     }
-    else _autoSelectShotPos();
+    else _autoSelectShotPos(false);
 
     int cnt{};
     for (Ship* ship : Game::getCurrEnemy()->grid->getShipList()) {
@@ -56,6 +58,7 @@ void Shooting::_selectShotPos()
     if (regex_match(ans, matches, re)) {
         row = static_cast<int>(tolower(matches[2].str().c_str()[0])) - 97;
         col = stoi(matches[3].str().c_str()) - 1;
+        char rowName = tolower(matches[2].str().c_str()[0]);
 
         ShotPos pos{row, col};
 
@@ -63,7 +66,8 @@ void Shooting::_selectShotPos()
         {
         case Reactions::HIT:
             print();
-            _console.drawInfo("You hit a ship!");
+            _console.drawInfo(format("You hit a ship on {}{}{}{}!",
+                    Tools::ft["underline"], rowName, col + 1, Tools::ft["endf"]));
             _selectShotPos();
             break;
         case Reactions::SUNK:
@@ -78,7 +82,8 @@ void Shooting::_selectShotPos()
             break;
         case Reactions::MISS:
             print();
-            _console.drawInfo("You missed!", true);
+            _console.drawInfo(format("You missed on {}{}{}{}!",
+                    Tools::ft["underline"], rowName, col + 1, Tools::ft["endf"]), true);
             break;
         default:
         }
@@ -90,32 +95,48 @@ void Shooting::_selectShotPos()
     }
 }
 
-void Shooting::_autoSelectShotPos()
+void Shooting::_autoSelectShotPos(bool isHit, ShotPos hitPos)
 {
-    int row{rand() % 10};
-    int col{rand() % 10};
-    ShotPos pos{row, col};
+    int row{}, col{};
 
+    if (isHit) {
+        array<int, 4> rowPos{ -1, 0, 1, 0 };
+        array<int, 4> colPos{ 0, 1, 0, -1 };
+
+        int val{_stage % 4}; 
+        row = hitPos.row + rowPos[val];
+        col = hitPos.col + colPos[val];
+
+        _stage++;
+    }
+    else {
+        do {
+            row = rand() % 10;
+            col = rand() % 10;
+        } while (_getMaxChunk() == row / 5 + 2 * (col / 5));
+    }
+    
+    ShotPos pos{row, col};
     switch (checkReaction(pos))
     {
     case Reactions::HIT:
         print();
-        _console.drawInfo("Comp hit your ship!", true);
-        _autoSelectShotPos();
+        _console.drawInfo(format("Comp hit your ship on {}{}{}{}!",
+                Tools::ft["underline"], static_cast<char>(row + 97), col + 1, Tools::ft["endf"]));
+        _autoSelectShotPos(true, pos);
         break;
     case Reactions::SUNK:
         print();
         _console.drawInfo("Comp sunk your ship!", true);
-        _autoSelectShotPos();
+        _autoSelectShotPos(false);
         break;
     case Reactions::AGAIN:
-        _autoSelectShotPos();
+        _autoSelectShotPos(false);
         break;
     case Reactions::MISS:
         print();
         _console.drawInfo("Comp missed!");
         break;
-    default:
     }
 }
 
@@ -155,4 +176,23 @@ Reactions Shooting::checkReaction(ShotPos& pos)
         grid->setSquare(pos.row, pos.col, static_cast<int>(SquareValues::MISS));
         return Reactions::MISS;
     }
+}
+
+int Shooting::_getMaxChunk()
+{
+    auto grid{Game::getCurrEnemy()->grid->getGrid()};
+    array<int, 4> vals{};
+
+    for (int i{}; i < grid.size(); i++) {
+        for (int j{}; j < grid.size(); j++) {
+            vals.at(i / 5 + 2 * (j / 5)) = grid[i][j] == 3;
+        }
+    }
+
+    int maxIdx{};
+    for (int i{}; i < vals.size(); i++) {
+        if (maxIdx < vals.at(i)) maxIdx = i;
+    }
+
+    return maxIdx;
 }
