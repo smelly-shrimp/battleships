@@ -102,7 +102,8 @@ void Game::_play()
             setScreen(screen);
 
             while (true) {
-                if (screen->selectShot() == 1) break;
+                screen->selectShot();
+                if (screen->isEnd()) break;
             }
             _state = GameStates::END;
             break;

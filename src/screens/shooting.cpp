@@ -22,7 +22,7 @@ void Shooting::print()
     _console.drawGrid(false, Game::getCurrPlayer()->getType() == PlayerTypes::COMP);
 }
 
-int Shooting::selectShot()
+void Shooting::selectShot()
 {
     if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
         _selectShotPos();
@@ -33,17 +33,20 @@ int Shooting::selectShot()
         }
     }
     else _autoSelectShotPos();
+}
 
+bool Shooting::isEnd()
+{
     int cnt{};
     for (Ship* ship : Game::getCurrEnemy()->grid->getShipList()) {
         if (ship->isSink()) cnt++;
     }
 
-    if (cnt >= 9) return 1;
+    if (cnt >= 9) return true;
 
     Game::changePlayers();
 
-    return 0;
+    return false;
 }
 
 void Shooting::_selectShotPos()
@@ -53,40 +56,44 @@ void Shooting::_selectShotPos()
 
     regex re{"(([a-j])([1-9]|10))"};
     smatch matches;
-    int row{}, col{};
+    // int row{}, col{};
 
     if (regex_match(ans, matches, re)) {
-        row = static_cast<int>(tolower(matches[2].str().c_str()[0])) - 97;
-        col = stoi(matches[3].str().c_str()) - 1;
         char rowName = tolower(matches[2].str().c_str()[0]);
+        int row{static_cast<int>(rowName) - 97};
+        int col{stoi(matches[3].str().c_str()) - 1};
 
-        ShotPos pos{row, col};
+        // row = static_cast<int>(tolower(matches[2].str().c_str()[0])) - 97;
+        // col = stoi(matches[3].str().c_str()) - 1;
+        // char rowName = tolower(matches[2].str().c_str()[0]);
 
-        switch (checkReaction(pos))
-        {
-        case Reactions::HIT:
-            print();
-            _console.drawInfo(format("You hit a ship on {}{}{}{}!",
-                    Tools::ft["underline"], rowName, col + 1, Tools::ft["endf"]));
-            _selectShotPos();
-            break;
-        case Reactions::SUNK:
-            print();
-            _console.drawInfo("You sunk a ship!");
-            _selectShotPos();
-            break;
-        case Reactions::AGAIN:
-            print();
-            _console.drawInfo("You cannot hit ship twice!");
-            _selectShotPos();
-            break;
-        case Reactions::MISS:
-            print();
-            _console.drawInfo(format("You missed on {}{}{}{}!",
-                    Tools::ft["underline"], rowName, col + 1, Tools::ft["endf"]), true);
-            break;
-        default:
-        }
+        // ShotPos pos{row, col};
+
+        // switch (_checkReaction(pos))
+        // {
+        // case Reactions::HIT:
+        //     print();
+        //     _console.drawInfo(format("You hit a ship on {}{}{}{}!",
+        //             Tools::ft["underline"], rowName, col + 1, Tools::ft["endf"]));
+        //     _selectShotPos();
+        //     break;
+        // case Reactions::SUNK:
+        //     print();
+        //     _console.drawInfo("You sunk a ship!");
+        //     _selectShotPos();
+        //     break;
+        // case Reactions::AGAIN:
+        //     print();
+        //     _console.drawInfo("You cannot hit ship twice!");
+        //     _selectShotPos();
+        //     break;
+        // case Reactions::MISS:
+        //     print();
+        //     _console.drawInfo(format("You missed on {}{}{}{}!",
+        //             Tools::ft["underline"], rowName, col + 1, Tools::ft["endf"]), true);
+        //     break;
+        // default:
+        // }
     }
     else {
         print();
@@ -119,7 +126,7 @@ void Shooting::_autoSelectShotPos()
     ShotPos pos{row, col};
     char rowName{static_cast<char>(row + 97)};
 
-    switch (checkReaction(pos))
+    switch (_checkReaction(pos))
     {
     case Reactions::HIT:
         print();
@@ -127,13 +134,13 @@ void Shooting::_autoSelectShotPos()
                 Tools::ft["underline"], rowName, col + 1, Tools::ft["endf"]), true);
         _isHit = true;
         if (!_isHit) _hitPos = pos;
-        _autoSelectShotPos();
+        // _autoSelectShotPos();
         break;
     case Reactions::SUNK:
         print();
         _console.drawInfo("Comp sunk your ship!", true);
         _isHit = false;
-        _autoSelectShotPos();
+        // _autoSelectShotPos();
         break;
     case Reactions::AGAIN:
         _autoSelectShotPos();
@@ -146,43 +153,59 @@ void Shooting::_autoSelectShotPos()
     }
 }
 
-Reactions Shooting::checkReaction(ShotPos& pos)
+Reactions Shooting::_checkReaction(ShotPos& pos)
 {
     int val{Game::getCurrEnemy()->grid->getSquare(pos.row, pos.col)};
     Ship* ship{Game::getCurrEnemy()->grid->getShipByVal(val)};
-    Grid* grid{Game::getCurrEnemy()->grid};
 
     if (val >= 8 && val % 8 == 0) {
-        ship->hit();
-
-        if (ship->isSink()) {
-            auto spos{ship->getPos()};
-            int orient{ship->getOrient()};
-            for (int i{}; i < ship->getLen(); i++) {
-                grid->setSquare(
-                    (orient == 0 ? spos["row"] : spos["row"] + i),
-                    (orient == 0 ? spos["col"] + i : spos["col"]),
-                    static_cast<int>(SquareValues::SUNK));
-            }
-
-            Game::getCurrEnemy()->grid->setOccup(spos["row"], spos["col"], ship->getLen(), orient, -2);
-            return Reactions::SUNK;
-        }
-        else {
-            grid->setSquare(pos.row, pos.col, static_cast<int>(SquareValues::HIT));
-            return Reactions::HIT;
-        }
+        return ship->isSink() ? Reactions::SUNK : Reactions::HIT;
     }
     else if (val == static_cast<int>(SquareValues::MISS)
           || val == static_cast<int>(SquareValues::HIT)
           || val == static_cast<int>(SquareValues::SUNK)) {
         return Reactions::AGAIN;
     }
-    else {
-        grid->setSquare(pos.row, pos.col, static_cast<int>(SquareValues::MISS));
-        return Reactions::MISS;
-    }
+    else return Reactions::MISS;
 }
+
+// Reactions Shooting::checkReaction(ShotPos& pos)
+// {
+//     int val{Game::getCurrEnemy()->grid->getSquare(pos.row, pos.col)};
+//     Ship* ship{Game::getCurrEnemy()->grid->getShipByVal(val)};
+//     Grid* grid{Game::getCurrEnemy()->grid};
+
+//     if (val >= 8 && val % 8 == 0) {
+//         ship->hit();
+
+//         if (ship->isSink()) {
+//             auto spos{ship->getPos()};
+//             int orient{ship->getOrient()};
+//             for (int i{}; i < ship->getLen(); i++) {
+//                 grid->setSquare(
+//                     (orient == 0 ? spos["row"] : spos["row"] + i),
+//                     (orient == 0 ? spos["col"] + i : spos["col"]),
+//                     static_cast<int>(SquareValues::SUNK));
+//             }
+
+//             Game::getCurrEnemy()->grid->setOccup(spos["row"], spos["col"], ship->getLen(), orient, -2);
+//             return Reactions::SUNK;
+//         }
+//         else {
+//             grid->setSquare(pos.row, pos.col, static_cast<int>(SquareValues::HIT));
+//             return Reactions::HIT;
+//         }
+//     }
+//     else if (val == static_cast<int>(SquareValues::MISS)
+//           || val == static_cast<int>(SquareValues::HIT)
+//           || val == static_cast<int>(SquareValues::SUNK)) {
+//         return Reactions::AGAIN;
+//     }
+//     else {
+//         grid->setSquare(pos.row, pos.col, static_cast<int>(SquareValues::MISS));
+//         return Reactions::MISS;
+//     }
+// }
 
 int Shooting::_getMaxChunk()
 {

@@ -31,14 +31,15 @@ class Shooting : public Screen
     public:
         Shooting();
         void print() override;
-        int selectShot();
+        void selectShot();
+        bool isEnd();
     private:
         int _stage{};
         bool _isHit{};
         ShotPos _hitPos{};
         void _selectShotPos();
         void _autoSelectShotPos();
-        Reactions checkReaction(ShotPos& pos);
+        Reactions _checkReaction(ShotPos& pos);
         int _getMaxChunk();
 };
 
