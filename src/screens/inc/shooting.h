@@ -34,8 +34,10 @@ class Shooting : public Screen
         int selectShot();
     private:
         int _stage{};
+        bool _isHit{};
+        ShotPos _hitPos{};
         void _selectShotPos();
-        void _autoSelectShotPos(bool isHit, ShotPos hitPos = {0, 0});
+        void _autoSelectShotPos();
         Reactions checkReaction(ShotPos& pos);
         int _getMaxChunk();
 };

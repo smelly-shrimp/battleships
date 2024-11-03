@@ -69,7 +69,7 @@ std::string Grid::asString(int val, bool isTarget)
     }
     else {
         if (val >= 8 && val % 8 == 0) ss << "██";
-        else if (val == OCCUP) ss << "××";
+        // else if (val == OCCUP) ss << "××";
         else if (val == HIT || val == SUNK) ss << "❯❮";
         else if (val == MISS) ss << "••";
         else ss << "══";

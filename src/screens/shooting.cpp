@@ -32,7 +32,7 @@ int Shooting::selectShot()
             _console.drawInfo("...");
         }
     }
-    else _autoSelectShotPos(false);
+    else _autoSelectShotPos();
 
     int cnt{};
     for (Ship* ship : Game::getCurrEnemy()->grid->getShipList()) {
@@ -95,17 +95,17 @@ void Shooting::_selectShotPos()
     }
 }
 
-void Shooting::_autoSelectShotPos(bool isHit, ShotPos hitPos)
+void Shooting::_autoSelectShotPos()
 {
     int row{}, col{};
 
-    if (isHit) {
+    if (_isHit) {
         array<int, 4> rowPos{ -1, 0, 1, 0 };
         array<int, 4> colPos{ 0, 1, 0, -1 };
 
-        int val{_stage % 4}; 
-        row = hitPos.row + rowPos[val];
-        col = hitPos.col + colPos[val];
+        int val{_stage % 4};
+        row = _hitPos.row + rowPos[val];
+        col = _hitPos.col + colPos[val];
 
         _stage++;
     }
@@ -117,25 +117,31 @@ void Shooting::_autoSelectShotPos(bool isHit, ShotPos hitPos)
     }
     
     ShotPos pos{row, col};
+    char rowName{static_cast<char>(row + 97)};
+
     switch (checkReaction(pos))
     {
     case Reactions::HIT:
         print();
         _console.drawInfo(format("Comp hit your ship on {}{}{}{}!",
-                Tools::ft["underline"], static_cast<char>(row + 97), col + 1, Tools::ft["endf"]));
-        _autoSelectShotPos(true, pos);
+                Tools::ft["underline"], rowName, col + 1, Tools::ft["endf"]), true);
+        _isHit = true;
+        if (!_isHit) _hitPos = pos;
+        _autoSelectShotPos();
         break;
     case Reactions::SUNK:
         print();
         _console.drawInfo("Comp sunk your ship!", true);
-        _autoSelectShotPos(false);
+        _isHit = false;
+        _autoSelectShotPos();
         break;
     case Reactions::AGAIN:
-        _autoSelectShotPos(false);
+        _autoSelectShotPos();
         break;
     case Reactions::MISS:
         print();
-        _console.drawInfo("Comp missed!");
+        _console.drawInfo(format("Comp missed on {}{}{}{}!",
+                Tools::ft["underline"], rowName, col + 1, Tools::ft["endf"]));
         break;
     }
 }
