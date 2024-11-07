@@ -9,9 +9,8 @@ class Welcome : public Screen
 {
     public:
         void print() override;
+        void update() override;
         Player* selectEnemy();
-    private:
-        void _askAgain(std::string msg);
 };
 
 #endif // !WELCOME_H

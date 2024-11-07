@@ -8,8 +8,13 @@ using std::string;
 void End::print()
 {
     Fman::playAnim("end", true, false);
-    _console.drawInfo("...");
+    _console.drawInfo("...", InfoType::DEF);
     Fman::playAnim("transition", true, true);
+}
+
+void End::update()
+{
+    
 }
 
 bool End::isPlayAgain()

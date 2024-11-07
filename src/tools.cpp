@@ -1,10 +1,16 @@
-#include <string>
-#include <format>
 #include <chrono>
+#include <format>
+#include <string>
 #include <thread>
+
 #include "tools.h"
 
-using namespace std;
+using std::string;
+
+void Tools::waitMs(int ms)
+{
+    std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+}
 
 void Tools::clearConsole()
 {
@@ -18,29 +24,19 @@ void Tools::clearConsole()
     //     printf("\033[2J");
     // #endif
 
-    printf("\033[2J");
-}
-
-void Tools::waitMs(int ms)
-{
-    this_thread::sleep_for(chrono::milliseconds(ms));
+    // printf("\033[2J");
 }
 
 string Tools::lower(string st)
 {
     string r;
-    for (char s : st) {
-        r += tolower(s);
-    }
-
+    for (char s : st) r.push_back(tolower(s));
     return r;
 }
 
 std::string Tools::insertChars(string c, int t)
 {
     string s;
-    for (int i = 0; i < t; i++) {
-        s = format("{}{}", s, c);
-    }
+    for (int i = 0; i < t; i++) s.append(c);
     return s;
 }

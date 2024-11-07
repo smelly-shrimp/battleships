@@ -3,18 +3,33 @@
 
 #include <string>
 
+enum class InfoType
+{
+    DEF,
+    SUCC,
+    WARN,
+    ERR,
+    IN,
+};
+
+struct InfoData
+{
+    std::string msg;
+    std::string color;
+};
+
 class Console
 {
     public:
         std::string input(std::string msg);
         bool isAnswer(std::string arg, std::string valid);
-        void drawInfo(std::string msg, bool isBad = false);
-        void drawError(std::string msg);
-        void drawHeader(std::string action, bool isTop = false);
-        void drawShipList(std::string msg, bool isArrange, bool isHidden = false);
-        void drawGrid(bool isArrange, bool isComp, bool isHidden = false);
+        void drawInfo(std::string msg, InfoType type);
+        void drawHeader(std::string msg);
+        void drawShipList(bool isArrange);
+        void drawGrid(bool isArrange, bool isComp);
     private:
-        void _drawLine(std::string color = "", bool isError = false);
+        void _drawBar(std::string msg, InfoType type, bool isHeader);
+        InfoData _getInfoData(InfoType type);
 };
 
 #endif // !CONSOLE_H

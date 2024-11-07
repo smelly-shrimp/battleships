@@ -5,3 +5,8 @@ void Intro::print()
 {
     Fman::playAnim("intro", false, false);
 }
+
+void Intro::update()
+{
+    
+}

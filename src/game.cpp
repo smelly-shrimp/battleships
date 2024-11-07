@@ -1,24 +1,17 @@
-#include <iostream>
 #include "game.h"
+#include "tools.h"
+
 #include "intro.h"
 #include "welcome.h"
 #include "arrange.h"
 #include "shooting.h"
-#include "tools.h"
-#include "player.h"
 #include "end.h"
-
-using std::cout;
 
 Game::Game()
 {
+    srand(time(0));
     _state = GameStates::WELCOME;
     _play();
-}
-
-GameStates Game::getGameState()
-{
-    return _state;
 }
 
 void Game::setCurrPlayer(Player* p)
@@ -50,84 +43,63 @@ void Game::changePlayers()
 
 void Game::_play()
 {
-    Player* p1{};
-    Player* p2{};
-
     while (true) {
         Tools::clearConsole();
 
         switch(_state)
         {
-        case INTRO:
+        case GameStates::INTRO:
             {
             Intro* screen = new Intro();
-            setScreen(screen);
+            _setScreen(screen);
 
             _screen->print();
+
             _state = GameStates::WELCOME;
-            break;
-            }
-        case WELCOME:
+            } break;
+        case GameStates::WELCOME:
             {
             Welcome* screen = new Welcome();
-            setScreen(screen);
+            _setScreen(screen);
 
-            p1 = new Human("PLAYER_1", PlayerTypes::HUMAN);
-            setCurrPlayer(p1);
-
-            p2 = screen->selectEnemy();
-            setCurrEnemy(p2);
+            screen->update();
 
             _state = GameStates::ARRANGE;
-            break;
-            }
-        case ARRANGE:
+            } break;
+        case GameStates::ARRANGE:
             {
             Arrange* screen = new Arrange();
-            setScreen(screen);
-                
-            for (int i{}; i < 2; i++) {
-                if (getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
-                    screen->selectShip(screen->selectArrangeMode());
-                }
-                else screen->selectShip(Mode::AUTO);
-            }
+            _setScreen(screen);
+
+            screen->update();
 
             _state = GameStates::SHOOTING;
-            break;
-            }
-        case SHOOTING:
+            } break;
+        case GameStates::SHOOTING:
             {
             Shooting* screen = new Shooting();
-            setScreen(screen);
+            _setScreen(screen);
 
-            while (true) {
-                screen->selectShot();
-                if (screen->isEnd()) break;
-            }
+            screen->update();
+
             _state = GameStates::END;
-            break;
-            }
-        case END:
+            } break;
+        case GameStates::END:
             {
             End* screen = new End();
-            setScreen(screen);
+            _setScreen(screen);
 
             screen->print();
             if (screen->isPlayAgain()) {
                 _state = GameStates::WELCOME;
             }
             else exit(0);
-            break;
-            }
-        default:
-            cout << Tools::ft["red"] << "PANIC! ILLEGAL STATE! STOPPING EXECUTION!" << Tools::ft["endf"] << "\n";
-            exit(0);
+            } break;
         }
     }
 }
 
-inline void Game::setScreen(Screen *screen)
+inline void Game::_setScreen(Screen *screen)
 {
     delete _screen;
     _screen = screen;

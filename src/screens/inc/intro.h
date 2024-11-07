@@ -7,6 +7,7 @@ class Intro : public Screen
 {
     public:
         void print() override;
+        void update() override;
 };
 
 #endif // !INTRO_H

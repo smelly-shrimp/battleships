@@ -27,7 +27,7 @@ int Grid::getSquare(int row, int col)
 
 void Grid::setSquare(int row, int col, int val)
 {
-    if (row < _grid.size() && row >= 0 && col < _grid.size() && col >= 0 ) {
+    if (row < _grid.size() && row >= 0 && col < _grid.size() && col >= 0) {
         _grid[row][col] = val;
     }
 }

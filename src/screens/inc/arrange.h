@@ -21,11 +21,11 @@ struct ShipPos
 class Arrange : public Screen
 {
     public:
-        Arrange();
         void print() override;
+        void update() override;
         Mode selectArrangeMode();
-        void selectShip(Mode mode);
     private:
+        void _selectShip(Mode mode);
         ShipPos _selectShipPos(int len);
         ShipPos _autoSelectShipPos(int len);
         void _createShip(ShipPos& pos, int len);

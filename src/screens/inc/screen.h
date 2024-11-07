@@ -7,6 +7,8 @@ class Screen
 {
     public:
         virtual void print() = 0;
+        virtual void update() = 0;
+        virtual ~Screen() = default;
     protected:
         Console _console;
 };

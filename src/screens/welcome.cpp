@@ -4,12 +4,19 @@
 #include "tools.h"
 #include "fman.h"
 #include "player.h"
+#include "game.h"
 
 using std::string, std::format;
 
 void Welcome::print()
 {
     Fman::playAnim("welcome", false, false);
+}
+
+void Welcome::update()
+{
+    Game::setCurrPlayer(new Human("PLAYER_1", PlayerTypes::HUMAN));
+    Game::setCurrEnemy(selectEnemy());
 }
 
 Player* Welcome::selectEnemy()
@@ -25,13 +32,8 @@ Player* Welcome::selectEnemy()
         return new Comp("COMP", PlayerTypes::COMP);
     }
     else {
-        _askAgain(format("There's no such user as \"{}\"!", ans));
+        print();
+        _console.drawInfo(format("There's no such user as \"{}\"!", ans), InfoType::ERR);
         return selectEnemy();
     }
-}
-
-void Welcome::_askAgain(string msg)
-{
-    print();
-    _console.drawError(msg);
 }
