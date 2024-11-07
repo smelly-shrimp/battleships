@@ -43,7 +43,7 @@ class Shooting : public Screen
         ShotPos _autoSelectShotPos();
         void _shoot(ShotPos pos);
         int _getMaxChunk();
-        void _inform(ShotPos pos, std::string, bool isBad);
+        void _inform(ShotPos pos, std::string msg, InfoType type);
 };
 
 #endif // !SHOOTING_H

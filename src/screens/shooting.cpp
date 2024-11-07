@@ -17,25 +17,20 @@ using std::array, std::format, std::regex, std::smatch, std::stoi, std::string;
 
 void Shooting::print()
 {
-    // _console.drawShipList(format("ATTACKING {}",
-    //     Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN ?
-    //         Game::getCurrEnemy()->getName() : Game::getCurrPlayer()->getName()), false);
-    // _console.drawGrid(false, Game::getCurrPlayer()->getType() == PlayerTypes::COMP);
-
-    // _console.drawShipList(format("ATTACKING {}", Game::getCurrPlayer()->getName()), false);
-    // _console.drawGrid(true, false);
+    _console.drawShipList(false);
+    _console.drawGrid(false, Game::getCurrPlayer()->getType() == PlayerTypes::COMP);
 }
 
 void Shooting::update()
 {
     while (!isEnd()) {
         ShotPos pos{};
-
         if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
             pos = _selectShotPos();
         }
         else pos = _autoSelectShotPos();
 
+        // std::cout << pos.row << " " << pos.col << '\n';
         _shoot(pos);
 
         // if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN
@@ -91,7 +86,6 @@ ShotPos Shooting::_selectShotPos()
     else {
         print();
         _console.drawInfo("Wrong position!", InfoType::ERR);
-        // _console.drawError(format("Wrong position", ans));
         return _selectShotPos();
     }
 }
@@ -132,20 +126,14 @@ void Shooting::_shoot(ShotPos pos)
     switch (_checkReaction(pos))
     {
     case Reactions::AGAIN:
-        _shoot(pos);
-        if (ptype == PlayerTypes::HUMAN) _inform(pos, "You cannot shoot again", true);
-        break;
+        if (ptype == PlayerTypes::HUMAN) _inform(pos, "You cannot shoot again", InfoType::ERR);
+        return _shoot(pos);
     case Reactions::MISS:
         grid->setSquare(pos.row, pos.col, static_cast<int>(SquareValues::MISS));
-        _inform(pos, format("{} missed", prefix), true);
-        break;
-    case Reactions::HIT:
-        grid->setSquare(pos.row, pos.col, static_cast<int>(SquareValues::HIT));
-        _inform(pos, format("{} hit", prefix), false);
-        if (ptype == PlayerTypes::COMP) _isHit = true;
-        _shoot(pos);
+        _inform(pos, format("{} missed", prefix), InfoType::WARN);
         break;
     case Reactions::SUNK:
+        {
         auto spos{ship->getPos()};
         int orient{ship->getOrient()};
         for (int i{}; i < ship->getLen(); i++) {
@@ -154,12 +142,16 @@ void Shooting::_shoot(ShotPos pos)
                 (orient == 0 ? spos["col"] + i : spos["col"]),
                 static_cast<int>(SquareValues::SUNK));
         }
-
         Game::getCurrEnemy()->grid->setOccup(spos["row"], spos["col"], ship->getLen(), orient, -2);
-        _inform(pos, format("{} sunk", prefix), false);
+        _inform(pos, format("{} sunk", prefix), InfoType::SUCC);
         if (ptype == PlayerTypes::COMP) _isHit = false;
-        _shoot(pos);
-        break;
+        return _shoot(pos);
+        }
+    case Reactions::HIT:
+        grid->setSquare(pos.row, pos.col, static_cast<int>(SquareValues::HIT));
+        _inform(pos, format("{} hit", prefix), InfoType::SUCC);
+        if (ptype == PlayerTypes::COMP) _isHit = true;
+        return _shoot(pos);
     }
 }
 
@@ -182,9 +174,9 @@ int Shooting::_getMaxChunk()
     return maxIdx;
 }
 
-void Shooting::_inform(ShotPos pos, string msg, bool isBad)
+void Shooting::_inform(ShotPos pos, string msg, InfoType type)
 {
     print();
     _console.drawInfo(format("{} on {}{}{}{}!", msg,
-        Tools::ft["underline"], static_cast<char>(pos.row + 97), pos.col + 1, Tools::ft["endf"]), InfoType::WARN);
+        Tools::ft["underline"], static_cast<char>(pos.row + 97), pos.col + 1, Tools::ft["endf"]), type);
 }

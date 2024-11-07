@@ -11,7 +11,7 @@ using std::array, std::cin, std::cout, std::format, std::getline, std::regex, st
 
 string Console::input(string msg)
 {
-    string arg;
+    string arg{};
     
     drawInfo(msg, InfoType::IN);
     getline(cin, arg);
@@ -49,8 +49,6 @@ void Console::drawShipList(bool isArrange)
         cout << "  " << names.at(i) << ' ';
 
         for (int j{}; j <= i && curr < Game::getCurrPlayer()->grid->getShipList().size(); j++) {
-            // if (isArrange) cout << (Game::getCurrPlayer()->grid->getShipList().at(curr)->isUsed() ? "██ " : "▁▁ ");
-            // else cout << (Game::getCurrEnemy()->grid->getShipList().at(curr)->isSink() ? "██ " : "▁▁ ");
             cout << (isArrange ? (Game::getCurrPlayer()->grid->getShipList().at(curr)->isUsed() ?  "██ " : "▁▁ ")
                                  : (Game::getCurrEnemy()->grid->getShipList().at(curr)->isSink() ? "██ " : "▁▁ "));
             curr++;
@@ -62,9 +60,13 @@ void Console::drawShipList(bool isArrange)
 
 void Console::drawGrid(bool isArrange, bool isComp)
 {
-    cout << "  ┌───┬───────── OCEAN GRID ──────────┐\n"
-         << "  │   │ 01 02 03 04 05 06 07 08 09 10 │\n"
-         << "  ├───┼──┼──┼──┼──┼──┼──┼──┼──┼──┼──┼─┤\n";
+    isArrange  ?
+        cout << "  ┌───┬───────── OCEAN GRID ──────────┐\n"
+             << "  │   │ 01 02 03 04 05 06 07 08 09 10 │\n"
+             << "  ├───┼──┼──┼──┼──┼──┼──┼──┼──┼──┼──┼─┤\n"
+      : cout << "  ┌───┬───────── OCEAN GRID ──────────┐  ┌───┬──────── TARGET GRID ──────────┐\n"
+             << "  │   │ 01 02 03 04 05 06 07 08 09 10 │  │   │ 01 02 03 04 05 06 07 08 09 10 │\n"
+             << "  ├───┼──┼──┼──┼──┼──┼──┼──┼──┼──┼──┼─┤  ├───┼──┼──┼──┼──┼──┼──┼──┼──┼──┼──┼─┤\n";
 
     Grid* grid1{};
     Grid* grid2{};
@@ -87,7 +89,7 @@ void Console::drawGrid(bool isArrange, bool isComp)
         if (!isArrange) {
             cout << "│";
 
-            cout << " │ " << static_cast<char>(65 + i) << " ┼ ";
+            cout << "  │ " << static_cast<char>(65 + i) << " ┼ ";
             for (int j{}; j < grid2->getGrid().size(); j++) {
                 cout << grid2->asString(grid2->getSquare(i, j), true);
             }
@@ -97,7 +99,7 @@ void Console::drawGrid(bool isArrange, bool isComp)
     }
 
     cout << "  └" << Tools::insertChars("─", 35) << "┘";
-    cout << (isArrange ? "\n" : format(" └{}┘\n", Tools::insertChars("─", 35)));
+    cout << (isArrange ? "\n" : format("  └{}┘\n", Tools::insertChars("─", 35)));
 }
 
 void Console::_drawBar(string msg, InfoType type, bool isHeader)
