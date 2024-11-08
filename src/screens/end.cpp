@@ -10,11 +10,12 @@ void End::print()
     Fman::playAnim("end", true, false);
     _console.drawInfo("...", InfoType::DEF);
     Fman::playAnim("transition", true, true);
+    Fman::playAnim("intro", true, false);
 }
 
 void End::update()
 {
-    
+    print();
 }
 
 bool End::isPlayAgain()
@@ -23,10 +24,4 @@ bool End::isPlayAgain()
 
     if (_console.isAnswer(ans, "(a|again)")) return true;
     else return false;
-
-    return false;
-}
-
-void End::saveScores()
-{
 }

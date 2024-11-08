@@ -59,7 +59,7 @@ void Game::_play()
             Intro* screen = new Intro();
             _setScreen(screen);
 
-            _screen->print();
+            _screen->update();
 
             _state = GameStates::WELCOME;
             } break;
@@ -95,7 +95,8 @@ void Game::_play()
             End* screen = new End();
             _setScreen(screen);
 
-            screen->print();
+            screen->update();
+
             if (screen->isPlayAgain()) {
                 _state = GameStates::WELCOME;
             }
