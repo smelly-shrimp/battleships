@@ -28,8 +28,8 @@ class Grid
         Ship* getShipByVal(int val);
     private:
         std::array<std::array<int, 10>, 10> _grid{0};
-        std::array<Ship*, 10> _ships;
-        Ship* _currShip;
+        std::array<Ship*, 10> _ships{};
+        Ship* _currShip{};
 };
 
 #endif // !GRID_H

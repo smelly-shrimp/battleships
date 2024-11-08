@@ -24,9 +24,9 @@ class Game
         static bool isHvsH();
         static void changePlayers();
     private:
-        inline static GameStates _state;
-        inline static Player* _currPlayer;
-        inline static Player* _currEnemy;
+        inline static GameStates _state{};
+        inline static Player* _currPlayer{};
+        inline static Player* _currEnemy{};
         inline static int arrangeMode{};
         inline static Screen* _screen{};
         static void _play();

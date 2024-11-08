@@ -12,7 +12,7 @@ class Fman
         static void readData();
         static void writeData();
     private:
-        inline static std::vector<std::string> _frames;
+        inline static std::vector<std::string> _frames{};
         static void _pingPong(std::vector<std::string> f, int i);
 };
 

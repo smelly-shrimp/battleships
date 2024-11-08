@@ -25,10 +25,10 @@ void Shooting::update()
         }
         else pos = _autoSelectShotPos();
 
-        _shoot(pos);
-
-        if (Game::isHvsH()) _console.cover();
-        Game::changePlayers();
+        if (!_shoot(pos)) {
+            if (Game::isHvsH()) _console.cover();
+            Game::changePlayers();
+        }
     }
 }
 
@@ -49,6 +49,7 @@ Reactions Shooting::_checkReaction(ShotPos pos)
     Ship* ship{Game::getCurrEnemy()->grid->getShipByVal(val)};
 
     if (val >= 8 && val % 8 == 0) {
+        std::cout << ship->getLen() << ' ' << ship->isSink();
         return ship->isSink() ? Reactions::SUNK : Reactions::HIT;
     }
     else if (val == static_cast<int>(SquareValues::MISS)
@@ -92,7 +93,7 @@ ShotPos Shooting::_autoSelectShotPos()
         row = _hitPos.row + rowPos[val];
         col = _hitPos.col + colPos[val];
 
-        _stage++;    
+        _stage++;
     }
     else {
         do {
@@ -104,7 +105,7 @@ ShotPos Shooting::_autoSelectShotPos()
     return {row, col};
 }
 
-void Shooting::_shoot(ShotPos pos)
+bool Shooting::_shoot(ShotPos pos)
 {
     int val{Game::getCurrEnemy()->grid->getSquare(pos.row, pos.col)};
     Grid* grid{Game::getCurrEnemy()->grid};
@@ -118,11 +119,11 @@ void Shooting::_shoot(ShotPos pos)
     {
     case Reactions::AGAIN:
         if (ptype == PlayerTypes::HUMAN) _inform(pos, "You cannot shoot again", InfoType::ERR);
-        break;
+        return true;
     case Reactions::MISS:
         grid->setSquare(pos.row, pos.col, static_cast<int>(SquareValues::MISS));
         _inform(pos, format("{} missed", prefix), InfoType::WARN);
-        break;
+        return false;
     case Reactions::SUNK:
         {
         auto spos{ship->getPos()};
@@ -135,16 +136,20 @@ void Shooting::_shoot(ShotPos pos)
                 static_cast<int>(SquareValues::SUNK));
         }
         Game::getCurrEnemy()->grid->setOccup(spos["row"], spos["col"], ship->getLen(), orient, -2);
-        _inform(pos, format("{} sunk", prefix), InfoType::SUCC);
+        _inform(pos, format("{} sunk ship", prefix), InfoType::SUCC);
         if (ptype == PlayerTypes::COMP) _isHit = false;
-        break;
+        return true;
         }
     case Reactions::HIT:
         ship->hit();
         grid->setSquare(pos.row, pos.col, static_cast<int>(SquareValues::HIT));
-        _inform(pos, format("{} hit", prefix), InfoType::SUCC);
-        if (ptype == PlayerTypes::COMP) _isHit = true;
-        break;
+        _inform(pos, format("{} hit ship", prefix), InfoType::SUCC);
+        if (ptype == PlayerTypes::COMP) {
+            _hitPos.row = pos.row;
+            _hitPos.col = pos.col;
+            _isHit = true;
+        }
+        return true;
     }
 }
 
