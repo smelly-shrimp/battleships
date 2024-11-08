@@ -27,11 +27,7 @@ void Shooting::update()
 
         _shoot(pos);
 
-        // if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN
-        //  && Game::getCurrEnemy()->getType() == PlayerTypes::HUMAN) {
-        //     _console.cover();
-        // }
-
+        if (Game::isHvsH()) _console.cover();
         Game::changePlayers();
     }
 }

@@ -34,6 +34,12 @@ Player *Game::getCurrEnemy()
     return _currEnemy;
 }
 
+bool Game::isHvsH()
+{
+    return getCurrPlayer()->getType() == PlayerTypes::HUMAN
+        && getCurrEnemy()->getType() == PlayerTypes::HUMAN;
+}
+
 void Game::changePlayers()
 {
     Player* player = Game::getCurrPlayer();

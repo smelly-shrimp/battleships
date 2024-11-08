@@ -4,6 +4,7 @@
 #include <string>
 
 #include "console.h"
+#include "fman.h"
 #include "game.h"
 #include "tools.h"
 
@@ -100,6 +101,12 @@ void Console::drawGrid(bool isArrange, bool isComp)
 
     cout << "  └" << Tools::insertChars("─", 35) << "┘";
     cout << (isArrange ? "\n" : format("  └{}┘\n", Tools::insertChars("─", 35)));
+}
+
+void Console::cover()
+{
+    Fman::playAnim(Game::getCurrPlayer()->getName() == "PLAYER_1" ? "player2_round" : "player1_round", false, false);
+    drawInfo("Enter to procced", InfoType::DEF);
 }
 
 void Console::_drawBar(string msg, InfoType type, bool isHeader)

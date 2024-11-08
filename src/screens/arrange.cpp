@@ -24,6 +24,7 @@ void Arrange::update()
             _console.drawInfo("You've just arranged all of your ships!", InfoType::SUCC);
         }
 
+        if (Game::isHvsH()) _console.cover();
         Game::changePlayers();
     }
 }

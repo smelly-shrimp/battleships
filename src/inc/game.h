@@ -10,7 +10,6 @@ enum class GameStates
     WELCOME,
     ARRANGE,
     SHOOTING,
-    HIDDEN,
     END,
 };
 
@@ -22,6 +21,7 @@ class Game
         static void setCurrEnemy(Player* p);
         static Player* getCurrPlayer();
         static Player* getCurrEnemy();
+        static bool isHvsH();
         static void changePlayers();
     private:
         inline static GameStates _state;
