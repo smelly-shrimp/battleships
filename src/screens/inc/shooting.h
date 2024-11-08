@@ -29,10 +29,8 @@ struct ShotPos
 class Shooting : public Screen
 {
     public:
-        // Shooting();
         void print() override;
         void update() override;
-        // void selectShot();
         bool isEnd();
     private:
         int _stage{};
@@ -41,6 +39,8 @@ class Shooting : public Screen
         Reactions _checkReaction(ShotPos pos);
         ShotPos _selectShotPos();
         ShotPos _autoSelectShotPos();
+        // void _shoot(ShotPos pos);
+        // void _autoShoot(ShotPos pos);
         void _shoot(ShotPos pos);
         int _getMaxChunk();
         void _inform(ShotPos pos, std::string msg, InfoType type);

@@ -10,11 +10,6 @@
 
 using std::array, std::format, std::regex, std::smatch, std::stoi, std::string;
 
-// Shooting::Shooting()
-// {
-//     srand(time(0));
-// }
-
 void Shooting::print()
 {
     _console.drawShipList(false);
@@ -30,7 +25,6 @@ void Shooting::update()
         }
         else pos = _autoSelectShotPos();
 
-        // std::cout << pos.row << " " << pos.col << '\n';
         _shoot(pos);
 
         // if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN
@@ -121,13 +115,14 @@ void Shooting::_shoot(ShotPos pos)
     Ship* ship{Game::getCurrEnemy()->grid->getShipByVal(val)};
 
     PlayerTypes ptype{Game::getCurrPlayer()->getType()};
-    string prefix{ptype == PlayerTypes::HUMAN ? "You've" : "Comp"};
+    bool isHuman{ptype == PlayerTypes::HUMAN};
+    string prefix{isHuman ? "You've" : "Comp"};
 
     switch (_checkReaction(pos))
     {
     case Reactions::AGAIN:
         if (ptype == PlayerTypes::HUMAN) _inform(pos, "You cannot shoot again", InfoType::ERR);
-        return _shoot(pos);
+        break;
     case Reactions::MISS:
         grid->setSquare(pos.row, pos.col, static_cast<int>(SquareValues::MISS));
         _inform(pos, format("{} missed", prefix), InfoType::WARN);
@@ -136,6 +131,7 @@ void Shooting::_shoot(ShotPos pos)
         {
         auto spos{ship->getPos()};
         int orient{ship->getOrient()};
+        ship->hit();
         for (int i{}; i < ship->getLen(); i++) {
             grid->setSquare(
                 (orient == 0 ? spos["row"] : spos["row"] + i),
@@ -145,13 +141,14 @@ void Shooting::_shoot(ShotPos pos)
         Game::getCurrEnemy()->grid->setOccup(spos["row"], spos["col"], ship->getLen(), orient, -2);
         _inform(pos, format("{} sunk", prefix), InfoType::SUCC);
         if (ptype == PlayerTypes::COMP) _isHit = false;
-        return _shoot(pos);
+        break;
         }
     case Reactions::HIT:
+        ship->hit();
         grid->setSquare(pos.row, pos.col, static_cast<int>(SquareValues::HIT));
         _inform(pos, format("{} hit", prefix), InfoType::SUCC);
         if (ptype == PlayerTypes::COMP) _isHit = true;
-        return _shoot(pos);
+        break;
     }
 }
 

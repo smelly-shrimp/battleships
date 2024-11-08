@@ -19,9 +19,7 @@ void Arrange::update()
     for (int i{}; i < 2; i++) {
         if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
             _selectShip(selectArrangeMode());
-        }
 
-        if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
             print();
             _console.drawInfo("You've just arranged all of your ships!", InfoType::SUCC);
         }
@@ -43,35 +41,6 @@ Mode Arrange::selectArrangeMode()
         return selectArrangeMode();
     }
 }
-
-// void Arrange::selectShip(Mode mode)
-// {
-//     int len{4};
-//     int curr{};
-//     for (int i{}; i < 4; i++) {
-//         for (int j{}; j <= i; j++) {
-//             Game::getCurrPlayer()->grid->setCurrShip(curr);
-//             ShipPos shipPos{mode == Mode::MANUAL ? _selectShipPos(len) : _autoSelectShipPos(len)};
-//             _createShip(shipPos, len);
-            
-//             curr++;
-//         }
-//         len--;
-//     }
-
-//     if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
-//         print();
-//         _console.drawInfo("You've just arranged all of your ships!");
-
-//         if (Game::getCurrEnemy()->getType() == PlayerTypes::HUMAN) {
-//             _console.drawShipList("", true, true);
-//             _console.drawGrid(true, false, true);
-//             _console.drawInfo("...");
-//         }
-//     }
-    
-//     Game::changePlayers();
-// }
 
 void Arrange::_selectShip(Mode mode)
 {
