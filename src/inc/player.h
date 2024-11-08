@@ -4,7 +4,7 @@
 #include <string>
 #include "grid.h"
 
-enum PlayerTypes
+enum class PlayerTypes
 {
     HUMAN,
     COMP,

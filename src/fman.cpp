@@ -8,7 +8,7 @@
 #include "fman.h"
 #include "tools.h"
 
-using namespace std;
+using std::cout, std::ifstream, std::ofstream, std::regex, std::vector, std::smatch, std::string;
 
 vector<string> Fman::read(string file)
 {
@@ -44,7 +44,7 @@ void Fman::playAnim(string file, bool isClear, bool isPingPong)
     else {
         for (string f : anim) {
             if (isClear) Tools::clearConsole();
-            cout << f << endl;
+            cout << f << '\n';
             if (anim.size() > 1) Tools::waitMs(500);
         }
     }
@@ -87,9 +87,9 @@ void Fman::writeData()
 
 void Fman::_pingPong(vector<string> f, int i)
 {
-    cout << f.at(i) << endl;
+    cout << f.at(i) << '\n';
     Tools::waitMs(50);
     if (i < f.size() - 1) _pingPong(f, i + 1);
-    cout << f.at(i) << endl;
+    cout << f.at(i) << '\n';
     Tools::waitMs(50);
 }
