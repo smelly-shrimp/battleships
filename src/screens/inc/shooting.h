@@ -20,10 +20,15 @@ enum class Reactions
     MISS,
 };
 
-struct ShotPos
+struct ShotInfo
 {
     int row;
     int col;
+    int prevRow;
+    int prevCol;
+    int hitCount;
+    int hitStage;
+    int dir;
 };
 
 class Shooting : public Screen
@@ -31,19 +36,15 @@ class Shooting : public Screen
     public:
         void print() override;
         void update() override;
-        bool isEnd();
     private:
-        int _stage{};
-        bool _isHit{};
-        ShotPos _hitPos{};
-        Reactions _checkReaction(ShotPos pos);
-        ShotPos _selectShotPos();
-        ShotPos _autoSelectShotPos();
-        // void _shoot(ShotPos pos);
-        // void _autoShoot(ShotPos pos);
-        bool _shoot(ShotPos pos);
+        ShotInfo _shotInfo{};
+        bool _isEnd();
+        Reactions _checkReaction();
+        void _selectShotPos();
+        void _autoSelectShotPos();
+        bool _shoot();
         int _getMaxChunk();
-        void _inform(ShotPos pos, std::string msg, InfoType type);
+        void _inform(std::string msg, InfoType type);
 };
 
 #endif // !SHOOTING_H
