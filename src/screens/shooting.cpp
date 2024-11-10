@@ -19,13 +19,10 @@ void Shooting::print()
 void Shooting::update()
 {
     while (!_isEnd()) {
-        // ShotInfo info{};
         if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
             _selectShotPos();
-            // info = _selectShotPos();
         }
         else _autoSelectShotPos();
-        // else info = _autoSelectShotPos();
 
         if (!_shoot()) {
             if (Game::isHvsH()) _console.cover();
@@ -38,7 +35,7 @@ bool Shooting::_isEnd()
 {
     int cnt{};
     for (Ship* ship : Game::getCurrEnemy()->grid->getShipList()) {
-        if (ship->isSink()) cnt++;
+        if (ship->isSunk()) cnt++;
     }
 
     if (cnt >= 9) return true;
@@ -50,9 +47,7 @@ Reactions Shooting::_checkReaction()
     int val{Game::getCurrEnemy()->grid->getSquare(_shotInfo.row, _shotInfo.col)};
     Ship* ship{Game::getCurrEnemy()->grid->getShipByVal(val)};
 
-    if (val >= 8 && val % 8 == 0) {
-        return ship->isSink() ? Reactions::SUNK : Reactions::HIT;
-    }
+    if (val >= 8 && val % 8 == 0) return Reactions::HIT;
     else if (val == static_cast<int>(SquareValues::MISS)
           || val == static_cast<int>(SquareValues::HIT)
           || val == static_cast<int>(SquareValues::SUNK)) {
@@ -72,10 +67,6 @@ void Shooting::_selectShotPos()
     if (regex_match(ans, matches, re)) {
         _shotInfo.row = static_cast<int>(tolower(matches[2].str().c_str()[0])) - 97;
         _shotInfo.col = stoi(matches[3].str().c_str()) - 1;
-        // int row{static_cast<int>(tolower(matches[2].str().c_str()[0])) - 97};
-        // int col{stoi(matches[3].str().c_str()) - 1};
-
-        // return {row, col};
     }
     else {
         print();
@@ -86,23 +77,32 @@ void Shooting::_selectShotPos()
 
 void Shooting::_autoSelectShotPos()
 {
-    // int row{}, col{};
-
     if (_shotInfo.hitCount > 0) {
         array<int, 4> rowPos{ -1, 0, 1, 0 };
         array<int, 4> colPos{ 0, 1, 0, -1 };
 
-        int val{_shotInfo.hitStage % 4};
+        int dir{_shotInfo.hitStage % 4}; // add random
 
-        if (_shotInfo.hitCount == 2) _shotInfo.dir = val;
-        // row = _shotInfo.row + rowPos[val];
-        // col = _shotInfo.col + colPos[val];
-        _shotInfo.row = _shotInfo.prevRow;
-        _shotInfo.col = _shotInfo.prevCol;
-        _shotInfo.row += rowPos[val];
-        _shotInfo.col += colPos[val];
+        _shotInfo.row = _shotInfo.prevRow + rowPos[dir];
+        _shotInfo.col = _shotInfo.prevCol + colPos[dir];
 
         _shotInfo.hitStage++;
+
+        // if (_shotInfo.hitCount == 2) _shotInfo.dir = dir;
+
+        // int sval{_shotInfo.hitStage % 4};
+
+        // if (_shotInfo.hitCount == 2) _shotInfo.dir = sval;
+        // int val{_shotInfo.hitCount > 2 ? _shotInfo.dir : sval};
+
+        // std::cout << val << '\n';
+
+        // _shotInfo.row = _shotInfo.prevRow;
+        // _shotInfo.col = _shotInfo.prevCol;
+        // _shotInfo.row += rowPos[val];
+        // _shotInfo.col += colPos[val];
+
+        // _shotInfo.hitStage++;
     }
     else {
         do {
@@ -110,8 +110,6 @@ void Shooting::_autoSelectShotPos()
             _shotInfo.col = rand() % 10;
         } while (_getMaxChunk() == _shotInfo.row / 5 + 2 * (_shotInfo.col / 5));    
     }
-
-    // return {row, col};
 }
 
 bool Shooting::_shoot()
@@ -121,8 +119,7 @@ bool Shooting::_shoot()
     Ship* ship{Game::getCurrEnemy()->grid->getShipByVal(val)};
 
     PlayerTypes ptype{Game::getCurrPlayer()->getType()};
-    bool isHuman{ptype == PlayerTypes::HUMAN};
-    string prefix{isHuman ? "You've" : "Comp"};
+    string prefix{ptype == PlayerTypes::HUMAN ? "You've" : "Comp"};
 
     switch (_checkReaction())
     {
@@ -133,30 +130,32 @@ bool Shooting::_shoot()
         grid->setSquare(_shotInfo.row, _shotInfo.col, static_cast<int>(SquareValues::MISS));
         _inform(format("{} missed", prefix), InfoType::WARN);
         return false;
-    case Reactions::SUNK:
-        {
-        auto spos{ship->getPos()};
-        int orient{ship->getOrient()};
+    case Reactions::HIT: // todo: refactor this mess
         ship->hit();
-        for (int i{}; i < ship->getLen(); i++) {
-            grid->setSquare(
-                (orient == 0 ? spos["row"] : spos["row"] + i),
-                (orient == 0 ? spos["col"] + i : spos["col"]),
-                static_cast<int>(SquareValues::SUNK));
+        if (ship->isSunk()) {
+            auto spos{ship->getPos()};
+            int orient{ship->getOrient()};
+
+            for (int i{}; i < ship->getLen(); i++) {
+                grid->setSquare(
+                    (orient == 0 ? spos["row"] : spos["row"] + i),
+                    (orient == 0 ? spos["col"] + i : spos["col"]),
+                    static_cast<int>(SquareValues::SUNK));
+            }
+
+            Game::getCurrEnemy()->grid->setOccup(spos["row"], spos["col"], ship->getLen(), orient, -2);
+            _inform(format("{} sunk ship", prefix), InfoType::SUCC);
+            if (ptype == PlayerTypes::COMP) _shotInfo.hitCount = 0;
         }
-        Game::getCurrEnemy()->grid->setOccup(spos["row"], spos["col"], ship->getLen(), orient, -2);
-        _inform(format("{} sunk ship", prefix), InfoType::SUCC);
-        if (ptype == PlayerTypes::COMP) _shotInfo.hitCount = 0;
-        return true;
-        }
-    case Reactions::HIT:
-        ship->hit();
-        grid->setSquare(_shotInfo.row, _shotInfo.col, static_cast<int>(SquareValues::HIT));
-        _inform(format("{} hit ship", prefix), InfoType::SUCC);
-        if (ptype == PlayerTypes::COMP) {
-            _shotInfo.prevRow = _shotInfo.row;
-            _shotInfo.prevCol = _shotInfo.col;
-            _shotInfo.hitCount += 1;
+        else {
+            grid->setSquare(_shotInfo.row, _shotInfo.col, static_cast<int>(SquareValues::HIT));
+            _inform(format("{} hit ship", prefix), InfoType::SUCC);
+            if (ptype == PlayerTypes::COMP) {
+                _shotInfo.prevRow = _shotInfo.row;
+                _shotInfo.prevCol = _shotInfo.col;
+                _shotInfo.hitCount += 1;
+                _shotInfo.hitStage = 0;
+            }
         }
         return true;
     }

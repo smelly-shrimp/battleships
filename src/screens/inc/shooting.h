@@ -15,7 +15,6 @@ enum class SquareValues
 enum class Reactions
 {
     HIT,
-    SUNK,
     AGAIN,
     MISS,
 };

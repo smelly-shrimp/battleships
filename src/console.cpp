@@ -51,7 +51,7 @@ void Console::drawShipList(bool isArrange)
 
         for (int j{}; j <= i && curr < Game::getCurrPlayer()->grid->getShipList().size(); j++) {
             cout << (isArrange ? (Game::getCurrPlayer()->grid->getShipList().at(curr)->isUsed() ?  "██ " : "▁▁ ")
-                                 : (Game::getCurrEnemy()->grid->getShipList().at(curr)->isSink() ? "██ " : "▁▁ "));
+                                 : (Game::getCurrEnemy()->grid->getShipList().at(curr)->isSunk() ? "██ " : "▁▁ "));
             curr++;
         }
         cout << '\n';

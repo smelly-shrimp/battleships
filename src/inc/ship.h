@@ -16,7 +16,7 @@ class Ship
         std::map<std::string, int> getPos();
         void setOrient(int orient);
         int getOrient();
-        bool isSink();
+        bool isSunk();
         bool isUsed();
         void use();
         void hit();

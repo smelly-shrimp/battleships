@@ -49,7 +49,7 @@ int Ship::getOrient()
     return _orient;
 }
 
-bool Ship::isSink()
+bool Ship::isSunk()
 {
     return _isSink;
 }
