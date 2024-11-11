@@ -28,6 +28,7 @@ class Console
         void drawShipList(bool isArrange, bool isComp);
         void drawGrid(bool isArrange, bool isComp);
         void cover();
+        void center(std::string msg);
     private:
         void _drawBar(std::string msg, InfoType type, bool isHeader);
         InfoData _getInfoData(InfoType type);

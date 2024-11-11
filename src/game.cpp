@@ -7,6 +7,10 @@
 #include "shooting.h"
 #include "end.h"
 
+#include <algorithm>
+
+using std::array, std::max;
+
 Game::Game()
 {
     srand(time(0));
@@ -47,6 +51,31 @@ void Game::changePlayers()
     Game::setCurrEnemy(player);
 }
 
+int Game::getPlayerPoints(int pIdx)
+{
+    if (pIdx < _points.size()) {
+        return _points[pIdx];
+    }
+    else return NULL;
+}
+
+int Game::getWinner()
+{
+    return max(max(_points[0], _points[1]), _points[2]);
+}
+
+void Game::addPoint(int pIdx)
+{
+    if (pIdx < _points.size()) {
+        _points[pIdx] += 1;
+    }
+}
+
+int Game::getTime()
+{
+    return _timer - time(0);
+}
+
 void Game::_play()
 {
     while (true) {
@@ -77,6 +106,7 @@ void Game::_play()
             Arrange* screen = new Arrange();
             _setScreen(screen);
 
+            _timer = time(0);
             screen->update();
 
             _state = GameStates::SHOOTING;

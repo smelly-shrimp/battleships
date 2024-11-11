@@ -120,6 +120,17 @@ void Console::cover()
     drawInfo("ENTER to proceed", InfoType::DEF);
 }
 
+void Console::center(std::string msg)
+{
+    int spaceReq{static_cast<int>((msg).length())};
+    int lSide{80 / 2 - spaceReq / 2};
+    int rSide{lSide - spaceReq % 2};
+
+    cout << Tools::insertChars(" ", lSide);
+    cout << msg;
+    cout << Tools::insertChars(" ", rSide);
+}
+
 void Console::_drawBar(string msg, InfoType type, bool isHeader)
 {
     InfoData d{_getInfoData(type)};

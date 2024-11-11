@@ -9,6 +9,8 @@ class End : public Screen
         void print() override;
         void update() override;
         bool isPlayAgain();
+    private:
+        void _printScores();
 };
 
 #endif // !END_H
