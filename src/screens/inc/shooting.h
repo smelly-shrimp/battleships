@@ -5,14 +5,6 @@
 #include "screen.h"
 #include "ship.h"
 
-enum class SquareValues
-{
-    OCCUP = -1,
-    MISS = 2,
-    HIT = 3,
-    SUNK = 4,
-};
-
 enum class Reactions
 {
     HIT,

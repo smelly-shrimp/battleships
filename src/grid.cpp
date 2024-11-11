@@ -2,13 +2,14 @@
 #include <map>
 #include <sstream>
 #include "grid.h"
+#include "game.h"
 
-#define OCCUP -1
-#define EMPTY 0
-#define SHIP 1
-#define MISS 2
-#define HIT 3
-#define SUNK 4
+// #define OCCUP -1
+// #define EMPTY 0
+// #define SHIP 1
+// #define MISS 2
+// #define HIT 3
+// #define SUNK 4
 
 using std::array, std::map, std::stringstream;
 
@@ -61,17 +62,17 @@ std::string Grid::asString(int val, bool isTarget)
     stringstream ss;
 
     if (isTarget) {
-        if (val == HIT) ss << "❯❮";
-        else if (val == SUNK) ss << "██";
-        else if (val == -1) ss << "××";
-        else if (val == MISS) ss << "••";
+        if (val == static_cast<int>(SquareValues::HIT)) ss << "❯❮";
+        else if (val == static_cast<int>(SquareValues::SUNK)) ss << "██";
+        else if (val == static_cast<int>(SquareValues::OCCUP)) ss << "××";
+        else if (val == static_cast<int>(SquareValues::MISS)) ss << "••";
         else ss << "══";
     }
     else {
         if (val >= 8 && val % 8 == 0) ss << "██";
-        else if (val == -1) ss << "××";
-        else if (val == HIT || val == SUNK) ss << "❯❮";
-        else if (val == MISS) ss << "••";
+        else if (val == static_cast<int>(SquareValues::HIT) || val == static_cast<int>(SquareValues::SUNK)) ss << "❯❮";
+        else if (val == static_cast<int>(SquareValues::OCCUP)) ss << "××";
+        else if (val == static_cast<int>(SquareValues::MISS)) ss << "••";
         else ss << "══";
     }
 
@@ -81,7 +82,6 @@ std::string Grid::asString(int val, bool isTarget)
 
 void Grid::setOccup(int row, int col, int len, int orient, int val)
 {
-    printf("Foo");
     for (int i{}; i < len + 2; i++) {
         for (int j{}; j < 3; j++) {
             int r{orient == 0 ? row - 1 + j : row - 1 + i};

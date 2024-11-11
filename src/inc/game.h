@@ -13,6 +13,14 @@ enum class GameStates
     END,
 };
 
+enum class SquareValues
+{
+    OCCUP = -1,
+    MISS = 2,
+    HIT = 3,
+    SUNK = 4,
+};
+
 class Game
 {
     public:
