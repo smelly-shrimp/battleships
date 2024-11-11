@@ -38,7 +38,7 @@ bool Shooting::_isEnd()
         if (ship->isSunk()) cnt++;
     }
 
-    if (cnt >= 9) return true;
+    if (cnt >= 10) return true;
     return false;
 }
 

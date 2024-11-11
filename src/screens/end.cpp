@@ -10,7 +10,7 @@ void End::print()
     Fman::playAnim("end", true, false);
     _console.drawInfo("...", InfoType::DEF);
     Fman::playAnim("transition", true, true);
-    Fman::playAnim("intro", true, false);
+    Fman::playAnim("welcome", true, false);
 }
 
 void End::update()

@@ -106,7 +106,7 @@ void Game::_play()
     }
 }
 
-inline void Game::_setScreen(Screen *screen)
+void Game::_setScreen(Screen *screen)
 {
     delete _screen;
     _screen = screen;

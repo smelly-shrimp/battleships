@@ -38,7 +38,7 @@ class Game
         inline static int arrangeMode{};
         inline static Screen* _screen{};
         static void _play();
-        inline static void _setScreen(Screen* screen);
+        static void _setScreen(Screen* screen);
 };
 
 #endif // !GAME_H
