@@ -16,7 +16,7 @@ using std::array, std::max, std::string;
 Game::Game()
 {
     srand(time(0));
-    _state = GameStates::WELCOME;
+    _state = GameStates::INTRO;
     _play();
 }
 

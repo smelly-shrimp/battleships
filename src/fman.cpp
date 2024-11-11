@@ -36,7 +36,7 @@ vector<string> Fman::read(string file)
     return _frames;
 }
 
-void Fman::playAnim(string file, bool isClear, bool isPingPong)
+void Fman::playAnim(string file, bool isClear, bool isPingPong, int ms)
 {
     vector<string> anim = Fman::read(file);
 
@@ -45,7 +45,7 @@ void Fman::playAnim(string file, bool isClear, bool isPingPong)
         for (string f : anim) {
             if (isClear) Tools::clearConsole();
             cout << f << '\n';
-            if (anim.size() > 1) Tools::waitMs(500);
+            if (anim.size() > 1) Tools::waitMs(ms);
         }
     }
 
