@@ -12,7 +12,7 @@ using std::array, std::format, std::regex, std::smatch, std::stoi, std::string;
 
 void Shooting::print()
 {
-    _console.drawShipList(false);
+    _console.drawShipList(false, Game::getCurrPlayer()->getType() == PlayerTypes::COMP);
     _console.drawGrid(false, Game::getCurrPlayer()->getType() == PlayerTypes::COMP);
 }
 
@@ -50,7 +50,8 @@ Reactions Shooting::_checkReaction()
     if (val >= 8 && val % 8 == 0) return Reactions::HIT;
     else if (val == static_cast<int>(SquareValues::MISS)
           || val == static_cast<int>(SquareValues::HIT)
-          || val == static_cast<int>(SquareValues::SUNK)) {
+          || val == static_cast<int>(SquareValues::SUNK)
+          || val == static_cast<int>(SquareValues::OCCUP)) {
         return Reactions::AGAIN;
     }
     else return Reactions::MISS;
@@ -81,10 +82,15 @@ void Shooting::_autoSelectShotPos()
         array<int, 4> rowPos{ -1, 0, 1, 0 };
         array<int, 4> colPos{ 0, 1, 0, -1 };
 
+        int& r{_shotInfo.row};
+        int& c{_shotInfo.col};
+
         int dir{_shotInfo.hitStage % 4}; // add random
 
-        _shotInfo.row = _shotInfo.prevRow + rowPos[dir];
-        _shotInfo.col = _shotInfo.prevCol + colPos[dir];
+        r = _shotInfo.prevRow + rowPos[dir];
+        c = _shotInfo.prevCol + colPos[dir];
+        
+        if (r < 0 || r > 10 || c < 0 || c > 10) _autoSelectShotPos();
 
         _shotInfo.hitStage++;
 
@@ -143,7 +149,7 @@ bool Shooting::_shoot()
                     static_cast<int>(SquareValues::SUNK));
             }
 
-            Game::getCurrEnemy()->grid->setOccup(spos["row"], spos["col"], ship->getLen(), orient, -2);
+            Game::getCurrEnemy()->grid->setOccup(spos["row"], spos["col"], ship->getLen(), orient, -1);
             _inform(format("{} sunk ship", prefix), InfoType::SUCC);
             if (ptype == PlayerTypes::COMP) _shotInfo.hitCount = 0;
         }

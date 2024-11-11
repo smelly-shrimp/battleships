@@ -63,13 +63,13 @@ std::string Grid::asString(int val, bool isTarget)
     if (isTarget) {
         if (val == HIT) ss << "❯❮";
         else if (val == SUNK) ss << "██";
-        else if (val == -2) ss << "××";
+        else if (val == -1) ss << "××";
         else if (val == MISS) ss << "••";
         else ss << "══";
     }
     else {
         if (val >= 8 && val % 8 == 0) ss << "██";
-        // else if (val == OCCUP) ss << "××";
+        else if (val == -1) ss << "××";
         else if (val == HIT || val == SUNK) ss << "❯❮";
         else if (val == MISS) ss << "••";
         else ss << "══";
@@ -81,11 +81,12 @@ std::string Grid::asString(int val, bool isTarget)
 
 void Grid::setOccup(int row, int col, int len, int orient, int val)
 {
+    printf("Foo");
     for (int i{}; i < len + 2; i++) {
-        orient == 0 ? setSquare(row - 1, col + i - 1, val) : setSquare(row + i - 1, col + 1, val);
-        orient == 0 ? setSquare(row + 1, col + i - 1, val) : setSquare(row + i - 1, col - 1, val);
-        if (i <= 0 || i >= len + 1) {
-            orient == 0 ? setSquare(row, col + i - 1, val) : setSquare(row + i - 1, col, val);
+        for (int j{}; j < 3; j++) {
+            int r{orient == 0 ? row - 1 + j : row - 1 + i};
+            int c{orient == 0 ? col - 1 + i : col - 1 + j};
+            if (getSquare(r, c) == 0) setSquare(r, c, val);
         }
     }
 }

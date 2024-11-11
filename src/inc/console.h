@@ -25,7 +25,7 @@ class Console
         bool isAnswer(std::string arg, std::string valid);
         void drawInfo(std::string msg, InfoType type);
         void drawHeader(std::string msg);
-        void drawShipList(bool isArrange);
+        void drawShipList(bool isArrange, bool isComp);
         void drawGrid(bool isArrange, bool isComp);
         void cover();
     private:

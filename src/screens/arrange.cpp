@@ -10,7 +10,7 @@ using std::format, std::regex, std::smatch, std::stoi, std::string;
 
 void Arrange::print()
 {
-    _console.drawShipList(true);
+    _console.drawShipList(true, Game::getCurrPlayer()->getType() == PlayerTypes::COMP);
     _console.drawGrid(true, Game::getCurrPlayer()->getType() == PlayerTypes::COMP);
 }
 
@@ -23,6 +23,7 @@ void Arrange::update()
             print();
             _console.drawInfo("You've just arranged all of your ships!", InfoType::SUCC);
         }
+        else _selectShip(Mode::AUTO);
 
         if (Game::isHvsH()) _console.cover();
         Game::changePlayers();
@@ -120,5 +121,5 @@ void Arrange::_createShip(ShipPos& pos, int len)
     grid->getCurrShip()->setPos(pos.row, pos.col);
     grid->getCurrShip()->setLen(len);
     grid->getCurrShip()->setOrient(pos.orient);
-    grid->setOccup(pos.row, pos.col, len, pos.orient, -1);
+    // grid->setOccup(pos.row, pos.col, len, pos.orient, -1);
 }

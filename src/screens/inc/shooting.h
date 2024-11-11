@@ -7,6 +7,7 @@
 
 enum class SquareValues
 {
+    OCCUP = -1,
     MISS = 2,
     HIT = 3,
     SUNK = 4,

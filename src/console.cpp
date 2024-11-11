@@ -39,19 +39,30 @@ void Console::drawHeader(string msg)
     _drawBar(msg, InfoType::DEF, true);
 }
 
-void Console::drawShipList(bool isArrange)
+void Console::drawShipList(bool isArrange, bool isComp)
 {
     array<string, 4> names{ "four-masted  ", "three-masted ", "two-masted   ", "single-masted" };
 
     drawHeader(format("{} {}", Game::getCurrPlayer()->getName(), (isArrange ? "ARRANGING" : "SHOOTING")));
 
+    Grid* grid1{};
+    Grid* grid2{};
+    if (isComp) {
+        grid1 = Game::getCurrEnemy()->grid;
+        grid2 = Game::getCurrPlayer()->grid;
+    }
+    else {
+        grid1 = Game::getCurrPlayer()->grid;
+        grid2 = Game::getCurrEnemy()->grid;
+    }
+
     int curr{};
     for (int i{}; i < names.size(); i++) {
         cout << "  " << names.at(i) << ' ';
 
-        for (int j{}; j <= i && curr < Game::getCurrPlayer()->grid->getShipList().size(); j++) {
-            cout << (isArrange ? (Game::getCurrPlayer()->grid->getShipList().at(curr)->isUsed() ?  "██ " : "▁▁ ")
-                                 : (Game::getCurrEnemy()->grid->getShipList().at(curr)->isSunk() ? "██ " : "▁▁ "));
+        for (int j{}; j <= i && curr < grid1->getShipList().size(); j++) {
+            cout << (isArrange ? (grid1->getShipList().at(curr)->isUsed() ?  "██ " : "▁▁ ")
+                                 : (grid2->getShipList().at(curr)->isSunk() ? "██ " : "▁▁ "));
             curr++;
         }
         cout << '\n';
