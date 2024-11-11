@@ -56,7 +56,7 @@ int Game::getPlayerPoints(int pIdx)
     if (pIdx < _points.size()) {
         return _points[pIdx];
     }
-    else return NULL;
+    else return 0;
 }
 
 int Game::getWinner()

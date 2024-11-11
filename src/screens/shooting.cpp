@@ -87,33 +87,26 @@ void Shooting::_autoSelectShotPos()
 
         int dir{_shotInfo.hitStage % 4}; // add random
 
-        r = _shotInfo.prevRow + rowPos[dir];
-        c = _shotInfo.prevCol + colPos[dir];
+        r = _shotInfo.prevRow + rowPos[_shotInfo.hitCount > 1 ? _shotInfo.dir : dir];
+        c = _shotInfo.prevCol + colPos[_shotInfo.hitCount > 1 ? _shotInfo.dir : dir];
         
-        if (r < 0 || r > 10 || c < 0 || c > 10) _autoSelectShotPos();
+        if (r < 0 || r > 9 || c < 0 || c > 9) return _autoSelectShotPos();
+
+        int val{Game::getCurrEnemy()->grid->getSquare(r, c)};
+        bool isHit{val >= 8 && val % 8 == 0};
+
+        if (_shotInfo.hitCount >= 1 && isHit) _shotInfo.dir = dir;
+
+        if (!isHit) _shotInfo.dir *= -1;
 
         _shotInfo.hitStage++;
-
-        // if (_shotInfo.hitCount == 2) _shotInfo.dir = dir;
-
-        // int sval{_shotInfo.hitStage % 4};
-
-        // if (_shotInfo.hitCount == 2) _shotInfo.dir = sval;
-        // int val{_shotInfo.hitCount > 2 ? _shotInfo.dir : sval};
-
-        // std::cout << val << '\n';
-
-        // _shotInfo.row = _shotInfo.prevRow;
-        // _shotInfo.col = _shotInfo.prevCol;
-        // _shotInfo.row += rowPos[val];
-        // _shotInfo.col += colPos[val];
-
-        // _shotInfo.hitStage++;
     }
     else {
         do {
             _shotInfo.row = rand() % 10;
             _shotInfo.col = rand() % 10;
+            _shotInfo.firstRow = _shotInfo.row;
+            _shotInfo.firstCol = _shotInfo.col;
         } while (_getMaxChunk() == _shotInfo.row / 5 + 2 * (_shotInfo.col / 5));    
     }
 }

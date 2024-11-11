@@ -16,6 +16,8 @@ struct ShotInfo
 {
     int row;
     int col;
+    int firstRow;
+    int firstCol;
     int prevRow;
     int prevCol;
     int hitCount;
