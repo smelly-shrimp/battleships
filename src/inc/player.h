@@ -14,12 +14,14 @@ class Player
 {
     public:
         Grid* grid;
-        Player(std::string name, PlayerTypes type);
+        Player(int id, std::string name, PlayerTypes type);
+        int getId();
         PlayerTypes getType();
         std::string getName();
     private:
-        PlayerTypes _type;
-        std::string _name;
+        int _id{};
+        PlayerTypes _type{};
+        std::string _name{};
 };
 
 class Human : public Player

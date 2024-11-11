@@ -66,6 +66,7 @@ std::string Grid::asString(int val, bool isTarget)
         else if (val == static_cast<int>(SquareValues::SUNK)) ss << "██";
         else if (val == static_cast<int>(SquareValues::OCCUP)) ss << "××";
         else if (val == static_cast<int>(SquareValues::MISS)) ss << "••";
+        else if (val >= 8 && val % 8 == 0) ss << "[]";
         else ss << "══";
     }
     else {

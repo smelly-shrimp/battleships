@@ -7,9 +7,11 @@
 #include "shooting.h"
 #include "end.h"
 
+#include <array>
 #include <algorithm>
+#include <string>
 
-using std::array, std::max;
+using std::array, std::max, std::string;
 
 Game::Game()
 {
@@ -23,7 +25,7 @@ void Game::setCurrPlayer(Player* p)
     _currPlayer = p;
 }
 
-void Game::setCurrEnemy(Player *p)
+void Game::setCurrEnemy(Player* p)
 {
     _currEnemy = p;
 }
@@ -59,21 +61,14 @@ int Game::getPlayerPoints(int pIdx)
     else return 0;
 }
 
-int Game::getWinner()
+void Game::addPoint(Player* p)
 {
-    return max(max(_points[0], _points[1]), _points[2]);
-}
-
-void Game::addPoint(int pIdx)
-{
-    if (pIdx < _points.size()) {
-        _points[pIdx] += 1;
-    }
+    _points[p->getId()] += 1;
 }
 
 int Game::getTime()
 {
-    return _timer - time(0);
+    return time(0) - _timer;
 }
 
 void Game::_play()

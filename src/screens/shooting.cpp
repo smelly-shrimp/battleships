@@ -38,7 +38,11 @@ bool Shooting::_isEnd()
         if (ship->isSunk()) cnt++;
     }
 
-    if (cnt >= 10) return true;
+    if (cnt >= 10) {
+        Game::addPoint(Game::getCurrPlayer());
+        return true;
+    }
+    
     return false;
 }
 

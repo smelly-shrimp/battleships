@@ -120,9 +120,9 @@ void Console::cover()
     drawInfo("ENTER to proceed", InfoType::DEF);
 }
 
-void Console::center(std::string msg)
+void Console::center(string msg)
 {
-    int spaceReq{static_cast<int>((msg).length())};
+    int spaceReq{static_cast<int>(msg.length())};
     int lSide{80 / 2 - spaceReq / 2};
     int rSide{lSide - spaceReq % 2};
 

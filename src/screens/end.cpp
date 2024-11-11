@@ -1,10 +1,11 @@
 #include <iostream>
+#include <sstream>
 #include "end.h"
 #include "fman.h"
 #include "tools.h"
 #include "game.h"
 
-using std::cout, std::format, std::string;
+using std::cout, std::format, std::stringstream, std::string;
 
 void End::print()
 {
@@ -30,10 +31,24 @@ bool End::isPlayAgain()
 
 void End::_printScores()
 {
+    int time{Game::getTime()};
+    stringstream ss;
+
+    if (time > 60) {
+        int m{time / 60};
+        int s{time % 60};
+
+        ss << m << "m " << s << "s";
+    }
+    else ss << time << "s";
+
+
     cout << Tools::insertChars("\n", 8);
-    _console.center(format("congrats {}! You win!\n", Game::getWinner()));
-    _console.center(format("PLAYER_1: {} wins\n", Game::getPlayerPoints(0)));
-    _console.center(format("PLAYER_2: {} wins\n", Game::getPlayerPoints(1)));
-    _console.center(format("COMP: {} wins\n", Game::getPlayerPoints(2)));
-    _console.center(format("time: {}", Game::getTime()));
+    _console.center(format("Congrats {}{}{}! You win!", Tools::ft["magenta"],
+        Game::getCurrPlayer()->getName(), Tools::ft["endf"]));
+    _console.center(format("PLAYER_1: {} wins", Game::getPlayerPoints(0)));
+    _console.center(format("PLAYER_2: {} wins", Game::getPlayerPoints(1)));
+    _console.center(format("COMP: {} wins", Game::getPlayerPoints(2)));
+    _console.center(format("time: {}", ss.str()));
+    cout << Tools::insertChars("\n", 8);
 }

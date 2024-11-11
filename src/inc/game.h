@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <array>
+#include <string>
 
 #include "player.h"
 #include "screen.h"
@@ -23,18 +24,9 @@ enum class SquareValues
     SUNK = 4,
 };
 
-// struct PointsData
-// {
-//     int p1Wins;
-//     int p2Wins;
-//     int compWins;
-//     int winner;
-// };
-
 class Game
 {
     public:
-        // inline static PointsData pointsData{};
         Game();
         static void setCurrPlayer(Player* p);
         static void setCurrEnemy(Player* p);
@@ -43,9 +35,7 @@ class Game
         static bool isHvsH();
         static void changePlayers();
         static int getPlayerPoints(int pIdx);
-        static int getWinner();
-        static void addPoint(int pIdx);
-        // static PointsData getPointsData();
+        static void addPoint(Player* p);
         static int getTime();
     private:
         inline static GameStates _state{};

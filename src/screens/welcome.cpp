@@ -15,7 +15,7 @@ void Welcome::print()
 
 void Welcome::update()
 {
-    Game::setCurrPlayer(new Human("PLAYER_1", PlayerTypes::HUMAN));
+    Game::setCurrPlayer(new Human(0, "PLAYER_1", PlayerTypes::HUMAN));
     Game::setCurrEnemy(selectEnemy());
 }
 
@@ -26,10 +26,10 @@ Player* Welcome::selectEnemy()
     ans = Tools::lower(ans);
 
     if (_console.isAnswer(ans, "(h|human)")) {
-        return new Human("PLAYER_2", PlayerTypes::HUMAN);
+        return new Human(1, "PLAYER_2", PlayerTypes::HUMAN);
     }
     else if (_console.isAnswer(ans, "(c|comp|computer)")) {
-        return new Comp("COMP", PlayerTypes::COMP);
+        return new Comp(2, "COMP", PlayerTypes::COMP);
     }
     else {
         print();
