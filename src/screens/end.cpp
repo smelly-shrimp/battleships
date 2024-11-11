@@ -44,8 +44,7 @@ void End::_printScores()
 
 
     cout << Tools::insertChars("\n", 8);
-    _console.center(format("Congrats {}{}{}! You win!", Tools::ft["magenta"],
-        Game::getCurrPlayer()->getName(), Tools::ft["endf"]));
+    _console.center(format("Congrats {}! You win!", Game::getCurrPlayer()->getName()));
     _console.center(format("PLAYER_1: {} wins", Game::getPlayerPoints(0)));
     _console.center(format("PLAYER_2: {} wins", Game::getPlayerPoints(1)));
     _console.center(format("COMP: {} wins", Game::getPlayerPoints(2)));
