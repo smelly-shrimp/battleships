@@ -19,10 +19,14 @@ void Shooting::print()
 void Shooting::update()
 {
     while (!_isEnd()) {
+        _currShotInfo = Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN ? &_humanShotInfo : &_compShotInfo;
+
         if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
             _selectShotPos();
         }
-        else _autoSelectShotPos();
+        else {
+            _autoSelectShotPos();
+        }
 
         if (!_shoot()) {
             if (Game::isHvsH()) _console.cover();
@@ -48,7 +52,7 @@ bool Shooting::_isEnd()
 
 Reactions Shooting::_checkReaction()
 {
-    int val{Game::getCurrEnemy()->grid->getSquare(_shotInfo.row, _shotInfo.col)};
+    int val{Game::getCurrEnemy()->grid->getSquare(_currShotInfo->row, _currShotInfo->col)};
     Ship* ship{Game::getCurrEnemy()->grid->getShipByVal(val)};
 
     if (val >= 8 && val % 8 == 0) return Reactions::HIT;
@@ -70,54 +74,51 @@ void Shooting::_selectShotPos()
     smatch matches;
 
     if (regex_match(ans, matches, re)) {
-        _shotInfo.row = static_cast<int>(tolower(matches[2].str().c_str()[0])) - 97;
-        _shotInfo.col = stoi(matches[3].str().c_str()) - 1;
+        _humanShotInfo.row = static_cast<int>(tolower(matches[2].str().c_str()[0])) - 97;
+        _humanShotInfo.col = stoi(matches[3].str().c_str()) - 1;
     }
     else {
         print();
         _console.drawInfo("Wrong position!", InfoType::ERR);
-        _selectShotPos();
+        return _selectShotPos();
     }
 }
 
 void Shooting::_autoSelectShotPos()
 {
-    if (_shotInfo.hitCount > 0) {
-        array<int, 4> rowPos{ -1, 0, 1, 0 };
-        array<int, 4> colPos{ 0, 1, 0, -1 };
+    int& r{_compShotInfo.row};
+    int& c{_compShotInfo.col};
 
-        int& r{_shotInfo.row};
-        int& c{_shotInfo.col};
-
-        int dir{_shotInfo.hitStage % 4}; // add random
-
-        r = _shotInfo.prevRow + rowPos[_shotInfo.hitCount > 1 ? _shotInfo.dir : dir];
-        c = _shotInfo.prevCol + colPos[_shotInfo.hitCount > 1 ? _shotInfo.dir : dir];
-        
-        if (r < 0 || r > 9 || c < 0 || c > 9) return _autoSelectShotPos();
+    if (_compShotInfo.hitCount > 0) {
+        array<int, 4> dr{ -1, 0, 1, 0 };
+        array<int, 4> dc{ 0, 1, 0, -1 };
 
         int val{Game::getCurrEnemy()->grid->getSquare(r, c)};
-        bool isHit{val >= 8 && val % 8 == 0};
+        bool isHit{val == 3};
 
-        if (_shotInfo.hitCount >= 1 && isHit) _shotInfo.dir = dir;
+        printf("%d\n", _compShotInfo.hitCount);
+        if (_compShotInfo.hitCount == 1 && !isHit) {
+            _compShotInfo.hitStage++;
+        }
+        else if (_compShotInfo.hitCount >= 2 && !isHit) {
+            _compShotInfo.hitStage += 2;
+            _compShotInfo.prevRow = _compShotInfo.firstRow;
+            _compShotInfo.prevCol = _compShotInfo.firstCol;
+        }
 
-        if (!isHit) _shotInfo.dir *= -1;
-
-        _shotInfo.hitStage++;
+        _compShotInfo.hitStage = _compShotInfo.hitStage % 4;
+        r = _compShotInfo.prevRow + dr[_compShotInfo.hitStage];
+        c = _compShotInfo.prevCol + dc[_compShotInfo.hitStage];
     }
     else {
-        do {
-            _shotInfo.row = rand() % 10;
-            _shotInfo.col = rand() % 10;
-            _shotInfo.firstRow = _shotInfo.row;
-            _shotInfo.firstCol = _shotInfo.col;
-        } while (_getMaxChunk() == _shotInfo.row / 5 + 2 * (_shotInfo.col / 5));    
+        r = rand() % 10;
+        c = rand() % 10;
     }
 }
 
 bool Shooting::_shoot()
-{
-    int val{Game::getCurrEnemy()->grid->getSquare(_shotInfo.row, _shotInfo.col)};
+{   
+    int val{Game::getCurrEnemy()->grid->getSquare(_currShotInfo->row, _currShotInfo->col)};
     Grid* grid{Game::getCurrEnemy()->grid};
     Ship* ship{Game::getCurrEnemy()->grid->getShipByVal(val)};
 
@@ -130,10 +131,10 @@ bool Shooting::_shoot()
         if (ptype == PlayerTypes::HUMAN) _inform("You cannot shoot again", InfoType::ERR);
         return true;
     case Reactions::MISS:
-        grid->setSquare(_shotInfo.row, _shotInfo.col, static_cast<int>(SquareValues::MISS));
+        grid->setSquare(_currShotInfo->row, _currShotInfo->col, static_cast<int>(SquareValues::MISS));
         _inform(format("{} missed", prefix), InfoType::WARN);
         return false;
-    case Reactions::HIT: // todo: refactor this mess
+    case Reactions::HIT: // refactor this mess
         ship->hit();
         if (ship->isSunk()) {
             auto spos{ship->getPos()};
@@ -146,18 +147,20 @@ bool Shooting::_shoot()
                     static_cast<int>(SquareValues::SUNK));
             }
 
-            Game::getCurrEnemy()->grid->setOccup(spos["row"], spos["col"], ship->getLen(), orient, -1);
+            Game::getCurrEnemy()->grid->setOccup(spos["row"], spos["col"], ship->getLen(), orient, static_cast<int>(SquareValues::OCCUP));
             _inform(format("{} sunk ship", prefix), InfoType::SUCC);
-            if (ptype == PlayerTypes::COMP) _shotInfo.hitCount = 0;
+            if (ptype == PlayerTypes::COMP) {
+                _currShotInfo->hitCount = 0;
+                _currShotInfo->hitStage = 0;
+            }
         }
         else {
-            grid->setSquare(_shotInfo.row, _shotInfo.col, static_cast<int>(SquareValues::HIT));
+            grid->setSquare(_currShotInfo->row, _currShotInfo->col, static_cast<int>(SquareValues::HIT));
             _inform(format("{} hit ship", prefix), InfoType::SUCC);
             if (ptype == PlayerTypes::COMP) {
-                _shotInfo.prevRow = _shotInfo.row;
-                _shotInfo.prevCol = _shotInfo.col;
-                _shotInfo.hitCount += 1;
-                _shotInfo.hitStage = 0;
+                _currShotInfo->hitCount++;
+                _currShotInfo->prevRow = _currShotInfo->row;
+                _currShotInfo->prevCol = _currShotInfo->col;
             }
         }
         return true;
@@ -187,5 +190,5 @@ void Shooting::_inform(string msg, InfoType type)
 {
     print();
     _console.drawInfo(format("{} on {}{}{}{}!", msg,
-        Tools::ft["underline"], static_cast<char>(_shotInfo.row + 97), _shotInfo.col + 1, Tools::ft["endf"]), type);
+        Tools::ft["underline"], static_cast<char>(_currShotInfo->row + 97), _currShotInfo->col + 1, Tools::ft["endf"]), type);
 }

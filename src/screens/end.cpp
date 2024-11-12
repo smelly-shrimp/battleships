@@ -23,10 +23,14 @@ void End::update()
 
 bool End::isPlayAgain()
 {
-    const string ans{Tools::lower(_console.input("To play again => A"))};
+    string ans{Tools::lower(_console.input("To play again => A"))};
+    return _console.isAnswer(ans, "(a|again)");
+}
 
-    if (_console.isAnswer(ans, "(a|again)")) return true;
-    else return false;
+End::~End()
+{
+    delete Game::getCurrPlayer();
+    delete Game::getCurrEnemy();
 }
 
 void End::_printScores()
@@ -43,7 +47,7 @@ void End::_printScores()
     else ss << time << "s";
 
 
-    cout << Tools::insertChars("\n", 8);
+    cout << Tools::insertChars("\n", 9);
     _console.center(format("Congrats {}! You win!", Game::getCurrPlayer()->getName()));
     _console.center(format("PLAYER_1: {} wins", Game::getPlayerPoints(0)));
     _console.center(format("PLAYER_2: {} wins", Game::getPlayerPoints(1)));

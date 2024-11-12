@@ -52,6 +52,7 @@ int Ship::getOrient()
 bool Ship::isSunk()
 {
     return _isSink;
+    // return true;
 }
 
 bool Ship::isUsed()

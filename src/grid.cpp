@@ -4,13 +4,6 @@
 #include "grid.h"
 #include "game.h"
 
-// #define OCCUP -1
-// #define EMPTY 0
-// #define SHIP 1
-// #define MISS 2
-// #define HIT 3
-// #define SUNK 4
-
 using std::array, std::map, std::stringstream;
 
 Grid::Grid()
@@ -66,7 +59,7 @@ std::string Grid::asString(int val, bool isTarget)
         else if (val == static_cast<int>(SquareValues::SUNK)) ss << "██";
         else if (val == static_cast<int>(SquareValues::OCCUP)) ss << "××";
         else if (val == static_cast<int>(SquareValues::MISS)) ss << "••";
-        // else if (val >= 8 && val % 8 == 0) ss << "[]";
+        else if (val >= 8 && val % 8 == 0) ss << "[]";
         else ss << "══";
     }
     else {

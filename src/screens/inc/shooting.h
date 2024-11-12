@@ -20,9 +20,9 @@ struct ShotInfo
     int firstCol;
     int prevRow;
     int prevCol;
+
     int hitCount;
     int hitStage;
-    int dir;
 };
 
 class Shooting : public Screen
@@ -31,7 +31,9 @@ class Shooting : public Screen
         void print() override;
         void update() override;
     private:
-        ShotInfo _shotInfo{};
+        ShotInfo _humanShotInfo{};
+        ShotInfo _compShotInfo{};
+        ShotInfo* _currShotInfo{};
         bool _isEnd();
         Reactions _checkReaction();
         void _selectShotPos();
