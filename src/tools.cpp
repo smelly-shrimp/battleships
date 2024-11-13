@@ -23,8 +23,6 @@ void Tools::clearConsole()
     #else
         printf("\033[2J");
     #endif
-
-    // printf("\033[2J");
 }
 
 string Tools::lower(string st)

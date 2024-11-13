@@ -19,6 +19,7 @@ void Shooting::print()
 void Shooting::update()
 {
     while (!_isEnd()) {
+        Tools::clearConsole();
         _currShotInfo = Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN ? &_humanShotInfo : &_compShotInfo;
 
         if (Game::getCurrPlayer()->getType() == PlayerTypes::HUMAN) {
@@ -52,14 +53,18 @@ bool Shooting::_isEnd()
 
 Reactions Shooting::_checkReaction()
 {
-    int val{Game::getCurrEnemy()->grid->getSquare(_currShotInfo->row, _currShotInfo->col)};
+    int r{_currShotInfo->row};
+    int c{_currShotInfo->col};
+
+    int val{Game::getCurrEnemy()->grid->getSquare(r, c)};
     Ship* ship{Game::getCurrEnemy()->grid->getShipByVal(val)};
 
     if (val >= 8 && val % 8 == 0) return Reactions::HIT;
     else if (val == static_cast<int>(SquareValues::MISS)
           || val == static_cast<int>(SquareValues::HIT)
           || val == static_cast<int>(SquareValues::SUNK)
-          || val == static_cast<int>(SquareValues::OCCUP)) {
+          || val == static_cast<int>(SquareValues::OCCUP)
+          || (r < 0 || r > 9 || c < 0 || c > 9)) {
         return Reactions::AGAIN;
     }
     else return Reactions::MISS;
@@ -96,7 +101,6 @@ void Shooting::_autoSelectShotPos()
         int val{Game::getCurrEnemy()->grid->getSquare(r, c)};
         bool isHit{val == 3};
 
-        printf("%d\n", _compShotInfo.hitCount);
         if (_compShotInfo.hitCount == 1 && !isHit) {
             _compShotInfo.hitStage++;
         }
@@ -109,10 +113,14 @@ void Shooting::_autoSelectShotPos()
         _compShotInfo.hitStage = _compShotInfo.hitStage % 4;
         r = _compShotInfo.prevRow + dr[_compShotInfo.hitStage];
         c = _compShotInfo.prevCol + dc[_compShotInfo.hitStage];
+
+        printf("FOO: %d %d | %d | %d | %d | %d %d\n", _compShotInfo.row, _compShotInfo.col, val, isHit, _compShotInfo.hitStage, _compShotInfo.firstRow, _compShotInfo.firstCol);
     }
     else {
         r = rand() % 10;
         c = rand() % 10;
+        _compShotInfo.firstRow = r;
+        _compShotInfo.firstCol = c;
     }
 }
 

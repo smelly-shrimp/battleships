@@ -6,5 +6,7 @@ if you can't -- all files here (from `/src`):
 
 **Run in normal system terminal (80 x 24)!**  
 
-requirements: c++ 20  
+requirements: c++ 20,  
 to avoid warnings add: `-std=c++2b`
+
+tested only on macOs Sequoia 15.1 (for now)
