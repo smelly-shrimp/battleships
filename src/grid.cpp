@@ -32,12 +32,22 @@ bool Grid::isAvailable(int row, int col, int len, int orient)
 
     for (int i{}; i < len + 2; i++) {
         for (int j{}; j < 3; j++) {
-            const int val = (orient == 0 ? _grid[row + j - 1][col + i - 1] : _grid[row + i - 1][col + j - 1]);
-            if (val != 0 && val != -1) return false;
+            int r{orient == 0 ? row + j - 1 : row + i - 1};
+            int c{orient == 0 ? col + i - 1 : col + j - 1};
+            if (!_getVal(r, c)) return false;
         }
     }
 
     return true;
+}
+
+bool Grid::_getVal(int row, int col)
+{
+    if (row >= 0 && row < 10 && col >= 0 && col < 10) {
+        const int val{_grid[row][col]};
+        return !(val != 0 && val != static_cast<int>(SquareValues::OCCUP));
+    }
+    else return true;
 }
 
 array<Ship*, 10> Grid::getShipList()

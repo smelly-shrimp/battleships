@@ -30,6 +30,7 @@ class Grid
         std::array<std::array<int, 10>, 10> _grid{0};
         std::array<Ship*, 10> _ships{};
         Ship* _currShip{};
+        bool _getVal(int row, int col);
 };
 
 #endif // !GRID_H

@@ -64,7 +64,7 @@ ShipPos Arrange::_selectShipPos(int len)
     print();
     string ans{_console.input(format("To position: <a-j><1-10> {}", len > 1 ? "<(h)orizontal/(v)ertical>" : ""))};
 
-    regex re("(([a-j])([1-9]|10)) (h|v)");
+    regex re{len > 1 ? "(([a-j])([1-9]|10)) (h|v)" : "(([a-j])([1-9]|10))"};
     smatch matches{};
 
     if (regex_match(ans, matches, re)) {
